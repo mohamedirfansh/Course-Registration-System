@@ -13,9 +13,10 @@ public class School {
 	private Staff[] allStaff;		// List of all Staff part of the particular school
 	private Course[] allCourses;	// List of courses that are available for this school
 
-	// School constructor to create school object
-	public School(){
-
+	// School constructor to create school object with the school name and initals
+	public School(String schoolName, String schoolInitials){
+		this.schoolName = schoolName;
+		this.schoolInitials = schoolInitials;
 	}
 
 	// All getter methods
@@ -52,7 +53,7 @@ public class School {
 		this.schoolName = schoolName;
 	}
 
-	public void setSchoolID(String schoolID){
+	public void setSchoolID(int schoolID){
 		this.schoolID = schoolID;
 	}
 
@@ -60,11 +61,11 @@ public class School {
 		this.allStudents = allStudents;
 	}
 
-	public void setAllStaff(Student[] allStaff){
+	public void setAllStaff(Staff[] allStaff){
 		this.allStaff = allStaff;
 	}
 
-	public void setAllCourses(Student[] allCourses){
+	public void setAllCourses(Course[] allCourses){
 		this.allCourses = allCourses;
 	}
 
