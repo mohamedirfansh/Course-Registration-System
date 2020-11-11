@@ -1,14 +1,22 @@
 package entities;
 
+/*
+ * Take note... this class can no longer be called directly, but needs to be run from the command line
+ */
+
+
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class Users {
-	Scanner input = new Scanner(System.in);			// global scanner
+	private Scanner input = new Scanner(System.in);			// global scanner
 	
 	// getter and mutator methods are allowed for the following attribute(s)
 	private String name;							// changes can be made if required, surname changes if married etc
-	private final String gender;					// no changes should be made, no mutator methods provided
 	private String nationality;						// changes can be made if required
 	private String schoolID;						// can switch school if required
 	private boolean adminPrivileges = false;		// Only Staff has adminPrivileages
@@ -20,6 +28,7 @@ public class Users {
 	
 	// personal information that can be released with identification key
 	private final String userID;					// no changes should be made, no mutator methods provided; can have getter on pretext you provide identification key
+	private final String gender;					// no changes should be made, no mutator methods provided
 	
 	// account intrusion protection 
 	private boolean accountLocked = false;			// false means account not locked; locked after 3 failed attempts; change password to unlock it
@@ -43,8 +52,7 @@ public class Users {
 	public boolean login() throws NoSuchAlgorithmException {
 		System.out.print("Please enter your User ID: ");
 		String u_id = input.nextLine();
-		System.out.print("Please enter your User password: ");
-		String u_pw = input.nextLine();
+		String u_pw = PasswordField.readPassword();
 		String convert2Hashed = Hash.encode(u_pw);
 		
 		int counter = 1;
@@ -54,7 +62,7 @@ public class Users {
 			System.out.print("Please enter your User ID: ");
 			u_id = input.nextLine();
 			System.out.print("Please enter your User password: ");
-			u_pw = input.nextLine();
+			u_pw = PasswordField.readPassword();
 			convert2Hashed = Hash.encode(u_pw);
 			counter ++;
 			loginSuccessful = this.userID.equals(u_id) && this.hashedPassword.equals(convert2Hashed);
@@ -63,29 +71,39 @@ public class Users {
 		if (!loginSuccessful) {
 			this.accountLocked = true;
 			System.out.println("Account had been locked after 3 failed attempts");
-		}
+		} else 
+			System.out.println("Login successful!");
 		
 		return loginSuccessful;
 	}
 	
 	public boolean changePW() throws NoSuchAlgorithmException {
-		System.out.println("Please enter your Matriculation or Staff ID: ");
-		String key = input.nextLine();
+		System.out.println("Please enter your Identification number: ");
+		String id_key = input.nextLine();
+		return changePW(id_key);
+	}
+	
+	private boolean changePW(String key) throws NoSuchAlgorithmException {
 		if (!key.equals(this.identificationKey)) {												// EG: you must key in your matric number when changing password
 			System.out.println("Identification Key Error - Key not found!");
 			return false;
 		}
 		
-		String newPW, newHashed;
+		String newHashed;
 		do 
 		{
-			System.out.print("Please enter a new password: ");
-			newPW = input.nextLine();
-			newHashed = Hash.encode(newPW);
+			System.out.println("Please enter a new password: ");
+			newHashed = Hash.encode(PasswordField.readPassword());
 			
 		} while (newHashed.equals(this.hashedPassword) && !this.pastPasswords.contains(newHashed));				// prevents user from setting same or reused password 
 		this.hashedPassword = newHashed;
 		System.out.println("Password had been updated successfully!");
+		
+		if (this.accountLocked) {
+			this.accountLocked = false;
+			System.out.println("Account had been unlocked after changing password.");
+		}
+		
 		return true;
 	}
 	
@@ -94,7 +112,11 @@ public class Users {
 			System.out.println("Account is not locked!");
 			return;
 		}
-		boolean changePass = changePW();
+		
+		System.out.println("Please enter your Identification number: ");
+		String id_key = input.nextLine();
+		
+		boolean changePass = changePW(id_key);
 		if (changePass) {
 			System.out.println("Unlocking of account is successful!");
 			this.accountLocked = false;
@@ -139,6 +161,10 @@ public class Users {
 			System.out.println("Account does not fulfil requirements to get administrative privileges");
 	}
 	
+	public String getUserID(boolean fromConstructor) {
+		return this.userID;
+	}
+	
 	public String getUserID() {
 		System.out.println("Please enter matriculation or staff id for identification purposes: ");
 		String key = input.nextLine();
@@ -155,8 +181,11 @@ public class Users {
 		Users user1 = new Users("Snek", "Snek19232", "HarrowPolice", "Snek", "Martian", "SCSE", "18002780022");
 		System.out.printf("%s %s %s %s %s %s %s\n", user1.name, user1.userID, user1.hashedPassword, user1.gender, user1.nationality, user1.schoolID, user1.identificationKey);
 		user1.login();
+		System.out.println("Done Login Test");
 		user1.getUserID();
+		System.out.println("Done Get User ID");
 		user1.changePW();
+		System.out.println("Done Change PW");
 		user1.unlockAccount();
 		System.out.printf("%s %s %s %s %s %s %s\n", user1.name, user1.userID, user1.hashedPassword, user1.gender, user1.nationality, user1.schoolID, user1.identificationKey);
 	}
