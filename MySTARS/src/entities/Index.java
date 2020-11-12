@@ -35,12 +35,34 @@ public class Index {
     public boolean addLesson(String lessonType, String venue, String startTime, String endTime, int day){
         try{
             //Lesson does not exist without the index so it is created here when adding it
-            lessons.add(new Lesson(lessonType, venue, startTime, endTime, day));
+
+            switch(lessonType){
+                case "Tut":
+                    lessons.add(new Tutorial(lessonType, venue, startTime, endTime, day));
+
+                case "Lab":
+                    System.out.println("Enter the week : ");
+                    lessons.add(new Lab(lessonType, venue, startTime, endTime, day, "ODD"));
+
+                case "Sem": case "Lec":
+                    //Add functionality
+            }
+
             return true;
         }catch (IllegalArgumentException e){
             return false;
         }
     }
+
+//    public boolean addLesson(String lessonType, String venue, String startTime, String endTime, int day, String week){
+//        try{
+//            //Lesson does not exist without the index so it is created here when adding it
+//            lessons.add(new Tutorial(lessonType, venue, startTime, endTime, day, week));
+//            return true;
+//        }catch (IllegalArgumentException e){
+//            return false;
+//        }
+//    }
 
     public Lesson deleteLesson(String lessonType, int day){
         if(lessons.isEmpty()){
@@ -249,4 +271,3 @@ public class Index {
             printLessons();
     }
 }
-

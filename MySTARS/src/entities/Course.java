@@ -27,7 +27,6 @@ public class Course {
     private final String schoolName;
     private final int au;
     private ArrayList<Index> courseIndex;
-    private Lesson[] lectures;
 
     public Course(String courseName, String courseCode, String schoolName, int au){
         this.courseName = courseName.toUpperCase();
@@ -35,7 +34,6 @@ public class Course {
         this.schoolName = schoolName.toUpperCase();
         this.au = au;
         this.courseIndex = new ArrayList<>();
-        this.lectures = new Lesson[2];
 
         System.out.println("Course Added.");
     }
