@@ -1,7 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class Course {
     /*
@@ -28,11 +28,17 @@ public class Course {
     private final int au;
     private ArrayList<Index> courseIndex;
 
-    public Course(String courseName, String courseCode, String schoolName, int au){
+    public Course(String courseName, String courseCode, String schoolName, int au) throws IllegalArgumentException{
         this.courseName = courseName.toUpperCase();
         this.courseCode = courseCode.toUpperCase();
-        this.schoolName = schoolName.toUpperCase();
-        this.au = au;
+        this.schoolName = schoolName.toUpperCase(); //need to add a check to see if the school exists
+
+        if(au <= 4 && au >= 1) {
+            this.au = au;
+        }else{
+            throw new IllegalArgumentException("Invalid Arguments.");
+        }
+
         this.courseIndex = new ArrayList<>();
 
         System.out.println("Course Added.");
@@ -59,16 +65,48 @@ public class Course {
     }
 
     public boolean addIndex(String indexCode, String groupName){
-        //index does not exist without the course so it should be initialized here
-        if(findIndex(indexCode) >= 0){
+        if(findIndexPos(indexCode) >= 0){
             return false;
         }
-
         courseIndex.add(new Index(indexCode, groupName));
         return true;
     }
 
-    private int findIndex(String indexCode){
+    public boolean removeIndex(String indexCode){
+        int pos = findIndexPos(indexCode);
+        if(pos == -1){
+            System.out.println("Index does not exist.");
+        }else{
+            courseIndex.remove(pos);
+            return true;
+        }
+
+        return false;
+    }
+
+    public HashMap<String, Integer> getVacantIndices(){
+        HashMap<String, Integer> vacantIndex = new HashMap<>();
+        for(Index i : courseIndex){
+            if(i.getVacancy() > 0){
+                vacantIndex.put(i.getIndexCode(), i.getVacancy());
+            }
+        }
+
+        return vacantIndex;
+    }
+
+    public HashMap<String, Integer> getWaitListSizes(){
+        HashMap<String, Integer> waitLists = new HashMap<>();
+        for(Index i : courseIndex){
+            if(i.getVacancy() == 0){
+                waitLists.put(i.getIndexCode(), i.getVacancy());
+            }
+        }
+
+        return waitLists;
+    }
+
+    private int findIndexPos(String indexCode){
         for(int i = 0; i < courseIndex.size(); ++i){
             if(courseIndex.get(i).getIndexCode().equals(indexCode)){
                 return i;
@@ -78,19 +116,13 @@ public class Course {
         return -1;
     }
 
-    //I think all the below functions should also be in a control class
+    private Index findIndex(String indexCode){
+        for(Index i : courseIndex){
+            if(i.getIndexCode().toUpperCase().equals(indexCode.toUpperCase())){
+                return i;
+            }
+        }
 
-    public void swapIndex(){
-        //function for the student to check the available vacancies and swap current index
+        return null;
     }
-
-    public void enrollmentList(){
-        //function to list all the students enrolled in the course, ordered by the index they are enrolled in
-    }
-
-    public void listVacancies(){
-        //function to list all the vacancies in each index for the students and admin to check vacancies
-    }
-
-
 }

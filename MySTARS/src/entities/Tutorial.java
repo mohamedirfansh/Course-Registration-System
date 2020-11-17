@@ -1,16 +1,24 @@
 package entities;
 
-public class Tutorial extends Lesson{
-    private static int count = 1;
+import java.io.*;  // Import the File class
 
-    public Tutorial(String lessonType, String venue, String startTime, String endTime, int day) {
-        super("Tutorial", venue, startTime, endTime, day);
+public class Tutorial extends Lesson{
+    public Tutorial(String venue, WorkingHours timings) throws IllegalArgumentException{
+        super("TUT", venue, timings);
+
+        if(!checkValidVenue(venue) || !timings.checkValidTimings(1f)){
+            throw new IllegalArgumentException("Invalid venue or timings.");
+        }
     }
 
     @Override
-    public boolean modifyTiming(String startTimeNew, String endTimeNew, int day) {
+    public boolean modifyTiming(WorkingHours newTimings) {
         try {
-            this.timings = new WorkingHours(startTimeNew, endTimeNew, day);
+            if(!newTimings.checkValidTimings(1f)){
+                return false;
+            }
+
+            this.timings = newTimings;
             return true;
         } catch (IllegalArgumentException e){
             System.out.println("Timings are not valid.");
@@ -20,6 +28,34 @@ public class Tutorial extends Lesson{
 
     @Override
     public boolean modifyVenue(String newVenue) {
+        if(checkValidVenue(newVenue)){
+            setVenue(newVenue);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean checkValidVenue(String newVenue) {
+        BufferedReader validVenues;
+
+        try {
+            validVenues = new BufferedReader(new FileReader("/Users/aneez.jah/Documents/Java Projects/STARS Planner/Venue/tutorialVenues.txt"));
+
+            String temp = validVenues.readLine();
+            while (temp != null) {
+                if (newVenue.toUpperCase().equals(temp.toUpperCase())) {
+                    validVenues.close();
+                    return true;
+                }
+                temp = validVenues.readLine();
+            }
+        }catch(IOException i){
+            System.out.println("Unable to parse file.");
+            return false;
+        }
+
         return false;
     }
 }

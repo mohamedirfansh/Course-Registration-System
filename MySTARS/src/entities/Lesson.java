@@ -5,16 +5,10 @@ public abstract class Lesson {
     private String venue; //location
     WorkingHours timings; //dictionary that holds the lesson day and time
 
-    public Lesson(String lessonType, String venue, String startTime, String endTime, int day){
+    public Lesson(String lessonType, String venue, WorkingHours timings){
         this.lessonType = lessonType;
         this.venue = venue;
-        this.timings = new WorkingHours(startTime, endTime, day);
-    }
-
-    public Lesson(String lessonType, String venue, String startTime, String endTime, int day, String week){
-        this.lessonType = lessonType;
-        this.venue = venue;
-        this.timings = new WorkingHours(startTime, endTime, day, week);
+        this.timings = timings;
     }
 
     public String getLessonType() {
@@ -29,17 +23,11 @@ public abstract class Lesson {
         return timings;
     }
 
-    //Consider moving this function to a control class instead of keeping it in the entity
-    public void printLessonHours(){
-        timings.printWorkingHours();
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 
-    //Consider moving this function to a control class instead of keeping it in the entity
-    public void printFullLesson(){
-        System.out.println("\nLesson Type : " + lessonType + "\nVenue : " + venue);
-        printLessonHours();
-    }
-
-    public abstract boolean modifyTiming(String startTimeNew, String endTimeNew, int day);
+    public abstract boolean checkValidVenue(String newVenue);
+    public abstract boolean modifyTiming(WorkingHours newTimings);
     public abstract boolean modifyVenue(String newVenue);
 }

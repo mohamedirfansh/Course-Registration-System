@@ -23,16 +23,30 @@ public class WorkingHours {
             throw new IllegalArgumentException("Invalid Timings");
         }
 
-        if(startMin > Math.abs(startMin - 30)){
-            startMin = 0;
-        }else{
-            startMin = 30;
+        if(startMin != 30 && startMin != 0) {
+            if (startMin > 45) {
+                ++startHour;
+                startMin = 0;
+            } else if (startMin < 15) {
+                startMin = 0;
+            }else{
+                startMin = 30;
+            }
         }
 
-        if(endMin > Math.abs(endMin - 30)){
-            endMin = 0;
-        }else{
-            endMin = 30;
+        if(endMin != 30 && endMin != 0) {
+            if (startMin > 45) {
+                ++endHour;
+                endMin = 0;
+            } else if (endMin < 15) {
+                endMin = 0;
+            }else{
+                endMin = 30;
+            }
+        }
+
+        if(endHour - startHour <= 0){
+            throw new IllegalArgumentException("Duration should be at least 1 hour.");
         }
 
         this.startHour = startHour;
@@ -43,14 +57,34 @@ public class WorkingHours {
         this.week = "ALL";
     }
 
-    public WorkingHours(String startTime, String endTime, int day, String week) {
-       this(startTime, endTime, day);
-       week = week.toUpperCase();
-       if(!week.equals("ODD") && !week.equals("EVEN")){
-           throw new IllegalArgumentException("Invalid Timings");
-       }else{
-           this.week = week;
-       }
+    public WorkingHours(String startTime, String endTime, int day, String week) throws IllegalArgumentException {
+        this(startTime, endTime, day);
+        week = week.toUpperCase();
+        if(!week.equals("ODD") && !week.equals("EVEN")){
+            throw new IllegalArgumentException("Invalid Timings");
+        }else{
+            this.week = week;
+        }
+    }
+
+    public static String[] getDayOfWeek() {
+        return DayOfWeek;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public int getEndHour() {
+        return endHour;
+    }
+
+    public int getStartMin() {
+        return startMin;
+    }
+
+    public int getEndMin() {
+        return endMin;
     }
 
     public String getStartTime(){
@@ -64,27 +98,70 @@ public class WorkingHours {
     }
 
     public String getDay(){
-        //returns the day of the lesson as a string
         return day;
     }
 
     public int getDayNum(){
         for(int i = 0; i < DayOfWeek.length; ++i){
             if(DayOfWeek[i].equals(day)){
-                return i;
+                return i + 1;
             }
         }
 
         return -1;
     }
 
-    public int findDuration(){
-        //retrieves the duration of the lesson. This is mainly for error checking
-        return endHour - startHour;
+    public String getWeek(){
+        return this.week;
     }
 
-    //Move this function to a control class. Leaving here for now for debugging purposes
-    public void printWorkingHours(){
-        System.out.println("Start Time : " + getStartTime() + ", End Time : " + getEndTime() + ", Day : " + getDay() + ", Duration : " + findDuration() + " hours, Week : " + week);
+    public float findDuration(){
+        //retrieves the duration of the lesson. This is mainly for error checking
+        int hours = endHour - startHour;
+        float minutes;
+
+        if(startMin > endMin){
+            hours -= 1;
+            minutes = startMin - endMin;
+        }else{
+            minutes = endMin - startMin;
+        }
+        minutes /= 60;
+
+        return (float)hours + minutes;
+    }
+
+    public boolean checkClash(WorkingHours timings){
+        if(this.getDayNum() != timings.getDayNum()){
+            return false;
+        }
+
+        if(timings.getEndHour() <= this.startHour){
+            if(timings.getEndMin() <= this.startMin){
+                return false;
+            }
+        }else if(timings.getStartHour() >= this.endHour){
+            if(timings.getStartMin() >= this.endMin){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkValidTimings(float minDuration, float maxDuration){
+        if(this.findDuration() >= minDuration && this.findDuration() <= maxDuration){
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkValidTimings(float duration){
+        if(this.findDuration() == duration){
+            return true;
+        }
+
+        return false;
     }
 }
