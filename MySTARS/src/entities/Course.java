@@ -6,14 +6,17 @@ import java.util.HashMap;
 public class Course {
     /*
     Class that holds the information regarding courses. Each course has a name, code, credits, school, and a certain number of indices.
+
     Considerations that haven't been implemented:
     -> Course type (GERPE, UE, CORE, MAJOR PE)
     ->
+
     Methods:
     Admin:
     -> Add a new index
     -> Modify access timings
     ->
+
     Student:
     -> View the indices and their available vacancies
     -> Swap index for a particular course
