@@ -1,71 +1,167 @@
 package entities;
 
-import java.time.temporal.ChronoUnit;
-import java.util.GregorianCalendar;
-import java.util.Calendar;
-
 public class WorkingHours {
-    /*
-    Class that holds 2 datetime objects: the start time and the end time of a lesson
+    private static final String[] DayOfWeek = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private int startHour;
+    private int endHour;
+    private int startMin;
+    private int endMin;
+    private String day;
+    private String week;
 
-    Attributes:
-        startTime : the start time and day of the lesson
-        endTime : the end time and the day of the lesson
+    public WorkingHours(String startTime, String endTime, int day) throws IllegalArgumentException{
+        String[] lessonBegin = startTime.split(":", 2);
+        String[] lessonEnd = endTime.split(":", 2);
 
-    Methods:
-        findDuration :
-            returns the duration of a lesson in hours.
+        int startHour = Integer.parseInt(lessonBegin[0]);
+        int endHour = Integer.parseInt(lessonEnd[0]);
+        int startMin = Integer.parseInt(lessonBegin[1]);
+        int endMin = Integer.parseInt(lessonEnd[1]);
 
-        printWorkingHours :
-            print method to print the start time, end time, day, and the duration of a lesson.
+        if(startHour < 8 || startHour > 18 || endHour < 9 || endHour > 20 || (endHour - startHour == 0) || day <= 1 || day >= 7 ||
+                startMin > 59 || startMin < 0 || endMin > 59 || endMin < 0) {
+            throw new IllegalArgumentException("Invalid Timings");
+        }
 
-     */
+        if(startMin != 30 && startMin != 0) {
+            if (startMin > 45) {
+                ++startHour;
+                startMin = 0;
+            } else if (startMin < 15) {
+                startMin = 0;
+            }else{
+                startMin = 30;
+            }
+        }
 
-    //enumeration that holds all the days of the week
-    private enum DayOfWeek {SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY}
+        if(endMin != 30 && endMin != 0) {
+            if (startMin > 45) {
+                ++endHour;
+                endMin = 0;
+            } else if (endMin < 15) {
+                endMin = 0;
+            }else{
+                endMin = 30;
+            }
+        }
 
-    private Calendar startTime = new GregorianCalendar();
-    private Calendar endTime = new GregorianCalendar();
+        if(endHour - startHour <= 0){
+            throw new IllegalArgumentException("Duration should be at least 1 hour.");
+        }
 
-    public WorkingHours(int startHour, int endHour, int startMin, int endMin, int day){
-        /*
-        Constructor creates a calendar object and stores the start and end time of the lesson.
-         */
-        startTime.set(Calendar.HOUR_OF_DAY, startHour);
-        endTime.set(Calendar.HOUR_OF_DAY, endHour);
-        startTime.set(Calendar.MINUTE, startMin);
-        endTime.set(Calendar.MINUTE, endMin);
-        startTime.set(Calendar.DAY_OF_WEEK, day);
-        endTime.set(Calendar.DAY_OF_WEEK, day);
-        startTime.set(Calendar.SECOND, 0);
-        endTime.set(Calendar.SECOND, 0);
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.startMin = startMin;
+        this.endMin = endMin;
+        this.day = DayOfWeek[day-1];
+        this.week = "ALL";
+    }
+
+    public WorkingHours(String startTime, String endTime, int day, String week) throws IllegalArgumentException {
+        this(startTime, endTime, day);
+        week = week.toUpperCase();
+        if(!week.equals("ODD") && !week.equals("EVEN")){
+            throw new IllegalArgumentException("Invalid Timings");
+        }else{
+            this.week = week;
+        }
+    }
+
+    public static String[] getDayOfWeek() {
+        return DayOfWeek;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public int getEndHour() {
+        return endHour;
+    }
+
+    public int getStartMin() {
+        return startMin;
+    }
+
+    public int getEndMin() {
+        return endMin;
     }
 
     public String getStartTime(){
         //returns the start time of the lesson as a string
-        return startTime.get(Calendar.HOUR_OF_DAY) + ":" + startTime.get(Calendar.MINUTE);
+        return String.format("%02d", this.startHour) + ":" + String.format("%02d", this.startMin);
     }
 
     public String getEndTime(){
         //returns the end time of the lesson as a string
-        return endTime.get(Calendar.HOUR_OF_DAY) + ":" + endTime.get(Calendar.MINUTE);
+        return String.format("%02d", this.endHour) + ":" + String.format("%02d", this.endMin);
     }
 
     public String getDay(){
-        //returns the day of the lesson as a string
-        return DayOfWeek.values()[endTime.get(Calendar.DAY_OF_WEEK) - 1].name();
+        return day;
     }
 
     public int getDayNum(){
-        return endTime.get(Calendar.DAY_OF_WEEK);
+        for(int i = 0; i < DayOfWeek.length; ++i){
+            if(DayOfWeek[i].equals(day)){
+                return i + 1;
+            }
+        }
+
+        return -1;
     }
 
-    public int findDuration(){
+    public String getWeek(){
+        return this.week;
+    }
+
+    public float findDuration(){
         //retrieves the duration of the lesson. This is mainly for error checking
-        return (int) ChronoUnit.HOURS.between(startTime.toInstant(), endTime.toInstant());
+        int hours = endHour - startHour;
+        float minutes;
+
+        if(startMin > endMin){
+            hours -= 1;
+            minutes = startMin - endMin;
+        }else{
+            minutes = endMin - startMin;
+        }
+        minutes /= 60;
+
+        return (float)hours + minutes;
     }
 
-    public void printWorkingHours(){
-        System.out.println("Start Time : " + getStartTime() + ", End Time : " + getEndTime() + ", Day : " + getDay() + ", Duration : " + findDuration() + " hours");
+    public boolean checkClash(WorkingHours timings){
+        if(this.getDayNum() != timings.getDayNum()){
+            return false;
+        }
+
+        if(timings.getEndHour() <= this.startHour){
+            if(timings.getEndMin() <= this.startMin){
+                return false;
+            }
+        }else if(timings.getStartHour() >= this.endHour){
+            if(timings.getStartMin() >= this.endMin){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkValidTimings(float minDuration, float maxDuration){
+        if(this.findDuration() >= minDuration && this.findDuration() <= maxDuration){
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkValidTimings(float duration){
+        if(this.findDuration() == duration){
+            return true;
+        }
+
+        return false;
     }
 }
