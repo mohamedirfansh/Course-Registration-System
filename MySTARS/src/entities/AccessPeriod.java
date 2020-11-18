@@ -44,8 +44,7 @@ public class AccessPeriod {
 				validStartDate = dateFormat.parse(this.startDate);
 				validEndDate = dateFormat.parse(this.endDate);
 			} catch (ParseException e){
-				// Temporary for now, move to boundary class later...
-				System.out.println("Cannot parse date");
+				e.printStackTrace();
 			}
 			// Checking if current date is within the access window
 			if (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0){
