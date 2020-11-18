@@ -21,10 +21,16 @@ public class AccessPeriod {
 	 * The ending date & time of the period.
 	 */
 	private String endDate;
-	/**
-	 * The particular school concerned.
-	 */
-	private School school; 
+	
+    /**
+     * Constructor for the AccessPeriod
+     * @param startDate
+     * @param endDate
+     */
+    public AccessPeriod(String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
 	/**
 	 * Method to check if the current system date & time is within the start
@@ -35,6 +41,7 @@ public class AccessPeriod {
 		// Only check if there is a date already available for the start & end dates.
 		Date validStartDate = null;
 		Date validEndDate = null;
+		
 		if (startDate != null && endDate != null){
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			Date currentDate = new Date();	// Get the current date
@@ -43,16 +50,16 @@ public class AccessPeriod {
 			try {
 				validStartDate = dateFormat.parse(this.startDate);
 				validEndDate = dateFormat.parse(this.endDate);
+				
+				// Checking if current date is within the access window
+                boolean isValid = (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0);
+                return isValid;
+                
 			} catch (ParseException e){
 				e.printStackTrace();
-			}
-			// Checking if current date is within the access window
-			if (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0){
-				return true;
-			} 
-			else {
 				return false;
 			}
+
 		}
 		// Temporary for now, can change to boundary classes later...
 		else {
@@ -79,14 +86,6 @@ public class AccessPeriod {
 		return endDate;
 	}
 
-	/**
-	 * Getter method to get the School concerned
-	 * @return school
-	 */
-	public School getSchool(){
-		return school;
-	}
-
 	// Setter methods
 
 	/**
@@ -105,11 +104,4 @@ public class AccessPeriod {
 		this.endDate = endDate;
 	}
 
-	/**
-	 * Setter method to set the school for the Access Period
-	 * @param school
-	 */
-	public void setSchool(School school){
-		this.school = school;
-	}
 }
