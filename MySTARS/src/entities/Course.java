@@ -125,4 +125,9 @@ public class Course {
 
         return null;
     }
+    
+    public String toString() {
+    	return "Course name: " + this.courseCode + "\tCourse Code " + this.courseName + "\tNumber of AUs " + this.au;
+    }
 }
+
