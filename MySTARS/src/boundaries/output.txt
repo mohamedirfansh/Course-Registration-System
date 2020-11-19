@@ -1,0 +1,28 @@
+user Adeline1999 not found!
+
+user Miao123 found!
+
+Added new user with name John
+
+user Miao123 already inside database!
+
+Error - Student already exists in system!
+user John1997 not found!
+
+Error - Staff already exists in system!
+Updating user Miao123 ...
+
+Course CZ1007 found!
+
+Course Added.
+Course CZ1007 already inside database
+
+Course Added.
+Updating course BU8201 ...
+
+School SCSE found!
+
+School SSS already inside database
+
+Updating School SSS ...
+
