@@ -1,8 +1,9 @@
 package controls;
 
 import java.util.Scanner;
-
+import java.util.ArrayList;
 import boundaries.StudentUI;
+import entities.Course;
 import entities.Index;
 import entities.Student;
 
@@ -12,12 +13,13 @@ import entities.Student;
  * student entity is supposed to be able to do in the system.
  */
 public class StudentControl {
-	// Temp for now...
+
 	private Student currentStudent;
 	Scanner scn = new Scanner(System.in);
 	
-	public StudentControl() {
-		
+	// Constructor
+	public StudentControl(Student currentStudent) {
+		this.currentStudent = currentStudent;
 	}
 	
 	/**
@@ -26,129 +28,84 @@ public class StudentControl {
 	 * @param studentID
 	 */
 	public void addCourse(String studentID) {
-		String index;
-		index = StudentUI.addCourseIndexMsg();
-		Index currentIndex = DatabaseControl.getCourseData(index);
+		DatabaseControl dbControl = new DatabaseControl('u');
 		
+		String course;
+		String index;
+		
+		course = StudentUI.addCourseMsg();
+		index = StudentUI.addCourseIndexMsg();
+		
+		Course currentCourse = dbControl.getCourseData(course);
+		Index currentIndex = currentCourse.findIndex(index);
+		
+		// Check to see if there actually is a course with that index, if there is not
+		// then display the courseDoesNotExistMsg() and exit the method.
 		if (currentIndex == null) {
 			StudentUI.courseDoesNotExistMsg();
 			return;
 		}
 		
-		/*
-		Course courseObj = new Course();
-		courseObj = DBController.getCourseByCourseCode(courseIndexObj.getCourseCode());
-		try {
-			//Get the list of index for the course and check whether the student is registered in any of it
-			ArrayList<String[]> listOfIndex = new ArrayList<String[]>();
-			listOfIndex = DBController.getIndexListByCourseCode(courseIndexObj.getCourseCode());
-			for (int i = 0; i < listOfIndex.size(); i++) {
-				ArrayList<String[]> listOfStudent = new ArrayList<String[]>();
-				listOfStudent = DBController.getStudentListByIndex(listOfIndex.get(i)[0]);
-				for (int j = 0; j < listOfStudent.size(); j++) {
-					if ((listOfStudent.get(j)[0].equals(accountID))) {
-						System.out.println(
-								"Error. You are already registered for the course.\n" + "Returning to main menu...");
-						System.out.println(
-								"------------------------------------------------------------------------------------------------------------------------------");
-						return;
-					}
-				}
-			}
-			//check time clash for new course
-			boolean isclash = false;
-			ArrayList<String[]> studentCourseList = DBController.getCourseListByStudentID(accountID);
-			if (studentCourseList != null) {
-				if (studentCourseList.size() != 0) {
-					for (int i = 0; i < studentCourseList.size(); i++) {
-						String tempindex = studentCourseList.get(i)[0];
-						isclash = isTimeClashBetweenIndexes(tempindex, courseIndex);
-						if (isclash) {
-							System.out.println("You can't add this course index because of day/time clash. \n"
-									+ "Returning to main menu...");
-							System.out.println(
-									"------------------------------------------------------------------------------------------------------------------------------");
-							return;
-						}
-					}
-				}
-
-			}
-			System.out.println("Select appropriate course type for " + courseIndex);
-			System.out.println(
-					"1. Core\n" + "2. Prescribed\n" + "3. Unrestricted\n" + "4. Cancel and return to main menu");
-			int choice;
-			do {
-				choice = sc.nextInt();
-				switch (choice) {
-				case 1:
-					courseType = "Core";
-					break;
-				case 2:
-					courseType = "Prescribed";
-					break;
-				case 3:
-					courseType = "Unrestricted";
-					break;
-				case 4:
-					return;
-				default:
-					System.out.println("Please enter a valid choice");
-					break;
-				}
-			} while (choice < 0 || choice > 4);
-			//Check if the course is full
-			if (courseIndexObj.getVacancy().equals("0")) {
-				System.out.println("Class is full, added to waiting list.\n" + "Returning to main menu...");
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
-				DBController.addToWL(accountID, courseIndex, courseType);
-				return;
-			}
-
-			String dataLine = accountID + "," + courseIndex + "," + courseType + "," + "NEW";
-			String[] dataLineArray = dataLine.split(",");
-			DBController.addOneline(wCourseRegFile, dataLineArray);
-			DBController.editVacByIndex(courseIndex, '-');
-
-			System.out.println("Registered successfully!");
-
-			System.out.println("Course Name: " + courseObj.getCourseName());
-			System.out.println("Course Type: " + courseType);
-			System.out.println("Index number: " + courseIndex);
-			/*print added Course Index Details. */
-			ArrayList<Lesson> indexdetails = DBController.getIndexDetailsByIndex(courseIndex);
-			if (indexdetails != null) {
-				if (indexdetails.size() != 0) {
-					System.out.println("+--------------------------------------------------+");
-					System.out.format("|%-11s|%-4s|%-10s|%-7s|%-8s|%-5s|%n", "Type", "Day", "Time", "Venue", "Week",
-							"Group");
-					System.out.println("+--------------------------------------------------+");
-					for (int i = 0; i < indexdetails.size(); i++) {
-						System.out.format("|%-11s|%-4s|%-4s-%-5s|%-7s|%-8s|%-5s|%n", indexdetails.get(i).getClassType(),
-								indexdetails.get(i).getDay(), indexdetails.get(i).getStarttime(),
-								indexdetails.get(i).getEndtime(), indexdetails.get(i).getVenue(),
-								indexdetails.get(i).getWeek(), indexdetails.get(i).getGroup());
-					}
-					System.out.println("+--------------------------------------------------+");
-				}
-			}
-			System.out.println(
-					"------------------------------------------------------------------------------------------------------------------------------");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		 */
+		// Check not needed as it is already done in the index class
+//		try {
+//			// Check if the current index already has this student enrolled in
+//			ArrayList<Student> listOfStudents = currentIndex.getEnrolled();
+//			for (Student student : listOfStudents) {
+//				if (student.getUserID() == studentID) {
+//					StudentUI.alreadyEnrolledIndexMsg();
+//					return;
+//				}
+//			}
+//		}
 		
+		// TODO: check for clash
+		currentIndex.registerStudent(currentStudent);
+		StudentUI.successfullyEnrolledMsg();
+
+		// Update back to the database
+		dbControl.updateCourseData(course, currentCourse);
 	}
 	
-	public static void dropCourse() {
-		pass;
+	/**
+	 * Method to drop the course for a student.
+	 * Called by the student object.
+	 */
+	public void dropCourse() {
+		DatabaseControl dbControl = new DatabaseControl('u');
+		
+		String course;
+		String index;
+		
+		course = StudentUI.dropCourseMsg();
+		index = StudentUI.dropCourseIndexMsg();
+		
+		Course currentCourse = dbControl.getCourseData(course);
+		Index currentIndex = currentCourse.findIndex(index);
+		
+		// Check if the current index really has this student enrolled in
+		ArrayList<Student> listOfStudents = currentIndex.getEnrolled();
+		for (Student student : listOfStudents) {
+			if (student.getUserID() == currentStudent.getUserID()) {
+				StudentUI.notInIndexMsg();
+				return;
+			}
+		}
+		
+		// If all's good, remove the student
+		currentIndex.deregisterStudent(currentStudent);
 	}
 	
 	public static void checkVacancy() {
-		pass;
+		DatabaseControl dbControl = new DatabaseControl('u');
+		
+		String course;
+		String index;
+		
+		course = StudentUI.dropCourseMsg();
+		index = StudentUI.dropCourseIndexMsg();
+		
+		Course currentCourse = dbControl.getCourseData(course);
+		Index currentIndex = currentCourse.findIndex(index);
 	}
 	
 	public static void changeIndex() {
