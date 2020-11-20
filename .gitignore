@@ -1,1 +1,4 @@
 /.metadata/
+*.un~
+*.swp
+.gitignore~

@@ -1,8 +1,9 @@
 package entities;
 
 import java.util.ArrayList;
+import java.io.Serializable; // need this for object serialization (Jun Jie)
 
-public class School {
+public class School implements Serializable {
 	/* Create some attributes unique to School class.
 	It will also contain a list of Students, list of Staff, list of Courses
 	since these information are unique to each school.

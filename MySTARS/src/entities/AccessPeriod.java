@@ -49,12 +49,17 @@ public class AccessPeriod {
                 System.out.println("Cannot parse date; Error: " + e);
             }
             // Checking if current date is within the access window
+	} // Added in '}' to close off the if statement (Jun Jie)
 
         // Temporary for now, can change to boundary classes later...
         else {
             System.out.println("Cannot get access period for school");
-            return false;
+            // return false;
         }
+	return false; // Shifted the return statement to after the else block
+		      // There will be a compiler error if not done like this
+		      // because the compiler isn't sure that the method will
+		      // definitely return something (Jun Jie)
     }
 
     // Getter methods
@@ -77,8 +82,9 @@ public class AccessPeriod {
         this.endDate = endDate;
     }
 
-    public void setSchool(School school) {
+    // This set method was not in the UML Diagram, I have commented it out for now
+    /* public void setSchool(School school) {
         this.school = school;
-    }
+    } */
 }
 
