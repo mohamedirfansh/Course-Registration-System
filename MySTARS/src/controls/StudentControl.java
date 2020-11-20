@@ -2,7 +2,7 @@ package controls;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import boundaries.StudentUI;
+import boundaries.StudentUIMsg;
 import entities.Course;
 import entities.Index;
 import entities.Student;
@@ -33,8 +33,8 @@ public class StudentControl {
 		String course;
 		String index;
 		
-		course = StudentUI.addCourseMsg();
-		index = StudentUI.addCourseIndexMsg();
+		course = StudentUIMsg.addCourseMsg();
+		index = StudentUIMsg.addCourseIndexMsg();
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);
@@ -42,7 +42,7 @@ public class StudentControl {
 		// Check to see if there actually is a course with that index, if there is not
 		// then display the courseDoesNotExistMsg() and exit the method.
 		if (currentIndex == null) {
-			StudentUI.courseDoesNotExistMsg();
+			StudentUIMsg.courseDoesNotExistMsg();
 			return;
 		}
 		
@@ -52,7 +52,7 @@ public class StudentControl {
 //			ArrayList<Student> listOfStudents = currentIndex.getEnrolled();
 //			for (Student student : listOfStudents) {
 //				if (student.getUserID() == studentID) {
-//					StudentUI.alreadyEnrolledIndexMsg();
+//					StudentUIMsg.alreadyEnrolledIndexMsg();
 //					return;
 //				}
 //			}
@@ -60,7 +60,7 @@ public class StudentControl {
 		
 		// TODO: check for clash
 		currentIndex.registerStudent(currentStudent);
-		StudentUI.successfullyEnrolledMsg();
+		StudentUIMsg.successfullyEnrolledMsg();
 
 		// Update back to the database
 		dbControl.updateCourseData(course, currentCourse);
@@ -76,8 +76,8 @@ public class StudentControl {
 		String course;
 		String index;
 		
-		course = StudentUI.dropCourseMsg();
-		index = StudentUI.dropCourseIndexMsg();
+		course = StudentUIMsg.dropCourseMsg();
+		index = StudentUIMsg.dropCourseIndexMsg();
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);
@@ -86,7 +86,7 @@ public class StudentControl {
 		ArrayList<Student> listOfStudents = currentIndex.getEnrolled();
 		for (Student student : listOfStudents) {
 			if (student.getUserID() == currentStudent.getUserID()) {
-				StudentUI.notInIndexMsg();
+				StudentUIMsg.notInIndexMsg();
 				return;
 			}
 		}
@@ -103,8 +103,8 @@ public class StudentControl {
 		int currentVacancy;
 		
 		//To change...
-		course = StudentUI.dropCourseMsg();
-		index = StudentUI.dropCourseIndexMsg();
+		course = StudentUIMsg.dropCourseMsg();
+		index = StudentUIMsg.dropCourseIndexMsg();
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);

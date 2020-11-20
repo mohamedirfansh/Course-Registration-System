@@ -8,7 +8,7 @@ import java.util.Scanner;
  * that are specific to the student. The User Interface
  * for the student interacting with the system.
  */
-public class StudentUI {
+public class StudentUIMsg {
 	private static Scanner scn = new Scanner(System.in);
 	
 	/**
