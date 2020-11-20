@@ -1,4 +1,4 @@
-package boundaries;
+package controls;
 import entities.School;
 import java.util.ArrayList;
 import java.util.List;

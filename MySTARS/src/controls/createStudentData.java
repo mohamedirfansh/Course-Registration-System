@@ -1,4 +1,4 @@
-package boundaries;
+package controls;
 import entities.Student;
 import entities.Hash;
 import entities.Users;

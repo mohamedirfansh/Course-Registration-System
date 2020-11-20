@@ -1,4 +1,4 @@
-package boundaries;
+package controls;
 import entities.Users;
 import entities.Staff;
 import entities.Hash;

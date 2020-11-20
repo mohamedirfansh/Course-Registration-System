@@ -1,6 +1,6 @@
-package control;
+package controls;
 
-import entities.*
+import entities.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
