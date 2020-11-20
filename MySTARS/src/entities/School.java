@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * School class unique attributes for a particular school.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * since these information are unique to each school.
  *
  */
-public class School {
+public class School implements Serializable {
 	/**
 	 * The full name of the school
 	 */

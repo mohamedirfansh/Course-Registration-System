@@ -30,4 +30,5 @@ public abstract class Lesson {
     public abstract boolean checkValidVenue(String newVenue);
     public abstract boolean modifyTiming(WorkingHours newTimings);
     public abstract boolean modifyVenue(String newVenue);
+
 }

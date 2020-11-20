@@ -2,8 +2,9 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.Serializable; // need this for object serialization (Jun Jie)
 
-public class Course {
+public class Course implements Serializable { // need to implement Serializable for object serialization (Jun Jie)
     /*
     Class that holds the information regarding courses. Each course has a name, code, credits, school, and a certain number of indices.
 
@@ -125,4 +126,9 @@ public class Course {
 
         return null;
     }
+    
+    public String toString() {
+    	return "Course name: " + this.courseCode + "\tCourse Code " + this.courseName + "\tNumber of AUs " + this.au;
+    }
 }
+

@@ -17,6 +17,7 @@ public class AccessPeriod {
 	 * The starting date & time of the period.
 	 */
 	private String startDate;
+	
 	/**
 	 * The ending date & time of the period.
 	 */
@@ -105,3 +106,4 @@ public class AccessPeriod {
 	}
 
 }
+
