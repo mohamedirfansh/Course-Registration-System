@@ -100,23 +100,48 @@ public class StudentControl {
 		
 		String course;
 		String index;
+		int currentVacancy;
 		
+		//To change...
 		course = StudentUI.dropCourseMsg();
 		index = StudentUI.dropCourseIndexMsg();
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);
+		
+		currentVacancy = currentIndex.getVacancy();
+		System.out.println("Vacancy: " + currentVacancy);
 	}
 	
-	public static void changeIndex() {
-		pass;
+	public void changeIndex() {
+		DatabaseControl dbControl = new DatabaseControl('u');
+		
+		String course;
+		String prevIndex;
+		String newIndex;
+		
+		// To change...
+		System.out.println("Enter course code: ");
+		course = scn.nextLine();
+		System.out.println("Enter old index: ");
+		prevIndex = scn.nextLine();
+		System.out.println("Enter new index: ");
+		newIndex = scn.nextLine();
+		
+		Course currentCourse = dbControl.getCourseData(course);
+		Index currentOldIndex = currentCourse.findIndex(prevIndex);
+		Index currentNewIndex = currentCourse.findIndex(newIndex);
+		
+		currentOldIndex.deregisterStudent(currentStudent);
+		currentNewIndex.registerStudent(currentStudent);
+		
 	}
 	
 	public static void swapIndex() {
-		pass;
+
 	}
 	
 	public static void isClashBetIndex() {
-		pass;
+
 	}
 }
