@@ -41,15 +41,15 @@ public class AccessPeriod {
             try {
                 validStartDate = dateFormat.parse(this.startDate);
                 validEndDate = dateFormat.parse(this.endDate);
-                boolean isValid = (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0);
-                return isValid;
+                return (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0);
                 
             } catch (ParseException e) {
                 // Temporary for now, move to boundary class later...
                 System.out.println("Cannot parse date; Error: " + e);
-            }
+                return false;
+            } 
+        }
             // Checking if current date is within the access window
-
         // Temporary for now, can change to boundary classes later...
         else {
             System.out.println("Cannot get access period for school");
@@ -75,9 +75,5 @@ public class AccessPeriod {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
-    }
-
-    public void setSchool(School school) {
-        this.school = school;
     }
 }
