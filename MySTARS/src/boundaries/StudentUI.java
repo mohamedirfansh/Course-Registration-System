@@ -33,7 +33,7 @@ public class StudentUI {
 				String course = scn.nextLine();
 				return course;
 			} catch (InputMismatchException e) {
-				System.out.println("Please enter a valid index: ");
+				System.out.println("Please enter a course code: ");
 			}
 		}
 	}
@@ -64,7 +64,56 @@ public class StudentUI {
 		System.out.println("__________________________________________");
 	}
 	
+	/**
+	 * Prints message that the student is already enrolled in the index.
+	 */
 	public static void alreadyEnrolledIndexMsg() {
 		System.out.println("You are already enrolled in this index.");
 	}
+	
+	/**
+	 * Prints message that the student has successfully enrolled in the course.
+	 */
+	public static void successfullyEnrolledMsg() {
+		System.out.println("Enrollment into course and index Successful!");
+	}
+	
+	/**
+	 * Prints message to ask user to enter the course they want to drop.
+	 * Carries out a check to see if the input is valid, if invalid, asks the user
+	 * to enter valid input again.
+	 * @return course
+	 */
+	public static String dropCourseMsg() {
+		System.out.println("Enter the course code you would like to drop: ");
+		while (true) {
+			try {
+				String course = scn.nextLine();
+				return course;
+			} catch (InputMismatchException e){
+				System.out.println("Please enter a valid course: ");
+			}
+		}
+	}
+	
+	/**
+	 * Prints message to ask user to enter index of the course they want to drop.
+	 * @return index
+	 */
+	public static String dropCourseIndexMsg() {
+		System.out.println("Enter course index to drop: ");
+		while (true) {
+			try {
+				String index = scn.nextLine();
+				return index;
+			} catch(InputMismatchException e){
+				System.out.println("Please enter a valid index: ");
+			}
+		}
+	}
+	
+	public static void notInIndexMsg() {
+		System.out.println("You are not enrolled in that index. Please try again.");
+	}
+	
 }
