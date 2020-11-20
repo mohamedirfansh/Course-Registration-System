@@ -117,7 +117,7 @@ public class Course implements Serializable { // need to implement Serializable 
         return -1;
     }
 
-    private Index findIndex(String indexCode){
+    public Index findIndex(String indexCode){
         for(Index i : courseIndex){
             if(i.getIndexCode().toUpperCase().equals(indexCode.toUpperCase())){
                 return i;
