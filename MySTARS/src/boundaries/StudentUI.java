@@ -21,6 +21,24 @@ public class StudentUI {
 	}
 	
 	/**
+	 * Prints message to ask user to enter the course they want to enroll in.
+	 * Carries out a check to see if the input is valid, if invalid, asks the user
+	 * to enter valid input again.
+	 * @return course
+	 */
+	public static String addCourseMsg() {
+		System.out.println("Enter the course code you would like to enroll in: ");
+		while (true) {
+			try {
+				String course = scn.nextLine();
+				return course;
+			} catch (InputMismatchException e) {
+				System.out.println("Please enter a valid index: ");
+			}
+		}
+	}
+	
+	/**
 	 * Prints message to ask user to enter the index they want to register to.
 	 * Carries out a check to see if the input is valid, if invalid, asks the user
 	 * to enter valid input again.
