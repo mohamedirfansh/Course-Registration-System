@@ -15,6 +15,7 @@ public class Student extends Users implements Serializable{
 	private static HashMap<String, Student> listOfStudents = new HashMap<>();
 	private ArrayList<Course> registeredCourses = new ArrayList<>();
 	private int academicUnits = 0;
+	public static final long serialVersionUID = 2L;
 	
 	public static void populateHashmap(String currentDir) throws IOException {
 		FileInputStream inFile = null;

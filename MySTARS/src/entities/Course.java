@@ -28,6 +28,7 @@ public class Course implements Serializable { // need to implement Serializable 
     private final String schoolName;
     private final int au;
     private ArrayList<Index> courseIndex;
+    public static final long serialVersionUID = 2L; // serialVersionUID is an identification value needed when serializing and de-serializing objects, if not errors may occur
 
     public Course(String courseName, String courseCode, String schoolName, int au) throws IllegalArgumentException{
         this.courseName = courseName.toUpperCase();
