@@ -34,6 +34,7 @@ public class School implements Serializable {
 	 * List of courses that are available for this school
 	 */
 	private ArrayList<Course> allCourses;
+	public static final long serialVersionUID = 2L;
 
 	/**
 	 * Stores an AccessPeriod object which allows us to read, write & validate a School's access period.
