@@ -15,13 +15,12 @@ public class Student extends Users implements Serializable{
 	private static HashMap<String, Student> listOfStudents = new HashMap<>();
 	private ArrayList<Course> registeredCourses = new ArrayList<>();
 	private int academicUnits = 0;
-	public static final long serialVersionUID = 2L;
-	
+
 	public static void populateHashmap(String currentDir) throws IOException {
 		FileInputStream inFile = null;
 		ObjectInputStream input = null;
 		Student tempStudent;
-		
+
 		try {
 			inFile = new FileInputStream(currentDir);
 			input = new ObjectInputStream(inFile);
@@ -53,17 +52,16 @@ public class Student extends Users implements Serializable{
 		} else
 			System.out.println("Error - Student already exists in system!");
 	}
-	
+
 	public static int getNumAUforParticularStudent(String userID) { return listOfStudents.get(userID).academicUnits; }
-	public static ArrayList<Course> getRegisteredCoursesForParticularStud(String userID) { 
-		return listOfStudents.get(userID).registeredCourses; 
+	public static ArrayList<Course> getRegisteredCoursesForParticularStud(String userID) {
+		return listOfStudents.get(userID).registeredCourses;
 	}
-	
+
 	public static HashMap<String, Student> getStudentList() { return listOfStudents; }
 	private static void addAU(String userID, int AU) { listOfStudents.get(userID).academicUnits += AU;}
-	public static void addCourseToParticularStud(String userID, Course course) { 
-		listOfStudents.get(userID).registeredCourses.add(course); 
-
+	public static void addCourseToParticularStud(String userID, Course course) {
+		listOfStudents.get(userID).registeredCourses.add(course);
 		addAU(userID, course.getAu());
 	}
 	public static void removeCourseForParticularStud(String userID, Course course) {

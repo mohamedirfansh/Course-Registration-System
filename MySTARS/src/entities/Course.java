@@ -3,7 +3,6 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.io.Serializable; // need this for object serialization (Jun Jie)
 
 /**
  * The course class is an entity that holds information regarding a course. A school can contain several courses whose data is stored in
@@ -24,8 +23,6 @@ public class Course implements Serializable {
     private final int au;
     private ArrayList<Index> courseIndex;
     private Lesson[] lectures = new Lecture[2];
-    
-    public static final long serialVersionUID = 2L; // serialVersionUID is an identification value needed when serializing and de-serializing objects, if not errors may occur
 
     /**
      * Class constructor that is used on object instantiation.
@@ -216,10 +213,6 @@ public class Course implements Serializable {
         }
 
         return null;
-    }
-    
-    public String toString() {
-    	return "Course name: " + this.courseCode + "\tCourse Code " + this.courseName + "\tNumber of AUs " + this.au;
     }
 }
 

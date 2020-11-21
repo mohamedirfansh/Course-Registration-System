@@ -5,38 +5,29 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
-/**
- * This class is used for the access period to the registration system.
- * Since each school can have different access periods, the period of
- * time that they can access the system is linked to the school.
- */
+/*  This class is used to store and validate the Access Period belonging to each School
+    within our planning system. Schools can then read, write and check if a given start date 
+    and end date is valid as a access period. A AccessPeriod object is stored within each School.
+*/
+
 public class AccessPeriod {
 
-	/**
-	 * The starting date & time of the period.
-	 */
-  private String startDate;
-	
-	/**
-	 * The ending date & time of the period.
-	 */
-  private String endDate;
-	
-    /**
-     * Constructor for the AccessPeriod
-     * @param startDate
-     * @param endDate
-     */
-  public AccessPeriod(String startDate, String endDate) {
+    private String startDate; // The starting date & time of the period.
+    private String endDate; // The ending date & time of the period.
+
+    // Constructor
+
+    public AccessPeriod(String startDate, String endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-	/**
-	 * Method to check if the current system date & time is within the start
-	 * date & end date for the school. If it is within the period, then returns true else false.
-	 * @return A boolean variable of whether the current period is valid for the school.
-	 */
+    /*
+     * Method to check if the current system date & time is within the start date &
+     * end date for the school. If it is within the period, then returns true else
+     * false.
+     */
+
     public boolean isValidPeriod() {
         // Only check if there is a date already available for the start & end dates.
         Date validStartDate;
@@ -50,56 +41,40 @@ public class AccessPeriod {
             try {
                 validStartDate = dateFormat.parse(this.startDate);
                 validEndDate = dateFormat.parse(this.endDate);
-                return (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0);
-                
+                boolean isValid = (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0);
+                return isValid;
+
             } catch (ParseException e) {
                 // Temporary for now, move to boundary class later...
                 System.out.println("Cannot parse date; Error: " + e);
-                return false;
-            } 
-        }
+            }
             // Checking if current date is within the access window
-        // Temporary for now, can change to boundary classes later...
-        else {
-            System.out.println("Cannot get access period for school");
-            return false;
+
+            // Temporary for now, can change to boundary classes later...
         }
+
+        System.out.println("Cannot get access period for school");
+        return false;
     }
 
-	// Getter methods
+        // Getter methods
 
-	/**
-	 * Getter method to get the start date of Access Period
-	 * @return startDate
-	 */
-	public String getStartDate(){
-		return startDate;
-	}
-	
-	/**
-	 * Getter method to get the end date of Access Period
-	 * @return endDate
-	 */
-	public String getEndDate(){
-		return endDate;
-	}
+    public String getStartDate () {
+        return startDate;
+    }
 
-	// Setter methods
+    public String getEndDate () {
+        return endDate;
+    }
 
-	/**
-	 * Setter method to set the start date of the Access Period
-	 * @param startDate
-	 */
-	public void setStartDate(String startDate){
-		this.startDate = startDate;
-	}
+    // Setter methods
 
-	/**
-	 * Setter method to set the end date of the Access Period
-	 * @param endDate
-	 */
-	public void setEndDate(String endDate){
-		this.endDate = endDate;
-	}
+    public void setStartDate (String startDate){
+        this.startDate = startDate;
+    }
+
+    public void setEndDate (String endDate){
+        this.endDate = endDate;
+    }
 }
 
