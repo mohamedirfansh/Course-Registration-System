@@ -2,6 +2,7 @@ package controls;
 import entities.Student;
 import entities.Hash;
 import entities.Users;
+import controls.SerializeDB;
 import java.util.ArrayList;
 import java.util.List;
 import java.security.NoSuchAlgorithmException;
