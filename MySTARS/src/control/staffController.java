@@ -4,7 +4,7 @@ import entities.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import control.databaseController; // If static
+import control.databaseController;
 
 public class staffController {
 
