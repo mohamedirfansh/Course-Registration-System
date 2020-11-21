@@ -1,4 +1,4 @@
-package control;
+package controls;
 
 import entities.*;
 import java.util.ArrayList;
