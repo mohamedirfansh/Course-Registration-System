@@ -4,16 +4,17 @@ import java.io.*;
 
 class EraserThread implements Runnable {
    private boolean stop;
- 
+
    /**
-    *@param The prompt displayed to the user
+    *@param: The prompt displayed to the user
+    * In this case specifically, prompt = "Enter password: ", called from PasswordField class
     */
    public EraserThread(String prompt) {
        System.out.print(prompt);
    }
 
    /**
-    * Begin masking...display asterisks (*)
+    * Begin masking...display asterisks (*) in place of any input character by the user
     */
    public void run () {
       stop = true;
