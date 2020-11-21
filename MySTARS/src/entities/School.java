@@ -177,13 +177,4 @@ public class School implements Serializable {
 		return isValid;
 	}
 
-	public boolean setAccessPeriod(String startDate, String endDate) {
-		AccessPeriod updatedAccessPeriod = new AccessPeriod(startDate, endDate);
-		boolean isValid = updatedAccessPeriod.isValidPeriod();
-		if (isValid) {
-			this.accessPeriod = updatedAccessPeriod;
-		} 
-		return isValid;
-	}
-
 }

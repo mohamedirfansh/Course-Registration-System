@@ -1,10 +1,12 @@
 package controls;
+
 import entities.Student;
 import entities.Staff;
 import entities.Users;
 import entities.Course;
 import entities.School;
 import entities.Hash;
+import controls.SerializeDB;
 import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -31,10 +33,10 @@ public class DatabaseControl {
 	public Users getUserData(String userID) {
 
 		if (domain == 'u') { // Check the domain, whether students or staff
-			temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
+			temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
 		}
 		else {
-			temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
+			temp = (ArrayList) SerializeDB.readSerializedObject(STAFF);
 		}
 
 		Users empty = null;

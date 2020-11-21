@@ -1,16 +1,10 @@
 package controls;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
+import java.util.HashMap;
 
 public interface Notification {
-    void sendMessage(String studID, String subject, String body, String sender, String senderPassword);
-//    void createMessage();
-//    void courseRegNotif();
-//    void courseDropNotif();
+    boolean sendRegisterSuccessfulMessage(String studID, String courseID, String courseName);
+    boolean sendWaitListedMessage(String studID, String courseID, String courseName);
+    boolean sendDropCourseMessage(String studID, String courseID, String courseName);
+    boolean sendEnrolledCourseListMessage(String studID, HashMap<String, String> courseList);
 }
-//send the email
-//create email
-//format the email
-//what are the differences between the different types of emails.
-//course registered email needs the course

@@ -14,7 +14,7 @@ import entities.Student;
  */
 public class StudentControl {
 
-	private Student currentStudent;
+	private static Student currentStudent;
 	Scanner scn = new Scanner(System.in);
 	
 	// Constructor
@@ -27,14 +27,8 @@ public class StudentControl {
 	 * student. Called by the student object.
 	 * @param studentID
 	 */
-	public void addCourse(String studentID) {
+	public static void addCourse(String course, String index) {
 		DatabaseControl dbControl = new DatabaseControl('u');
-		
-		String course;
-		String index;
-		
-		course = StudentUIMsg.addCourseMsg(1);
-		index = StudentUIMsg.addCourseMsg(2);
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);
@@ -70,14 +64,8 @@ public class StudentControl {
 	 * Method to drop the course for a student.
 	 * Called by the student object.
 	 */
-	public void dropCourse() {
+	public static void dropCourse(String course, String index) {
 		DatabaseControl dbControl = new DatabaseControl('u');
-		
-		String course;
-		String index;
-		
-		course = StudentUIMsg.dropCourseMsg(1);
-		index = StudentUIMsg.dropCourseMsg(2);
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);
@@ -98,11 +86,8 @@ public class StudentControl {
 		dbControl.updateCourseData(course, currentCourse);
 	}
 	
-	public static void checkVacancy() {
+	public static void checkVacancy(String course) {
 		DatabaseControl dbControl = new DatabaseControl('u');
-		
-		String course;
-		course = StudentUIMsg.checkVacancyMsg();
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
@@ -113,18 +98,8 @@ public class StudentControl {
 		}
 	}
 	
-	public void changeIndex() {
+	public static void changeIndex(String course, String prevIndex, String newIndex) {
 		DatabaseControl dbControl = new DatabaseControl('u');
-		
-		String course;
-		String prevIndex;
-		String newIndex;
-		ArrayList<String> indexData;
-		
-		indexData = StudentUIMsg.changeIndexMsg();
-		course = indexData.get(0);
-		prevIndex = indexData.get(1);
-		newIndex = indexData.get(2);
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentOldIndex = currentCourse.findIndex(prevIndex);
@@ -133,6 +108,10 @@ public class StudentControl {
 		currentOldIndex.deregisterStudent(currentStudent);
 		currentNewIndex.registerStudent(currentStudent);
 		
+	}
+	
+	public static void viewRegisteredCourses() {
+		//TODO	
 	}
 	
 	public static void swapIndex() {
