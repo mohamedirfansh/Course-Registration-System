@@ -11,61 +11,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Student extends Users implements Serializable{
-	private static HashMap<String, Student> listOfStudents = new HashMap<>();
-	private ArrayList<Course> registeredCourses = new ArrayList<>();
+public class Student extends User implements Serializable{
+	private ArrayList<String> registeredCourses = new ArrayList<>();
 	private int academicUnits = 0;
-	
-	public static void populateHashmap(String currentDir) throws IOException {
-		FileInputStream inFile = null;
-		ObjectInputStream input = null;
-		Student tempStudent;
-		
-		try {
-			inFile = new FileInputStream(currentDir);
-			input = new ObjectInputStream(inFile);
-			while (true) {
-				tempStudent = (Student) input.readObject();
-				//System.out.println(tempStudent.getUserID() + ":    " + tempStudent.getName());
-				if (!listOfStudents.containsKey(tempStudent.getUserID())) {
-					listOfStudents.put(tempStudent.getUserID(), tempStudent);
-				}
-			}
-		} catch (EOFException E) {
-			System.out.println("Finish reading file...");
-		} catch (Exception E){
-			E.printStackTrace();
-		} finally {
-			inFile.close();
-			input.close();
-		}
-	}
 	
 	public Student(String name, String userID, String userPW,
 			String gender, String nationality, String schoolID, 
 			String identificationKey) throws NoSuchAlgorithmException {
-		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
 		
-		// I need a method to write new student/staff to the binary file
-		if (!listOfStudents.containsKey(userID)) {
-			listOfStudents.put(userID, this);
-		} else
-			System.out.println("Error - Student already exists in system!");
+		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
 	}
 	
-	public static int getNumAUforParticularStudent(String userID) { return listOfStudents.get(userID).academicUnits; }
-	public static ArrayList<Course> getRegisteredCoursesForParticularStud(String userID) { 
-		return listOfStudents.get(userID).registeredCourses; 
-	}
+	public void updateRegisteredCourses(ArrayList<String> coursesDetails) { this.registeredCourses = coursesDetails; }
+	public ArrayList<String> retrieveRegisteredCourses() { return this.registeredCourses; }
 	
-	public static HashMap<String, Student> getStudentList() { return listOfStudents; }
-	private static void addAU(String userID, int AU) { listOfStudents.get(userID).academicUnits += AU;}
-	public static void addCourseToParticularStud(String userID, Course course) { 
-		listOfStudents.get(userID).registeredCourses.add(course); 
-		addAU(userID, course.getAu());
-	}
-	public static void removeCourseForParticularStud(String userID, Course course) {
-		listOfStudents.get(userID).registeredCourses.remove(course);
-		addAU(userID, course.getAu()*-1);
-	}
+	public void updateAcademicUnits(int numberOfAU) { this.academicUnits = numberOfAU; }
+	public int retrieveNumberOfAUs() { return this.academicUnits; }
 }
