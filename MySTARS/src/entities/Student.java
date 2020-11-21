@@ -15,6 +15,7 @@ public class Student extends Users implements Serializable{
 	private static HashMap<String, Student> listOfStudents = new HashMap<>();
 	private ArrayList<Course> registeredCourses = new ArrayList<>();
 	private int academicUnits = 0;
+	public static final long serialVersionUID = 2L;
 	
 	public static void populateHashmap(String currentDir) throws IOException {
 		FileInputStream inFile = null;
@@ -40,12 +41,12 @@ public class Student extends Users implements Serializable{
 			input.close();
 		}
 	}
-	
+
 	public Student(String name, String userID, String userPW,
-			String gender, String nationality, String schoolID, 
+			String gender, String nationality, String schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
-		
+
 		// I need a method to write new student/staff to the binary file
 		if (!listOfStudents.containsKey(userID)) {
 			listOfStudents.put(userID, this);
@@ -62,6 +63,7 @@ public class Student extends Users implements Serializable{
 	private static void addAU(String userID, int AU) { listOfStudents.get(userID).academicUnits += AU;}
 	public static void addCourseToParticularStud(String userID, Course course) { 
 		listOfStudents.get(userID).registeredCourses.add(course); 
+
 		addAU(userID, course.getAu());
 	}
 	public static void removeCourseForParticularStud(String userID, Course course) {
@@ -69,3 +71,5 @@ public class Student extends Users implements Serializable{
 		addAU(userID, course.getAu()*-1);
 	}
 }
+
+

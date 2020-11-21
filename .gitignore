@@ -2,3 +2,5 @@
 *.un~
 *.swp
 .gitignore~
+*.class
+*.java~

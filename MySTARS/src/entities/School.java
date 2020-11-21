@@ -34,6 +34,7 @@ public class School implements Serializable {
 	 * List of courses that are available for this school
 	 */
 	private ArrayList<Course> allCourses;
+	public static final long serialVersionUID = 2L;
 
 	/**
 	 * Stores an AccessPeriod object which allows us to read, write & validate a School's access period.
@@ -167,6 +168,15 @@ public class School implements Serializable {
 	 * @param endDate
 	 * @return isValid
 	 */
+	public boolean setAccessPeriod(String startDate, String endDate) {
+		AccessPeriod updatedAccessPeriod = new AccessPeriod(startDate, endDate);
+		boolean isValid = updatedAccessPeriod.isValidPeriod();
+		if (isValid) {
+			this.accessPeriod = updatedAccessPeriod;
+		} 
+		return isValid;
+	}
+
 	public boolean setAccessPeriod(String startDate, String endDate) {
 		AccessPeriod updatedAccessPeriod = new AccessPeriod(startDate, endDate);
 		boolean isValid = updatedAccessPeriod.isValidPeriod();
