@@ -11,6 +11,7 @@ import java.util.*;
 
 public class Staff extends Users implements Serializable{
 	private static HashMap<String, Staff> listOfStaff = new HashMap<>();
+  
 	public static final long serialVersionUID = 2L;
 	
 	// don't have to instantiate to call this function, can map all stored Staff objects like

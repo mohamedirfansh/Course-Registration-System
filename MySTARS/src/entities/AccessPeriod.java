@@ -10,25 +10,24 @@ import java.text.ParseException;
  * Since each school can have different access periods, the period of
  * time that they can access the system is linked to the school.
  */
-
 public class AccessPeriod {
 
 	/**
 	 * The starting date & time of the period.
 	 */
-	private String startDate;
+  private String startDate;
 	
 	/**
 	 * The ending date & time of the period.
 	 */
-	private String endDate;
+  private String endDate;
 	
     /**
      * Constructor for the AccessPeriod
      * @param startDate
      * @param endDate
      */
-    public AccessPeriod(String startDate, String endDate) {
+  public AccessPeriod(String startDate, String endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -42,7 +41,7 @@ public class AccessPeriod {
         // Only check if there is a date already available for the start & end dates.
         Date validStartDate;
         Date validEndDate;
-        
+
         if (startDate != null && endDate != null) {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date currentDate = new Date(); // Get the current date

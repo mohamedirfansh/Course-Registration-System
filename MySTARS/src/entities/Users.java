@@ -46,4 +46,6 @@ public class Users implements Serializable{
 	public String getUserID() { return this.userID;	}
 	public String getUserPW() { return this.hashedPassword; }
 	public String getIDKey() { return this.identificationKey; }
+	public void setName(String name){this.name = name;}
+
 }
