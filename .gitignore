@@ -1,1 +1,6 @@
 /.metadata/
+*.un~
+*.swp
+.gitignore~
+*.class
+*.java~
