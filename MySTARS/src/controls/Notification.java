@@ -1,4 +1,4 @@
-package control;
+package controls;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
