@@ -33,8 +33,8 @@ public class StudentControl {
 		String course;
 		String index;
 		
-		course = StudentUIMsg.addCourseMsg();
-		index = StudentUIMsg.addCourseIndexMsg();
+		course = StudentUIMsg.addCourseMsg(1);
+		index = StudentUIMsg.addCourseMsg(2);
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);
@@ -76,8 +76,8 @@ public class StudentControl {
 		String course;
 		String index;
 		
-		course = StudentUIMsg.dropCourseMsg();
-		index = StudentUIMsg.dropCourseIndexMsg();
+		course = StudentUIMsg.dropCourseMsg(1);
+		index = StudentUIMsg.dropCourseMsg(2);
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);
@@ -93,24 +93,24 @@ public class StudentControl {
 		
 		// If all's good, remove the student
 		currentIndex.deregisterStudent(currentStudent);
+		
+		// Update back to the database
+		dbControl.updateCourseData(course, currentCourse);
 	}
 	
 	public static void checkVacancy() {
 		DatabaseControl dbControl = new DatabaseControl('u');
 		
 		String course;
-		String index;
-		int currentVacancy;
-		
-		//To change...
-		course = StudentUIMsg.dropCourseMsg();
-		index = StudentUIMsg.dropCourseIndexMsg();
+		course = StudentUIMsg.checkVacancyMsg();
 		
 		Course currentCourse = dbControl.getCourseData(course);
-		Index currentIndex = currentCourse.findIndex(index);
+		ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
 		
-		currentVacancy = currentIndex.getVacancy();
-		System.out.println("Vacancy: " + currentVacancy);
+		System.out.println("Index\tVacancy");
+		for (Index i : listOfIndex) {
+			System.out.printf("%s\t%d", i.getIndexCode(), i.getVacancy());
+		}
 	}
 	
 	public void changeIndex() {
@@ -119,14 +119,12 @@ public class StudentControl {
 		String course;
 		String prevIndex;
 		String newIndex;
+		ArrayList<String> indexData;
 		
-		// To change...
-		System.out.println("Enter course code: ");
-		course = scn.nextLine();
-		System.out.println("Enter old index: ");
-		prevIndex = scn.nextLine();
-		System.out.println("Enter new index: ");
-		newIndex = scn.nextLine();
+		indexData = StudentUIMsg.changeIndexMsg();
+		course = indexData.get(0);
+		prevIndex = indexData.get(1);
+		newIndex = indexData.get(2);
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentOldIndex = currentCourse.findIndex(prevIndex);
@@ -138,10 +136,18 @@ public class StudentControl {
 	}
 	
 	public static void swapIndex() {
-
+		//TODO
 	}
 	
-	public static void isClashBetIndex() {
-
+	//TODO
+	public void isClashBetIndex(Index newIndex) {
+		DatabaseControl dbControl = new DatabaseControl('u');
+		
+		Student temp = dbControl.getStudentData(currentStudent.getUserID());
+		ArrayList<Course> listOfCourses = temp.getRegisteredCourses();
+		
+		for (Course c : listOfCourses) {
+			if (c.getCourseIndex())
+		}
 	}
 }
