@@ -18,7 +18,7 @@ public class Student extends Users{
 	public static final long serialVersionUID = 2L;
 
 	public Student(String name, String userID, String userPW,
-			String gender, String nationality, String schoolID,
+			String gender, String nationality, int schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 
 		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
