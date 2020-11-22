@@ -27,6 +27,7 @@ public class Index implements Serializable {
     private Queue<String> waitList;
     private ArrayList<String> enrolled;
     private ArrayList<Lesson> lessons;
+    public static final long serialVersionUID = 2L;
 
     /**
      * Class constructor which is used to create an index for a course.
@@ -219,7 +220,7 @@ public class Index implements Serializable {
      *
      * @param studID, which is the ID of the student that failed to register and needs to be added to the waitList.
      * @return true, if the student was added to the waitList successfully.
-     *          False, if the student alreay exists in the waitList or if the student ID passed is invalid.
+     *          False, if the student already exists in the waitList or if the student ID passed is invalid.
      */
     private boolean addStudentToWaitList(String studID){
         if(findStudentInWaitList(studID) != null || studID == null){

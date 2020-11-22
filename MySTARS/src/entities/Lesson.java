@@ -6,7 +6,7 @@ package entities;
  * Class Attributes:
  * -> lessonType : String, which holds the type of class in the lesson
  * -> venue : String, which holds the location where the class is being held
- * -> timings : WorkingHours, whcih holds the time during which the lesson takes place
+ * -> timings : WorkingHours, which holds the time during which the lesson takes place
  */
 
 public abstract class Lesson {

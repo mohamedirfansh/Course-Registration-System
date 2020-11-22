@@ -27,6 +27,8 @@ public class Users implements Serializable{
 	private final String userID;					// no changes should be made, no mutator methods provided; can have getter on pretext you provide identification key
 	private final String gender;					// no changes should be made, no mutator methods provided
 	
+	public static final long serialVersionUID = 2L;
+	
 	public Users(String name, String userID, String userPW,
 			String gender, String nationality, String schoolID, 
 			String identificationKey) throws NoSuchAlgorithmException {

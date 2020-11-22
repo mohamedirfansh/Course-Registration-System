@@ -208,7 +208,7 @@ public class Course implements Serializable {
      * @param indexCode, which is the unique identifier for an index within the course.
      * @return an Index object. Returns null if the index does not exist in the course.
      */
-    private Index findIndex(String indexCode){
+    public Index findIndex(String indexCode){
         for(Index i : courseIndex){
             if(i.getIndexCode().toUpperCase().equals(indexCode.toUpperCase())){
                 return i;

@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 
 public class Staff extends User implements Serializable{
-	/*
+	
+	public static final long serialVersionUID = 2L;
+	
+	/**
 	 * 2 new methods:
 	 * 1) createCourse:
 	 * @param courseName: name of new course
@@ -17,7 +20,6 @@ public class Staff extends User implements Serializable{
 	 * @param (all): all required information to create a new student object.
 	 * @return: returns the new student to the caller
 	 */
-
 	public Staff(String name, String userID, String userPW,
 			String gender, String nationality, String schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
