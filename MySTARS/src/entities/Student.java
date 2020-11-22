@@ -39,9 +39,9 @@ public class Student extends Users{
 	 * @return: integer value of the total number of academic units the student had registered for
 	 */
 
-	public void updateRegisteredCourses(HashMap<String, String> coursesDetails) { this.registeredCourses = coursesDetails; }
-	public HashMap<String, String> retrieveRegisteredCourses() { return this.registeredCourses; }
+	public void setRegisteredCourses(HashMap<String, String> coursesDetails) { this.registeredCourses = coursesDetails; }
+	public HashMap<String, String> getRegisteredCourses() { return this.registeredCourses; }
 
-	public void updateAcademicUnits(int numberOfAU) { this.academicUnits = numberOfAU; }
-	public int retrieveNumberOfAUs() { return this.academicUnits; }
+	public void setAcademicUnits(int numberOfAU) { this.academicUnits = numberOfAU; }
+	public int getNumberOfAUs() { return this.academicUnits; }
 }
