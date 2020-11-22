@@ -3,9 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 
-public class Staff extends User implements Serializable{
-	
-	public static final long serialVersionUID = 2L;
+public class Staff extends Users{
 	
 	/**
 	 * 2 new methods:

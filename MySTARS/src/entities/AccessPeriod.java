@@ -4,13 +4,14 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.io.Serializable;
 
 /**
  * This class is used for the access period to the registration system.
  * Since each school can have different access periods, the period of
  * time that they can access the system is linked to the school.
  */
-public class AccessPeriod {
+public class AccessPeriod implements Serializable {
 
 	/**
 	 * The starting date & time of the period.
@@ -21,6 +22,8 @@ public class AccessPeriod {
 	 * The ending date & time of the period.
 	 */
   private String endDate;
+
+  private static final long serialVersionUID = 2L; 
 	
     /**
      * Constructor for the AccessPeriod

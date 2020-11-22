@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
-public class Student extends User implements Serializable{
+public class Student extends Users{
 	/*
 	 * Attribute: HashMap<String, String> registeredCourses
 	 * -> Key: CourseID, Value: index of added course, which determines the timetable slot
