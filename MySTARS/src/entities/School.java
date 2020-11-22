@@ -25,20 +25,29 @@ public class School implements Serializable {
 	/**
 	 * List of all Students part of the particular school
 	 */
-	private ArrayList<Student> allStudents;
+	//private ArrayList<Student> allStudents;
+	  private ArrayList<String> allStudents;
 	/**
 	 * List of all Staff part of the particular school
 	 */
-	private ArrayList<Staff> allStaff;
+	//private ArrayList<Staff> allStaff;
+	private ArrayList<String> allStaff;
 	/**
 	 * List of courses that are available for this school
 	 */
-	private ArrayList<Course> allCourses;
+	//private ArrayList<Course> allCourses;
+	private ArrayList<String> allCourses;
+	
 
 	/**
 	 * Stores an AccessPeriod object which allows us to read, write & validate a School's access period.
 	 */
 	private AccessPeriod accessPeriod; 
+
+	/**
+	 * Needed to verify that serialization and de-serialization is done correctly
+	 */
+	private static final long serialVersionUID = 2L;
 	
 	
 	/**
@@ -81,7 +90,10 @@ public class School implements Serializable {
 	 * Getter method to return the school's list of students
 	 * @return allStudents
 	 */
-	public ArrayList<Student> getAllStudents(){
+	/* public ArrayList<Student> getAllStudents(){
+		return allStudents;
+	} */
+	public ArrayList<String> getAllStudents(){
 		return allStudents;
 	}
 	
@@ -89,7 +101,11 @@ public class School implements Serializable {
 	 * Getter method to return the school's list of staff
 	 * @return allStaff
 	 */
-	public ArrayList<Staff> getAllStaff(){
+	/* public ArrayList<Staff> getAllStaff(){
+		return allStaff;
+	} */
+
+	public ArrayList<String> getAllStaff(){
 		return allStaff;
 	}
 
@@ -97,7 +113,11 @@ public class School implements Serializable {
 	 * Getter method to return the school's list of courses offered
 	 * @return allCourses
 	 */
-	public ArrayList<Course> getAllCourses(){
+	/* public ArrayList<Course> getAllCourses(){
+		return allCourses;
+	} */
+
+	public ArrayList<String> getAllCourses(){
 		return allCourses;
 	}
 	
@@ -140,7 +160,11 @@ public class School implements Serializable {
 	 * Setter method to set school's students
 	 * @param allStudents
 	 */
-	public void setAllStudents(ArrayList<Student> allStudents){
+	/* public void setAllStudents(ArrayList<Student> allStudents){
+		this.allStudents = allStudents;
+	} */
+
+	public void setAllStudents(ArrayList<String> allStudents){
 		this.allStudents = allStudents;
 	}
 
@@ -148,7 +172,11 @@ public class School implements Serializable {
 	 * Setter method to set school's staffs
 	 * @param allStaff
 	 */
-	public void setAllStaff(ArrayList<Staff> allStaff){
+	/* public void setAllStaff(ArrayList<Staff> allStaff){
+		this.allStaff = allStaff;
+	} */
+
+	public void setAllStaff(ArrayList<String> allStaff){
 		this.allStaff = allStaff;
 	}
 
@@ -156,7 +184,11 @@ public class School implements Serializable {
 	 * Setter method to set school's courses offered
 	 * @param allCourses
 	 */
-	public void setAllCourses(ArrayList<Course> allCourses){
+	/* public void setAllCourses(ArrayList<Course> allCourses){
+		this.allCourses = allCourses;
+	} */
+
+	public void setAllCourses(ArrayList<String> allCourses){
 		this.allCourses = allCourses;
 	}
 	
