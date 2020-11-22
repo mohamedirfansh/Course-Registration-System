@@ -2,6 +2,10 @@ package controls;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import boundaries.StudentUIMsg;
 import entities.Course;
 import entities.Index;
@@ -53,7 +57,7 @@ public class StudentControl {
 //		}
 		
 		// TODO: check for clash
-		currentIndex.registerStudent(currentStudent);
+		currentIndex.registerStudent(currentStudent.getUserID());
 		StudentUIMsg.successfullyEnrolledMsg();
 
 		// Update back to the database
@@ -71,16 +75,16 @@ public class StudentControl {
 		Index currentIndex = currentCourse.findIndex(index);
 		
 		// Check if the current index really has this student enrolled in
-		ArrayList<Student> listOfStudents = currentIndex.getEnrolled();
-		for (Student student : listOfStudents) {
-			if (student.getUserID() == currentStudent.getUserID()) {
+		ArrayList<String> listOfStudents = currentIndex.getEnrolled();
+		for (String student : listOfStudents) {
+			if (student == currentStudent.getUserID()) {
 				StudentUIMsg.notInIndexMsg();
 				return;
 			}
 		}
 		
 		// If all's good, remove the student
-		currentIndex.deregisterStudent(currentStudent);
+		currentIndex.deregisterStudent(currentStudent.getUserID());
 		
 		// Update back to the database
 		dbControl.updateCourseData(course, currentCourse);
@@ -94,7 +98,7 @@ public class StudentControl {
 		
 		System.out.println("Index\tVacancy");
 		for (Index i : listOfIndex) {
-			System.out.printf("%s\t%d", i.getIndexCode(), i.getVacancy());
+			System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
 		}
 	}
 	
@@ -105,16 +109,30 @@ public class StudentControl {
 		Index currentOldIndex = currentCourse.findIndex(prevIndex);
 		Index currentNewIndex = currentCourse.findIndex(newIndex);
 		
-		currentOldIndex.deregisterStudent(currentStudent);
-		currentNewIndex.registerStudent(currentStudent);
+		currentOldIndex.deregisterStudent(currentStudent.getUserID());
+		currentNewIndex.registerStudent(currentStudent.getUserID());
+		
+		dbControl.updateCourseData(course, currentCourse);
+		dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
 		
 	}
 	
 	public static void viewRegisteredCourses() {
-		//TODO	
+		DatabaseControl dbControl = new DatabaseControl('u');
+		
+		Student currentStud = dbControl.getStudentData(currentStudent.getUserID());
+		HashMap<String, String> listOfRegisteredCourses = currentStud.retrieveRegisteredCourses();
+		
+		System.out.println("Course\tIndex");
+		for (Map.Entry<String, String> mapElement : listOfRegisteredCourses.entrySet()) {
+			String key = (String)mapElement.getKey();
+			String value = (String)mapElement.getValue();
+			
+			System.out.printf("%s\t%s\n", key, value);
+		}
 	}
 	
-	public static void swapIndex() {
+	public static void swapIndex(String friendID) {
 		//TODO
 	}
 	
@@ -123,10 +141,10 @@ public class StudentControl {
 		DatabaseControl dbControl = new DatabaseControl('u');
 		
 		Student temp = dbControl.getStudentData(currentStudent.getUserID());
-		ArrayList<Course> listOfCourses = temp.getRegisteredCourses();
+		List<String> listOfIndices = new ArrayList<String>(temp.retrieveRegisteredCourses().values());
 		
-		for (Course c : listOfCourses) {
-			if (c.getCourseIndex())
+		for (int i=0; i<listOfIndices.size(); i++) {
+			if (listOfIndices.get(i))
 		}
 	}
 }

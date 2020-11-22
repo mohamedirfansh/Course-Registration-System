@@ -92,7 +92,7 @@ public class WorkingHours {
 
 
     /**
-     * Overlaoded class constructor, with the additional parameters described below.
+     * Overloaded class constructor, with the additional parameters described below.
      * @param week : String, indicates if the time range applies on all, even, or odd weeks.
      * @throws IllegalArgumentException, when the below constraint is violated.
      *      -> The week cannot hold values besides ["ALL", "EVEN", "ODD"]
