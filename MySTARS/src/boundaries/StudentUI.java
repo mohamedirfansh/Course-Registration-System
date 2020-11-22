@@ -11,7 +11,7 @@ public class StudentUI {
 	public static void StudentUIMain(Student currentStudent) {
 		Scanner scn = new Scanner(System.in);
 		
-		System.out.println("Welcome!");
+		System.out.println("Welcome back " + currentStudent.getName() + "!");
 		while (loggedIn) {
             // Menu
 			System.out.println("Please select an option:");
@@ -59,16 +59,19 @@ public class StudentUI {
             	// Change index
             	case 5:
             		System.out.println("Enter course code you want to change: ");
-            		String course = scn.nextLine();
+            		String courseForIndex = scn.nextLine();
             		System.out.println("Enter old index: ");
             		String prevIndex = scn.nextLine();
             		System.out.println("Enter new index: ");
             		String newIndex = scn.nextLine();
-            		StudentControl.changeIndex(course, prevIndex, newIndex);
+            		StudentControl.changeIndex(courseForIndex, prevIndex, newIndex);
             		break;
-            		
+            	
+            	// Swap index with another student
             	case 6:
-            		//swap index
+            		System.out.println("Enter course code you want to change: ");
+            		String courseWithFriend = scn.nextLine();
+            		System.out.println("Enter");
             		break;
             	
             	// Option to logout

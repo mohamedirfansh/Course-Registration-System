@@ -24,6 +24,8 @@ public class User implements Serializable{
 	private String hashedPassword;
 	private final String userID;
 	private final String gender;
+	
+	public static final long serialVersionUID = 2L;
 
 	public User(String name, String userID, String userPW,
 			String gender, String nationality, String schoolID,

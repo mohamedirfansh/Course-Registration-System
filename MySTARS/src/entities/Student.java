@@ -15,6 +15,7 @@ public class Student extends User implements Serializable{
 
 	private HashMap<String, String> registeredCourses = new HashMap<>();
 	private int academicUnits = 0;
+	public static final long serialVersionUID = 2L;
 
 	public Student(String name, String userID, String userPW,
 			String gender, String nationality, String schoolID,
