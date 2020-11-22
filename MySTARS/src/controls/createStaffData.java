@@ -10,11 +10,11 @@ import java.security.NoSuchAlgorithmException;
 public class createStaffData {
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
-		ArrayList<Users> staffData = new ArrayList();
-		Users staff1 = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
+		ArrayList<Staff> staffData = new ArrayList();
+		Staff staff1 = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
 
-		Users staff2 = new Staff("Luke Kang Kwong", "Luke123", Hash.encode("LukePassword"), "Male", "Singaporean", "SSS", "S073284L");
-		Users staff3 = new Staff("Christina Soh", "Christina123", Hash.encode("ChristinaPassword"), "Female", "Singaporean", "NBS", "S091210C");
+		Staff staff2 = new Staff("Luke Kang Kwong", "Luke123", Hash.encode("LukePassword"), "Male", "Singaporean", "SSS", "S073284L");
+		Staff staff3 = new Staff("Christina Soh", "Christina123", Hash.encode("ChristinaPassword"), "Female", "Singaporean", "NBS", "S091210C");
 		staffData.add(staff1);
 		staffData.add(staff2);
 		staffData.add(staff3);

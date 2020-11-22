@@ -3,7 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 
-public class Staff extends User implements Serializable{
+public class Staff extends Users{
 	/*
 	 * 2 new methods:
 	 * 1) createCourse:

@@ -28,7 +28,7 @@ public class StudentControl {
 	 * @param studentID
 	 */
 	public static void addCourse(String course, String index) {
-		DatabaseControl dbControl = new DatabaseControl('u');
+		DatabaseControl dbControl = new DatabaseControl();
 		
 		Course currentCourse = dbControl.getCourseData(course);
 		Index currentIndex = currentCourse.findIndex(index);

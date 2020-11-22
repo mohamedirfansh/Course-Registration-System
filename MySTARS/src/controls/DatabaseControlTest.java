@@ -15,68 +15,82 @@ public class DatabaseControlTest {
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		try {
 
-			DatabaseControl dbcu = new DatabaseControl('u');
-			DatabaseControl dbcs = new DatabaseControl('s');
+			DatabaseControl db = new DatabaseControl();
 
 			// Testing retrieval of particular Student object
 			String testStudentID = "Adeline1999";
-			Users testStudent = dbcu.getUserData(testStudentID);
+			Student testStudent = db.getStudentData(testStudentID);
 			System.out.println();
 
 			// Testing retrieval of particular Staff object
 			String testStaffID = "Miao123";
-			Users testStaff = dbcs.getUserData(testStaffID);
+			Staff testStaff = db.getStaffData(testStaffID);
 			System.out.println();
 
 			// Testing addition of new Student object
-			Users newStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
-			dbcu.addUserData(newStudent);
+			Student newStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
+			db.addStudentData(newStudent);
 			System.out.println();
 
 			// Testing addition of new Staff object
-			Users newStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
-			dbcs.addUserData(newStaff);
+			Staff newStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
+			db.addStaffData(newStaff);
 			System.out.println();
 			
 			// Testing update of Student object
-			Users updateStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
-			dbcu.updateUserData(updateStudent.getUserID(), updateStudent);
+			Student updateStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
+			db.updateStudentData(updateStudent.getUserID(), updateStudent);
 			System.out.println();
 			
 			// Testing update of Staff Object
-			Users updateStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
-			dbcs.updateUserData(updateStaff.getUserID(), updateStaff);
+			Staff updateStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
+			db.updateStaffData(updateStaff.getUserID(), updateStaff);
 			System.out.println();
 			
 			// Testing retrieval of particular Course object
 			String testCode = "CZ1007";
-			Course testCourse = dbcs.getCourseData(testCode);
+			Course testCourse = db.getCourseData(testCode);
 			System.out.println();
 			
 			// Testing addition of new Course Object
 			Course newCourse = new Course("Data Structures", "CZ1007", "School of Computer Science and Engineering", 3);
-			dbcs.addCourseData(newCourse);
+			db.addCourseData(newCourse);
 			System.out.println();
 			
 			// Testing update of Course Object
 			Course updateCourse = new Course("Business Finance", "BU8201", "Nanyang Business School", 3);
-			dbcs.updateCourseData(updateCourse.getCourseCode(), updateCourse);
+			db.updateCourseData(updateCourse.getCourseCode(), updateCourse);
 			System.out.println();
 
 			// Testing retrieval of particular School Object
-			String testInitials = "SCSE";
-			School testSchool = dbcs.getSchoolData(testInitials);
+			int testID = 11;
+			School testSchool = db.getSchoolData(testID);
 			System.out.println();
 			
 			// Testing addition of new School Object
 			School newSchool = new School("School of Social Sciences", "SSS");
-			dbcs.addSchoolData(newSchool);
+			newSchool.setSchoolID(31);
+			db.addSchoolData(newSchool);
 			System.out.println();
 			
 			// Testing update of School Object
 			School updateSchool = new School("School of Social Sciences", "SSS");
-			dbcs.updateSchoolData(updateSchool.getSchoolInitials(), updateSchool);
+			updateSchool.setSchoolID(31);
+			db.updateSchoolData(updateSchool.getSchoolID(), updateSchool);
 			System.out.println();
+
+			/* // Testing of StaffControl
+			DatabaseControl dbStudent = new DatabaseControl();
+
+			String testStudentID = "Tom1998";
+			Student testStudent = dbStudent.getStudentData(testStudentID);
+
+			StudentControl sc = new StudentControl(testStudent);
+			testStudent.addCourse("CZ2001" */
+
+
+
+			
 		}
 		catch (Exception e) {
 			System.out.println("Exception >> " + e.getMessage());

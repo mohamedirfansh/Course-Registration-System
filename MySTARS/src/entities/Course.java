@@ -16,6 +16,7 @@ import java.io.Serializable; // need this for object serialization (Jun Jie)
  * -> au : int, which is the number of creadits alloted to the course.
  * -> courseIndex : ArrayList<Index>, which is a list of indices or classes within the course.
  * -> lectures : Lesson[2], which is a list of lectures for the course, since lectures are shared by all indices.
+ * -> serialVersionUID : long, needed to verify that serialization and de-serialization is done correctly
  */
 public class Course implements Serializable {
     private final String courseName;
@@ -24,8 +25,7 @@ public class Course implements Serializable {
     private final int au;
     private ArrayList<Index> courseIndex;
     private Lesson[] lectures = new Lecture[2];
-    
-    public static final long serialVersionUID = 2L; // serialVersionUID is an identification value needed when serializing and de-serializing objects, if not errors may occur
+    private static final long serialVersionUID = 2L; 
 
     /**
      * Class constructor that is used on object instantiation.
@@ -208,7 +208,8 @@ public class Course implements Serializable {
      * @param indexCode, which is the unique identifier for an index within the course.
      * @return an Index object. Returns null if the index does not exist in the course.
      */
-    private Index findIndex(String indexCode){
+    // Changed from private to public method
+    public Index findIndex(String indexCode){
         for(Index i : courseIndex){
             if(i.getIndexCode().toUpperCase().equals(indexCode.toUpperCase())){
                 return i;

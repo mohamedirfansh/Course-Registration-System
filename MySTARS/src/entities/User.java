@@ -15,6 +15,7 @@ public class User implements Serializable{
 	 * hashedPassword-> only storing password strings that are not human readable for security purposes
 	 * identificationKey-> something like matriculation number, wont change throughout education; presume
 	 * 						the same for staff number
+	 * serialVersionUID -> Needed to verify that serialization and deserialization is done correctly 
 	 */
 
 	private String name;
@@ -24,6 +25,7 @@ public class User implements Serializable{
 	private String hashedPassword;
 	private final String userID;
 	private final String gender;
+	private static final long serialVersionUID = 2L;
 
 	public User(String name, String userID, String userPW,
 			String gender, String nationality, String schoolID,

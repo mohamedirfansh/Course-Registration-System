@@ -25,101 +25,140 @@ public class DatabaseControl {
 
 	// Constructor for DatabaseControl and assign the domain
 	// u for students and s for staff
-	DatabaseControl(char domain) {
+	/* DatabaseControl(char domain) {
 		this.domain = domain;
-	}
+	} */
 
-	// User object retrieval based on userID
-	public Users getUserData(String userID) {
+	// Student object retrieval based on userID
+	public Student getStudentData(String userID) {
 
-		if (domain == 'u') { // Check the domain, whether students or staff
-			temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
-		}
-		else {
-			temp = (ArrayList) SerializeDB.readSerializedObject(STAFF);
-		}
+		temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
 
-		Users empty = null;
+		Student empty = null;
 		
-		// Search through the list of User objects
+		// Search through the list of Student objects
 		// return object if found
 		for (int i = 0; i < temp.size(); i++) {
-			Users u = (Users)temp.get(i);
+			Student u = (Student)temp.get(i);
 			if (u.getUserID().equals(userID)) {
-				System.out.println("user " + userID + " found!");
+				System.out.println("Student " + userID + " found!");
 				return u;
 			}
 		}
 
 		// return null object if not found
-		System.out.println("user " + userID + " not found!");
+		System.out.println("Student " + userID + " not found!");
 		return empty;
 	}
 
-	// User object addition
-	public void addUserData(Users newUser) {
+	public Staff getStaffData(String userID) {
 
-		if (domain == 'u') {
-			temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
+		temp = (ArrayList) SerializeDB.readSerializedObject(STAFF);
+
+		Staff empty = null;
+		
+		// Search through the list of Staff objects
+		// return object if found
+		for (int i = 0; i < temp.size(); i++) {
+			Staff u = (Staff)temp.get(i);
+			if (u.getUserID().equals(userID)) {
+				System.out.println("Staff " + userID + " found!");
+				return u;
+			}
 		}
-		else {
-			temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
-		}
+
+		// return null object if not found
+		System.out.println("Staff " + userID + " not found!");
+		return empty;
+	}
+
+	// Student object addition
+	public void addStudentData(Student newUser) {
+
+		temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
 
 		// Search through the list of User objects
 		// return if object to be added is already inside database
 		for (int i = 0; i < temp.size(); i++) {
-			Users u = (Users)temp.get(i);
+			Student u = (Student)temp.get(i);
 			if (u.getUserID().equals(newUser.getUserID())) {
-				System.out.println("user " + newUser.getUserID() + " already inside database!");
+				System.out.println("Student " + newUser.getUserID() + " already inside database!");
 				return;
 			}
 		}
 
 		// add to list the new User object
 		temp.add(newUser);
-		System.out.println("Added new user with name " + newUser.getName());
+		System.out.println("Added new Student with name " + newUser.getName());
 
 		// write to binary file
-		if (domain == 'u') {
-			SerializeDB.writeSerializedObject(STUDENT, temp);
-		}
-		else {
-			SerializeDB.writeSerializedObject(STAFF, temp);
-		}
-		
+		SerializeDB.writeSerializedObject(STUDENT, temp);
 	}
 
+	// Staff object addition
+	public void addStaffData(Staff newUser) {
 
-	// User object update
-	public void updateUserData(String userID, Users updatedUser) {
+		temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
 
-		if (domain == 'u') {
-			temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
-		}
-		else {
-			temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
-		}
-		
-		// Search through list of User objects
-		// if found, replace with new object
-		// write to binary file and return
+		// Search through the list of Staff objects
+		// return if object to be added is already inside database
 		for (int i = 0; i < temp.size(); i++) {
-			Users u = (Users)temp.get(i);
-			if (u.getUserID().equals(userID)) {
-				System.out.println("Updating user " + u.getUserID() + " ...");
-				temp.set(i, updatedUser);
-				if (domain == 'u') {
-					SerializeDB.writeSerializedObject(STUDENT, temp);
-				}
-				else {
-					SerializeDB.writeSerializedObject(STAFF, temp);
-				}
+			Staff u = (Staff)temp.get(i);
+			if (u.getUserID().equals(newUser.getUserID())) {
+				System.out.println("Staff " + newUser.getUserID() + " already inside database!");
 				return;
 			}
 		}
 
-		System.out.println("user " + userID + " not found!");
+		// add to list the new Staff object
+		temp.add(newUser);
+		System.out.println("Added new Staff with name " + newUser.getName());
+
+		// write to binary file
+		SerializeDB.writeSerializedObject(STAFF, temp);
+	}
+
+
+	// Student object update
+	public void updateStudentData(String userID, Student updatedUser) {
+
+		temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (int i = 0; i < temp.size(); i++) {
+			Student u = (Student)temp.get(i);
+			if (u.getUserID().equals(userID)) {
+				System.out.println("Updating Student " + u.getUserID() + " ...");
+				temp.set(i, updatedUser);
+				SerializeDB.writeSerializedObject(STUDENT, temp);
+				return;
+			}
+		}
+
+		System.out.println("Student " + userID + " not found!");
+	}
+
+	// Staff object update
+	public void updateStaffData(String userID, Users updatedUser) {
+
+		temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
+		
+		// Search through list of Staff objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (int i = 0; i < temp.size(); i++) {
+			Staff u = (Staff)temp.get(i);
+			if (u.getUserID().equals(userID)) {
+				System.out.println("Updating Staff " + u.getUserID() + " ...");
+				temp.set(i, updatedUser);
+				SerializeDB.writeSerializedObject(STAFF, temp);
+				return;
+			}
+		}
+
+		System.out.println("Staff " + userID + " not found!");
 	}
 
 	// Course object retrieval
@@ -186,7 +225,7 @@ public class DatabaseControl {
 	}
 
 	// Retrieve School object
-	public School getSchoolData(String testInitials) {
+	public School getSchoolData(int schoolID) {
 		
 		temp = (ArrayList)SerializeDB.readSerializedObject(SCHOOL);
 		School empty = null;
@@ -194,14 +233,14 @@ public class DatabaseControl {
 		// Search and return if found
 		for (int i = 0; i < temp.size(); i++) {
 			School s = (School)temp.get(i);
-			if (s.getSchoolInitials().equals(testInitials)) {
-				System.out.println("School " + testInitials + " found!");
+			if (s.getSchoolID() == schoolID) {
+				System.out.println("School with ID " + schoolID + " found!");
 				return s;
 			}
 		}
 
 		// return empty if not found
-		System.out.println("School " + testInitials + " not found!");
+		System.out.println("School with ID " + schoolID + " not found!");
 		return empty;
 	}
 
@@ -213,22 +252,22 @@ public class DatabaseControl {
 		// Search if new object to be added already exists in the database
 		for (int i = 0; i < temp.size(); i++) {
 			School s = (School)temp.get(i);
-			if (newSchool.getSchoolInitials().equals(s.getSchoolInitials())) {
-				System.out.println("School " + newSchool.getSchoolInitials() + " already inside database");
+			if (newSchool.getSchoolID() == s.getSchoolID()) {
+				System.out.println("School with ID " + newSchool.getSchoolID() + " already inside database");
 				return;
 			}
 		}
 
 		// Add new object to the list
 		temp.add(newSchool);
-		System.out.println("Added new School with initials " + newSchool.getSchoolInitials());
+		System.out.println("Added new School with ID " + newSchool.getSchoolID());
 
 		// Write to binary file
 		SerializeDB.writeSerializedObject(SCHOOL, temp);
 	}
 
 	// Update School object
-	public void updateSchoolData(String schoolInitials, School updatedSchool) {
+	public void updateSchoolData(int schoolID, School updatedSchool) {
 		
 		temp = (ArrayList)SerializeDB.readSerializedObject(SCHOOL);
 
@@ -236,15 +275,15 @@ public class DatabaseControl {
 		// update and return if found
 		for (int i = 0; i < temp.size(); i++) {
 			School s = (School)temp.get(i);
-			if (s.getSchoolInitials().equals(schoolInitials)) {
-				System.out.println("Updating School " + schoolInitials + " ...");
+			if (s.getSchoolID() == schoolID) {
+				System.out.println("Updating School with ID " + schoolID + " ...");
 				temp.set(i, updatedSchool);
 				SerializeDB.writeSerializedObject(SCHOOL, temp);	
 				return;
 			}
 		}
 
-		System.out.println("school " + schoolInitials + " not found");
+		System.out.println("school with ID " + schoolID + " not found");
 	}
 }
 
