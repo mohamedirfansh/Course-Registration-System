@@ -2,11 +2,11 @@ package boundaries;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import control.staffController;
+import control.StaffController;
 import entities.Student;
 import entities.Staff;
 
-public class staffUI {
+public class StaffUI {
 
     private static boolean loggedIn = true;
 
@@ -117,7 +117,7 @@ public class staffUI {
     // Methods
     // 1. Update school's Access Period
     public static void updateAccPeriod(Staff currentStaff, String startDate, String endDate) {
-        if (staffController.updateAccessPeriod(currentStaff, startDate, endDate)) {
+        if (StaffController.updateAccessPeriod(currentStaff, startDate, endDate)) {
             System.out.println("Access period was successfully updated!");
         } else {
             System.out.println("Invalid access period was entered! Please try again");
@@ -126,7 +126,7 @@ public class staffUI {
 
     // 2. Add student to school
     public static void addStudentToSchool(Staff currentStaff, String name, String userID, String userPW, String gender, String nationality, String schoolID, String identificationKey) {
-        if (staffController.addStudent(currentStaff, name, userID, userPW, gender, nationality, schoolID, identificationKey)) {
+        if (StaffController.addStudent(currentStaff, name, userID, userPW, gender, nationality, schoolID, identificationKey)) {
             System.out.println("Student added successfully to school!");
         } else {
             System.out.println("Error in adding student to school! Please try again");
@@ -135,7 +135,7 @@ public class staffUI {
 
     // 3. Add course to school
     public static void addCourseToSchool(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
-        if (staffController.addCourse(currentStaff, courseCode, courseName, schoolName, au)) {
+        if (StaffController.addCourse(currentStaff, courseCode, courseName, schoolName, au)) {
             System.out.println("Course added successfully to school!");
         } else {
             System.out.println("Error in adding course to school! Please try again");
@@ -144,7 +144,7 @@ public class staffUI {
 
     // 4. Update course belonging to school and course database
     public static void updateCourseInSchool(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
-        if (staffController.updateCourse(currentStaff, courseCode, courseName, schoolName, au)) {
+        if (StaffController.updateCourse(currentStaff, courseCode, courseName, schoolName, au)) {
             System.out.println("Course updated successfully!");
         } else {
             System.out.println("Error updating course! Please try again");
@@ -153,7 +153,7 @@ public class staffUI {
 
     // 5. Check course vacancy
     public static void checkCourseVacancy(String courseCode, String indexCode) {
-        int numVacancy = staffController.checkVacancy(courseCode, indexCode);
+        int numVacancy = StaffController.checkVacancy(courseCode, indexCode);
         if (numVacancy > 0) {
             System.out.println("Course: " + courseCode);
             System.out.println("Index: " + indexCode);
@@ -165,7 +165,7 @@ public class staffUI {
 
     // 6. Print student's list (By course and by index)
     public static void printCourseStudentList(String courseCode) {
-        ArrayList<Student> allStudents = staffController.getAllStudentsInCourse(courseCode);
+        ArrayList<Student> allStudents = StaffController.getAllStudentsInCourse(courseCode);
         if (allStudents.isEmpty()) {
             System.out.println("There are no students enrolled in this course!");
         } else {
@@ -177,7 +177,7 @@ public class staffUI {
     }
 
     public static void printIndexStudentList(String courseCode, String indexCode) {
-        ArrayList<Student> allStudents = staffController.getAllStudentsInIndex(courseCode, indexCode);
+        ArrayList<Student> allStudents = StaffController.getAllStudentsInIndex(courseCode, indexCode);
         if (allStudents.isEmpty()) {
             System.out.println("There are no students enrolled in this index!");
         } else {

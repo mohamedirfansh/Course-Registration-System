@@ -4,15 +4,16 @@ import entities.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import control.databaseController;
+import control.DatabaseControl;
 
-public class staffController {
+public class StaffController {
+    
+    private static DatabaseControl databaseController = new DatabaseControl('s');
 
     // Methods
     public static boolean updateAccessPeriod(Staff currentStaff, String startDate, String endDate) {
         String schoolID = currentStaff.getSchoolID();
         // Get school object using schoolID from database
-        // Dummy code (Comment out before compiling):
 
         School school = databaseController.getSchoolData(schoolID);
         boolean updateSuccessful = school.setAccessPeriod(startDate, endDate);
