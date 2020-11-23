@@ -14,10 +14,11 @@ public class Student extends User{
 	 */
 
 	private HashMap<String, String> registeredCourses = new HashMap<>();
+	private HashMap<String, String> waitListedCourses = new HashMap<>();
 	private int academicUnits = 0;
 	public static final long serialVersionUID = 2L;
 
-	public Student(String name, String userID,
+	public Student(String name, String userID, String userPW,
 			String gender, String nationality, int schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 
@@ -41,6 +42,9 @@ public class Student extends User{
 
 	public void setRegisteredCourses(HashMap<String, String> coursesDetails) { this.registeredCourses = coursesDetails; }
 	public HashMap<String, String> getRegisteredCourses() { return this.registeredCourses; }
+
+	public void setWaitListedCourses(HashMap<String, String>  waitListedCourses){ this.waitListedCourses = waitListedCourses; }
+	public HashMap<String, String> getWaitListedCourses(){ return this.waitListedCourses; }
 
 	public void setAcademicUnits(int numberOfAU) { this.academicUnits = numberOfAU; }
 	public int getNumberOfAUs() { return this.academicUnits; }

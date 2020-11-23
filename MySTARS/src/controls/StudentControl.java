@@ -21,7 +21,7 @@ public class StudentControl {
 	 * student. Called by the student object.
 	 * @param courseID
 	 */
-	public static boolean addCourse(Student currentStudent, String courseID, String index) {
+	public static boolean addCourse(Student currentStudent, String courseID, String index, boolean checkWaitList) {
 		
 		Course currentCourse = dbControl.getCourseData(courseID);
 		if(currentCourse == null){
@@ -42,9 +42,22 @@ public class StudentControl {
 		}
 
 		if(!currentIndex.registerStudent(currentStudent.getUserID())) {
-			System.out.println("Failed to register student.");
+			System.out.println("Failed to register student. Adding student to waitList.");
+
+			if(currentIndex.addStudentToWaitList(currentStudent.getUserID())){
+				System.out.println("Student added to waitlist.");
+				HashMap<String, String> studentsWaitListedCourses = currentStudent.getWaitListedCourses();
+				studentsWaitListedCourses.put(courseID, index);
+				currentStudent.setWaitListedCourses(studentsWaitListedCourses);
+
+				// Update the database with the new info
+				dbControl.updateCourseData(courseID, currentCourse);
+				dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+			}
+
 			return false;
 		}
+
 		StudentUIMsg.successfullyEnrolledMsg();
 		//Update au
 		int studentsAU = currentStudent.getNumberOfAUs();
@@ -63,12 +76,16 @@ public class StudentControl {
 		
 		return true;
 	}
+
+	public static boolean addCourse(Student currentStudent, String courseID, String index){
+		return addCourse(currentStudent, courseID, index, true);
+	}
 	
 	/**
 	 * Method to drop the course for a student.
 	 * Called by the student object.
 	 */
-	public static boolean dropCourse(Student currentStudent, String courseID, String index) {
+	public static boolean dropCourse(Student currentStudent, String courseID, String index, boolean checkWaitList) {
 
 		Course currentCourse = dbControl.getCourseData(courseID);
 		//Check that the course is not null
@@ -96,9 +113,29 @@ public class StudentControl {
 					studentsAU -= currentCourse.getAu();
 					currentStudent.setAcademicUnits(studentsAU);
 					currentStudent.setRegisteredCourses(studentsCourses);
+
+					//need to enroll the student in front of the queue
+
+					//check the waitlist to retrive the student at the front of the waitlist
+					if(checkWaitList){
+						String newStudentID = currentIndex.getFrontOfWaitList();
+
+						//check if the student exists
+						if(newStudentID != null) {
+							Student newStudent = dbControl.getStudentData(newStudentID);
+							addCourse(newStudent, courseID, index, false);
+						}
+					}
+
+					return true;
 					
-				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID())) {
-					//logic when student deregisters from a course that he is waitlisted into.
+				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) && checkWaitList) {
+					HashMap<String, String> studentsCourses = currentStudent.getWaitListedCourses();
+					if(!studentsCourses.containsKey(courseID))
+						return false;
+
+					studentsCourses.remove(courseID, index);
+					currentStudent.setWaitListedCourses(studentsCourses);
 				} else {
 					return false;
 				}
@@ -113,26 +150,27 @@ public class StudentControl {
 		return false;
 	}
 
+	public static boolean dropCourse(Student currentStudent, String courseID, String index){
+		return dropCourse(currentStudent, courseID, index, true);
+	}
+
 	
 	public static boolean changeIndex(Student currentStudent, String course, String prevIndex, String newIndex) {
 		
 		Course currentCourse = dbControl.getCourseData(course);
 
 		if(currentCourse != null) {
-			if(dropCourse(currentStudent, course, prevIndex)){
-				if(addCourse(currentStudent, course, newIndex)){
+			if(dropCourse(currentStudent, course, prevIndex, false)){
+				if(addCourse(currentStudent, course, newIndex, false)){
 					return true;
 				}else {
-					addCourse(currentStudent, course, prevIndex);
+					addCourse(currentStudent, course, prevIndex, false);
 				}
 			}
 		}
 		return false;
 	}
-	
 
-	
-	//TODO
 	public static boolean swapIndex(Student currentStudent, String courseID, String currIndex, String friendID, String friendPassword, String friendIndex) {
 
 		Student friend = dbControl.getStudentData(friendID);
@@ -150,62 +188,33 @@ public class StudentControl {
 			e.printStackTrace();
 		}
 
-		if (dropCourse(currentStudent, courseID, currIndex) && dropCourse(friend, courseID, friendIndex)) {
-			if (addCourse(currentStudent, courseID, friendIndex)) {
+		if (dropCourse(currentStudent, courseID, currIndex, false) && dropCourse(friend, courseID, friendIndex, false)) {
+			if (addCourse(currentStudent, courseID, friendIndex, false)) {
 				if (addCourse(friend, courseID, currIndex)) {
 					return true;
 				} else {
-					dropCourse(currentStudent, courseID, friendIndex);
+					dropCourse(currentStudent, courseID, friendIndex, false);
 				}
 			}
 		}
 
-		addCourse(currentStudent, courseID, currIndex);
-		addCourse(friend, courseID, friendIndex);
+		addCourse(currentStudent, courseID, currIndex, false);
+		addCourse(friend, courseID, friendIndex, false);
 		return false;
 	}
-		
-//		Course currentCourse = dbControl.getCourseData(courseID);
-//
-//		if(currentCourse != null) {
-//			Index currentIndex = currentCourse.findIndex(currIndex);
-//			Index frenIndex = currentCourse.findIndex(friendIndex);
-//
-//			if(currentIndex != null && frenIndex != null){
-//				// Drop the current course for the student and the friend
-//				dropCourse(currentStudent, courseID, currIndex);
-//				dropCourse(friend, courseID, friendIndex);
-//
-//				// Check for clash for the student
-//				if (clashBetIndex(currentStudent, courseID, friendIndex)) {
-//					System.out.println("You have a clash with your friend's index.");
-//					addCourse(currentStudent, courseID, currIndex);
-//					return false;
-//				}else if (clashBetIndex(friend, courseID, currIndex)) {
-//					System.out.println("Your friend has a clash with your index.");
-//					addCourse(currentStudent, courseID, currIndex);
-//					return false;
-//				}
-//
-//				// If no clash for both, add them to their respective courses
-//				addCourse(currentStudent, courseID, friendIndex);
-//				addCourse(friend, courseID, currIndex);
-//
-//				return true;
-//
-//			}
-//
-//		}
-//		System.out.println("No such courses!");
-//		return false;
+
 
 	public static boolean clashBetIndex(Student currentStudent, String courseID, String index) {
 
 		//students registered courses
 		HashMap<String, String> studCourses = currentStudent.getRegisteredCourses();
 
+		//students waitListed courses
+		HashMap<String, String> waitListedCourses = currentStudent.getWaitListedCourses();
+
 		//students registered courseID
 		Set<String> courses = studCourses.keySet();
+		courses.addAll(waitListedCourses.keySet());
 
 		//Course object of the new course
 		Course newCourse = dbControl.getCourseData(courseID);
@@ -289,11 +298,14 @@ public class StudentControl {
 	public static void checkVacancy(String course) {
 
 		Course currentCourse = dbControl.getCourseData(course);
-		ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
-
-		System.out.println("Index\tVacancy");
-		for (Index i : listOfIndex) {
-			System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
+		
+		if (currentCourse != null) {
+			ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
+	
+			System.out.println("Index\tVacancy");
+			for (Index i : listOfIndex) {
+				System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
+			}
 		}
 	}
 }
