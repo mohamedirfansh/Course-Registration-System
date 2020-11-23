@@ -131,7 +131,7 @@ public class createCourseData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("course.dat", courseData);
+			sdb.writeSerializedObject("src\\data\\course.dat", courseData);
 		}
 
 		catch (Exception e) {
