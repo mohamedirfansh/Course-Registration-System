@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.HashMap;
+import java.io.File;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class DatabaseControl {
 
@@ -20,17 +23,20 @@ public class DatabaseControl {
 	private HashMap<String, String> tempPW;
 
 	// define filename constants
-	static final String STUDENT = "src\\data\\student.dat";
-	static final String STAFF = "src\\data\\staff.dat";
-	static final String COURSE = "src\\data\\course.dat";
-	static final String SCHOOL = "src\\data\\school.dat";
-	static final String PASSWORD = "src\\data\\password.dat";
+	static Path current = Paths.get(System.getProperty("user.dir"));
+	static final String parentDirectory = current.getParent().toString();
+	static final String STUDENT = parentDirectory + File.separator + "data" + File.separator + "student.dat";
+	static final String STAFF = parentDirectory + File.separator + "data" + File.separator + "staff.dat";
+	static final String COURSE = parentDirectory + File.separator + "data" + File.separator + "course.dat";
+	static final String SCHOOL = parentDirectory + File.separator + "data" + File.separator + "school.dat";
+	static final String STUDENTPASSWORD = parentDirectory + File.separator + "data" + File.separator + "studentPassword.dat";
+	static final String STAFFPASSWORD = parentDirectory + File.separator + "data" + File.separator + "staffPassword.dat";
 
 	// No special Constructor for DatabaseControl needed 
 
-	public String getPassword(String userID) {
+	public String getStudentPassword(String userID) {
 
-		tempPW = (HashMap)SerializeDB.readSerializedMapObject(PASSWORD);
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STUDENTPASSWORD);
 		
 		// Search through list of Student objects
 		// if found, replace with new object
@@ -44,7 +50,23 @@ public class DatabaseControl {
 
 		return null;
 	}
-	
+
+	public String getStaffPassword(String userID) {
+
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STAFFPASSWORD);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (String key: tempPW.keySet()) {
+			if (key.equals(userID)) {
+				System.out.println(key);
+				return tempPW.get(key);
+			}
+		}
+
+		return null;
+	}
 	
 	// Student object retrieval based on userID
 	public Student getStudentData(String userID) {
