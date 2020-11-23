@@ -127,7 +127,6 @@ public class StudentControl {
 						}
 					}
 
-					return true;
 					
 				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) && checkWaitList) {
 					HashMap<String, String> studentsCourses = currentStudent.getWaitListedCourses();
@@ -155,9 +154,14 @@ public class StudentControl {
 	}
 
 	
-	public static boolean changeIndex(Student currentStudent, String course, String prevIndex, String newIndex) {
+	public static boolean changeIndex(Student currentStudent, String course, String newIndex) {
 		
 		Course currentCourse = dbControl.getCourseData(course);
+		String prevIndex = currentStudent.getRegisteredCourses().get(course);
+		
+		if (prevIndex == null) {
+			return false;
+		}
 
 		if(currentCourse != null) {
 			if(dropCourse(currentStudent, course, prevIndex, false)){
@@ -180,7 +184,8 @@ public class StudentControl {
 		}
 
 		try {
-			if (Hash.encode(friendPassword) != Password.getHash(friendID)) { // Check friend's password here
+			// != Password.getHash(friendID)
+			if (!(Hash.encode(friendPassword).equals(dbControl.getStudentPassword(friendID)))) { // Check friend's password here
 				System.out.println("Your friend's password is incorrect!");
 				return false;
 			}
@@ -213,8 +218,15 @@ public class StudentControl {
 		HashMap<String, String> waitListedCourses = currentStudent.getWaitListedCourses();
 
 		//students registered courseID
-		Set<String> courses = studCourses.keySet();
-		courses.addAll(waitListedCourses.keySet());
+
+		Set<String> courses = new HashSet<>();
+		if(studCourses != null) {
+			courses = studCourses.keySet();
+		}
+
+		if(waitListedCourses != null) {
+			courses.addAll(waitListedCourses.keySet());
+		}
 
 		//Course object of the new course
 		Course newCourse = dbControl.getCourseData(courseID);
@@ -225,6 +237,9 @@ public class StudentControl {
 
 		//all the timings for the lectures of the new course
 		for(Lesson l : newLecture){
+			if(l == null){
+				break;
+			}
 			newCourseTimings.add(l.getTimings());
 		}
 
@@ -232,6 +247,9 @@ public class StudentControl {
 		for(Index i : newCourse.getCourseIndex()){
 			if(i.getIndexCode().equals(index)){
 				for(Lesson l : i.getLessons()){
+					if(l == null){
+						break;
+					}
 					newCourseTimings.add(l.getTimings());
 				}
 			}
@@ -251,6 +269,9 @@ public class StudentControl {
 			Lesson[] tempLecture = tempCourse.getLectures();
 			ArrayList<WorkingHours> registeredCourseTimings = new ArrayList<>();
 			for(Lesson l : tempLecture){
+				if(l == null){
+					break;
+				}
 				registeredCourseTimings.add(l.getTimings());
 			}
 
@@ -281,7 +302,7 @@ public class StudentControl {
 
 		return false;
 	}
-
+	
 	public static void viewRegisteredCourses(Student currentStudent) {
 
 		HashMap<String, String> listOfRegisteredCourses = currentStudent.getRegisteredCourses();
@@ -302,9 +323,9 @@ public class StudentControl {
 		if (currentCourse != null) {
 			ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
 	
-			System.out.println("Index\tVacancy");
+			System.out.println("Index\t\tVacancy");
 			for (Index i : listOfIndex) {
-				System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
+				System.out.printf("%s\t%d/%d\n", i.getIndexCode(), i.getVacancy(), i.getClassSize());
 			}
 		}
 	}

@@ -216,6 +216,10 @@ public class DatabaseControl {
 		System.out.println("Course " + courseCode + " not found!");
 		return empty;
 	}
+	
+	public ArrayList<Course> getAllCourseData() {
+		return (ArrayList)SerializeDB.readSerializedObject(COURSE);
+	}
 
 	// add new Course object
 	public boolean addCourseData(Course newCourse) {
