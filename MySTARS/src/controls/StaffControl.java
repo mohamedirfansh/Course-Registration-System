@@ -54,7 +54,8 @@ public class StaffControl {
         
         Student student;
 		try {
-			student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+			student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
+			Password.addNewPassword(userID, userPW);
 			int schoolIDTwo = currentStaff.getSchoolID(); 
 	        School school = db.getSchoolData(schoolIDTwo);
 	        ArrayList<String> allStudents = school.getAllStudents();

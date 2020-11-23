@@ -186,7 +186,7 @@ public class StudentControl {
 		}
 		
 		try {
-			if (Hash.encode(friendPassword) != friend.getUserPW()) { // Check friend's password here
+			if (Hash.encode(friendPassword) != Password.getHash(friendID)) { // Check friend's password here
 				System.out.println("Your friend's password is incorrect!");
 				return false;
 			}
