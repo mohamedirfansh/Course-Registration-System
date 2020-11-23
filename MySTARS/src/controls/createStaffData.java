@@ -23,7 +23,7 @@ public class createStaffData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("staff.dat", staffData);
+			sdb.writeSerializedObject("src\\data\\staff.dat", staffData);
 		}
 
 		catch (Exception e) {
