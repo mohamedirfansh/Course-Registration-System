@@ -16,21 +16,21 @@ public class AccessPeriod implements Serializable {
 	/**
 	 * The starting date & time of the period.
 	 */
-  private String startDate;
+  	private String startDate;
 	
 	/**
 	 * The ending date & time of the period.
 	 */
-  private String endDate;
+  	private String endDate;
 
-  private static final long serialVersionUID = 2L; 
+  	private static final long serialVersionUID = 2L; 
 	
     /**
      * Constructor for the AccessPeriod
      * @param startDate
      * @param endDate
      */
-  public AccessPeriod(String startDate, String endDate) {
+  	public AccessPeriod(String startDate, String endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -52,14 +52,15 @@ public class AccessPeriod implements Serializable {
 			// Parse needed to convert the date from string type to date type for comparison
 			try {
 				validStartDate = dateFormat.parse(this.startDate);
+				System.out.println("New Start Date: " + validStartDate);
 				validEndDate = dateFormat.parse(this.endDate);
+				System.out.println("New End Date: " + validEndDate);
 				
-				// Checking if current date is within the access window
-                boolean isValid = (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0);
-                return isValid;
-                
+				// Checking if current date is within the access window (-ve if currDate is before validEndDate)
+				return (currentDate.compareTo(validStartDate) <= 0 && currentDate.compareTo(validEndDate) < 0 && validStartDate.compareTo(validEndDate) < 0);
+				
 			} catch (ParseException e){
-				e.printStackTrace();
+				System.out.println("Date entered in the wrong format! Please enter a valid date format.");
 				return false;
 			}
 
