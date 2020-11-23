@@ -1,7 +1,9 @@
-package controls;
+package data;
 import entities.User;
 import entities.Staff;
 import entities.Hash;
+import controls.SerializeDB;
+import controls.Password;
 import java.util.ArrayList;
 import java.util.List;
 

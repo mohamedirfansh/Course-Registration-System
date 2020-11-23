@@ -1,8 +1,9 @@
-package controls;
+package data;
 import entities.Student;
 import entities.Hash;
 import entities.Student;
 import controls.SerializeDB;
+import controls.Password;
 import java.util.ArrayList;
 import java.util.List;
 import java.security.NoSuchAlgorithmException;

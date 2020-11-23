@@ -7,6 +7,7 @@ import entities.Hash;
 
 public class Password implements Serializable {
 
+	public static final long serialVersionUID = 2L;
 	private static HashMap<String, String> allPW = new HashMap<>();
 
 	public static void addNewPassword(String userID, String inputPassword) throws NoSuchAlgorithmException {

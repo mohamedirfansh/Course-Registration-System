@@ -1,5 +1,6 @@
-package controls;
+package data;
 import entities.School;
+import controls.SerializeDB;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;

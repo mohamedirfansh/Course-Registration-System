@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.HashMap;
 import java.io.File;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class DatabaseControl {
 
@@ -21,13 +23,14 @@ public class DatabaseControl {
 	private HashMap<String, String> tempPW;
 
 	// define filename constants
-	static final String parentDirectory = System.getProperty("user.dir");
-	static final String STUDENT = parentDirectory + File.separator + "student.dat";
-	static final String STAFF = parentDirectory + File.separator + "staff.dat";
-	static final String COURSE = parentDirectory + File.separator + "course.dat";
-	static final String SCHOOL = parentDirectory + File.separator + "school.dat";
-	static final String STUDENTPASSWORD = parentDirectory + File.separator + "studentPassword.dat";
-	static final String STAFFPASSWORD = parentDirectory + File.separator + "staffPassword.dat";
+	static Path current = Paths.get(System.getProperty("user.dir"));
+	static final String parentDirectory = current.getParent().toString();
+	static final String STUDENT = parentDirectory + File.separator + "data" + File.separator + "student.dat";
+	static final String STAFF = parentDirectory + File.separator + "data" + File.separator + "staff.dat";
+	static final String COURSE = parentDirectory + File.separator + "data" + File.separator + "course.dat";
+	static final String SCHOOL = parentDirectory + File.separator + "data" + File.separator + "school.dat";
+	static final String STUDENTPASSWORD = parentDirectory + File.separator + "data" + File.separator + "studentPassword.dat";
+	static final String STAFFPASSWORD = parentDirectory + File.separator + "data" + File.separator + "staffPassword.dat";
 
 	// No special Constructor for DatabaseControl needed 
 
