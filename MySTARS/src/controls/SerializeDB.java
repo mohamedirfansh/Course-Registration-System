@@ -7,8 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.ArrayList;
 
-// Note : When structure of the Object type (the class file) in the list changed
-// the Serialized file may fail.
 public class SerializeDB
 {
 	public static List readSerializedObject(String filename) {
@@ -25,9 +23,6 @@ public class SerializeDB
 		} catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		}
-		// print out the size
-		//System.out.println(" Details Size: " + pDetails.size());
-		//System.out.println();
 		return pDetails;
 	}
 
@@ -39,7 +34,6 @@ public class SerializeDB
 			out = new ObjectOutputStream(fos);
 			out.writeObject(list);
 			out.close();
-		//	System.out.println("Object Persisted");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

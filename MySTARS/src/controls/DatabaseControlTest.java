@@ -16,6 +16,7 @@ public class DatabaseControlTest {
 		try {
 
 			DatabaseControl db = new DatabaseControl();
+			boolean success;
 
 			// Testing retrieval of particular Student object
 			String testStudentID = "Adeline1999";
@@ -29,22 +30,47 @@ public class DatabaseControlTest {
 
 			// Testing addition of new Student object
 			Student newStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
-			db.addStudentData(newStudent);
+			success = db.addStudentData(newStudent);
+			if (success == true) {
+				System.out.println("Added new Student with name " + newStudent.getName());
+			}
+			else {
+				System.out.println("Student with userID " + newStudent.getUserID() + " already inside database!");
+			}
 			System.out.println();
 
 			// Testing addition of new Staff object
 			Staff newStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
-			db.addStaffData(newStaff);
+			success = db.addStaffData(newStaff);
+			if (success == true) {
+				System.out.println("Added new Staff with name " + newStaff.getName());
+			}
+			else {
+				System.out.println("Staff with userID " + newStaff.getUserID() + " already inside database!");
+			}
 			System.out.println();
 			
 			// Testing update of Student object
 			Student updateStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
-			db.updateStudentData(updateStudent.getUserID(), updateStudent);
+			success = db.updateStudentData(updateStudent.getUserID(), updateStudent);
+			if (success == true) {
+				System.out.println("Student with userID " + updateStudent.getUserID() + " updated");
+			}
+			else {
+				System.out.println("Student with userID " + updateStudent.getUserID() + " not found!");
+			}
+
 			System.out.println();
 			
 			// Testing update of Staff Object
 			Staff updateStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
-			db.updateStaffData(updateStaff.getUserID(), updateStaff);
+			success = db.updateStaffData(updateStaff.getUserID(), updateStaff);
+			if (success == true) {
+				System.out.println("Staff with userID " + updateStaff.getUserID() + " updated");
+			}
+			else {
+				System.out.println("Staff with userID " + updateStaff.getUserID() + " not found!");
+			}
 			System.out.println();
 			
 			// Testing retrieval of particular Course object
@@ -54,12 +80,26 @@ public class DatabaseControlTest {
 			
 			// Testing addition of new Course Object
 			Course newCourse = new Course("Data Structures", "CZ1007", "School of Computer Science and Engineering", 3);
-			db.addCourseData(newCourse);
+			success = db.addCourseData(newCourse);
+			if (success == true) {
+				System.out.println("Added new course with code " + newCourse.getCourseCode());
+			}
+			else {
+				System.out.println("Course " + newCourse.getCourseCode() + " already inside database");
+			}
+
 			System.out.println();
 			
 			// Testing update of Course Object
 			Course updateCourse = new Course("Business Finance", "BU8201", "Nanyang Business School", 3);
-			db.updateCourseData(updateCourse.getCourseCode(), updateCourse);
+			success = db.updateCourseData(updateCourse.getCourseCode(), updateCourse);
+			if (success == true) {
+				System.out.println("Updated course " + updateCourse.getCourseCode());
+			}
+			else {
+				System.out.println("course " + updateCourse.getCourseCode() + " not found");
+			}
+
 			System.out.println();
 
 			// Testing retrieval of particular School Object
@@ -70,27 +110,27 @@ public class DatabaseControlTest {
 			// Testing addition of new School Object
 			School newSchool = new School("School of Social Sciences", "SSS");
 			newSchool.setSchoolID(31);
-			db.addSchoolData(newSchool);
+			success = db.addSchoolData(newSchool);
+			if (success == true) {
+				System.out.println("Added new School with ID " + newSchool.getSchoolID());
+			}
+			else {
+				System.out.println("School with ID " + newSchool.getSchoolID() + " already inside database");
+			}
+
 			System.out.println();
 			
 			// Testing update of School Object
 			School updateSchool = new School("School of Social Sciences", "SSS");
 			updateSchool.setSchoolID(31);
-			db.updateSchoolData(updateSchool.getSchoolID(), updateSchool);
+			success = db.updateSchoolData(updateSchool.getSchoolID(), updateSchool);
+			if (success == true) {
+				System.out.println("Updated School with ID " + updateSchool.getSchoolID() + " ...");
+			}
+			else {
+				System.out.println("school with ID " + updateSchool.getSchoolID() + " not found");
+			}
 			System.out.println();
-
-			/* // Testing of StaffControl
-			DatabaseControl dbStudent = new DatabaseControl();
-
-			String testStudentID = "Tom1998";
-			Student testStudent = dbStudent.getStudentData(testStudentID);
-
-			StudentControl sc = new StudentControl(testStudent);
-			testStudent.addCourse("CZ2001" */
-
-
-
-			
 		}
 		catch (Exception e) {
 			System.out.println("Exception >> " + e.getMessage());
