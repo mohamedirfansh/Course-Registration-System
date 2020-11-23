@@ -1,7 +1,9 @@
-package controls;
+package data;
 import entities.User;
 import entities.Staff;
 import entities.Hash;
+import controls.SerializeDB;
+import controls.Password;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +29,19 @@ public class createStaffData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("src\\data\\staff.dat", staffData);
+			sdb.writeSerializedObject("staff.dat", staffData);
+			sdb.writeSerializedObject("staffPassword.dat", Password.getHashMap());
+
 		}
 
 		catch (Exception e) {
 			System.out.println("Exception >> " + e.getMessage());
 		}
+	}
+
+	public static void main(String[] args) throws NoSuchAlgorithmException  {
+		createStaffData staffData = new createStaffData();
+		staffData.createStaff();
 	}
 }
 

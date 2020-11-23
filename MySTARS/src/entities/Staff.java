@@ -19,8 +19,7 @@ public class Staff extends User{
 	 * @return: returns the new student to the caller
 	 */
 	public Staff(String name, String userID, String gender, 
-			String nationality, int schoolID,
-			String identificationKey) throws NoSuchAlgorithmException {
+			String nationality, int schoolID,String identificationKey) throws NoSuchAlgorithmException {
 		super(name, userID, gender, nationality, schoolID, identificationKey);
 	}
 

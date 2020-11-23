@@ -1,8 +1,9 @@
-package controls;
+package data;
 import entities.Student;
 import entities.Hash;
 import entities.Student;
 import controls.SerializeDB;
+import controls.Password;
 import java.util.ArrayList;
 import java.util.List;
 import java.security.NoSuchAlgorithmException;
@@ -95,7 +96,7 @@ public class createStudentData {
 		Student student10 = new Student("Adeline", "Adeline1999", "Female", "Malaysian", 21, "U198752A");
 		Password.addNewPassword("Adeline1999", "AdelinePassword");
 
-		// SSS students
+		// sss students
 
 		Student student11 = new Student("George", "George1999", "Male", "Indonesian", 31, "U912734G");
 		Password.addNewPassword("George1999", "GeorgePassword");
@@ -159,12 +160,18 @@ public class createStudentData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("src\\data\\student.dat", studentData);
+			sdb.writeSerializedObject("student.dat", studentData);
+			sdb.writeSerializedObject("studentPassword.dat", Password.getHashMap());
 		}
 
 		catch (Exception e) {
 			System.out.println("Exception >> " + e.getMessage());
 		}
+	}
+
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+		createStudentData create = new createStudentData();
+		create.createStudent();
 	}
 }
 

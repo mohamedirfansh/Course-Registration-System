@@ -1,5 +1,6 @@
-package controls;
+package data;
 import entities.School;
+import controls.SerializeDB;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -68,7 +69,7 @@ public class createSchoolData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("src\\data\\school.dat", schoolData);
+			sdb.writeSerializedObject("school.dat", schoolData);
 		}
 
 		catch (Exception e) {

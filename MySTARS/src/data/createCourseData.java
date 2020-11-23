@@ -1,4 +1,5 @@
-package controls;
+package data;
+import controls.*;
 import entities.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +132,7 @@ public class createCourseData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("src\\data\\course.dat", courseData);
+			sdb.writeSerializedObject("course.dat", courseData);
 		}
 
 		catch (Exception e) {

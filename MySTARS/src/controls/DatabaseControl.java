@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.HashMap;
+import java.io.File;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class DatabaseControl {
 
@@ -24,12 +27,14 @@ public class DatabaseControl {
 	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
 	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
 	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
-	static final String PASSWORD = System.getProperty("user.dir") + "/src/data/password.dat";
+	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
 
 	// No special Constructor for DatabaseControl needed 
-	public String getPassword(String userID) {
 
-		tempPW = (HashMap)SerializeDB.readSerializedMapObject(PASSWORD);
+	public String getStudentPassword(String userID) {
+
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STUDENTPASSWORD);
 		
 		// Search through list of Student objects
 		// if found, replace with new object
@@ -43,7 +48,23 @@ public class DatabaseControl {
 
 		return null;
 	}
-	
+
+	public String getStaffPassword(String userID) {
+
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STAFFPASSWORD);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (String key: tempPW.keySet()) {
+			if (key.equals(userID)) {
+				System.out.println(key);
+				return tempPW.get(key);
+			}
+		}
+
+		return null;
+	}
 	
 	// Student object retrieval based on userID
 	public Student getStudentData(String userID) {
