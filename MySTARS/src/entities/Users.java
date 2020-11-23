@@ -17,7 +17,7 @@ public class Users implements Serializable{
 	
 	private String name;							// changes can be made if required, surname changes if married etc
 	private String nationality;						// changes can be made if required
-	private String schoolID;						// can switch school if required
+	private int schoolID;						// can switch school if required
 	
 	// personal information that need to be hidden from direct changes; cannot provide getter methods due to privacy reasons
 	private final String identificationKey;			// Your matriculation/staff id is used to prove that the account belongs to you (matric num no change at all)
@@ -30,7 +30,7 @@ public class Users implements Serializable{
 	public static final long serialVersionUID = 2L;
 	
 	public Users(String name, String userID, String userPW,
-			String gender, String nationality, String schoolID, 
+			String gender, String nationality, int schoolID, 
 			String identificationKey) throws NoSuchAlgorithmException {
 		this.name = name;
 		this.userID = userID;
@@ -44,7 +44,7 @@ public class Users implements Serializable{
 	public String getName() { return this.name; }
 	public String getGender() { return this.gender; }
 	public String getNationality() { return this.nationality; }
-	public String getSchoolID() { return this.schoolID; }
+	public int getSchoolID() { return this.schoolID; }
 	public String getUserID() { return this.userID;	}
 	public String getUserPW() { return this.hashedPassword; }
 	public String getIDKey() { return this.identificationKey; }
