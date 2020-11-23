@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="javax.mail.jar"/>
+	<classpathentry kind="lib" path="activation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
