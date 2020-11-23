@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import entities.Hash;
 import entities.PasswordField;
+import entities.Staff;
+import entities.Student;
 import entities.User;
 
 public class AuthenticationController implements AuthenticationControl{
@@ -18,23 +20,23 @@ public class AuthenticationController implements AuthenticationControl{
 	 * login will run a forever while loop to check the validity of the account details entered
 	 */
 
-	public boolean login(User user, String inputID, String inputPassword) throws NoSuchAlgorithmException {
+	public boolean login(Student user, String inputID, String inputPassword) throws NoSuchAlgorithmException {
 		String user_id = user.getUserID();
 		String hashedPassword = user.getUserPW();
 		String hashedInput = Hash.encode(inputPassword);
 
 		boolean loginSuccessful = user_id.equals(inputID) && hashedPassword.equals(hashedInput);
-		while (!loginSuccessful) {
-			System.out.print("Please enter your User ID: ");
-			inputID = input.nextLine();
-			inputPassword = PasswordField.readPassword();
-			hashedInput = Hash.encode(inputPassword);
-			loginSuccessful = user_id.equals(inputID) && hashedPassword.equals(hashedInput);
-		}
+		System.out.println("Hashed: " + hashedInput);
+		System.out.println("Stored: " + hashedPassword);
+		return loginSuccessful;
+	}
+	
+	public boolean login(Staff user, String inputID, String inputPassword) throws NoSuchAlgorithmException {
+		String user_id = user.getUserID();
+		String hashedPassword = user.getUserPW();
+		String hashedInput = Hash.encode(inputPassword);
 
-		if (loginSuccessful)
-			System.out.println("Login successful!");
-
+		boolean loginSuccessful = user_id.equals(inputID) && hashedPassword.equals(hashedInput);
 		return loginSuccessful;
 	}
 

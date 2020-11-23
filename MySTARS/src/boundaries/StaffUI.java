@@ -193,7 +193,7 @@ public class StaffUI {
      * @return Prints result of update
      */
     public static void updateCourseInSchool(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
-        if (StaffControl.updateCourse(currentStaff, courseCode, courseName, schoolName, au)) {
+        if (StaffControl.updateCourse(courseCode, courseName, schoolName, au)) {
             System.out.println("Course updated successfully!");
         } else {
             System.out.println("Error updating course! Please try again");

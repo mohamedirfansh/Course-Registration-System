@@ -55,17 +55,17 @@ public class StaffControl {
         Student student;
 		try {
 			student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+			int schoolIDTwo = currentStaff.getSchoolID(); 
+	        School school = db.getSchoolData(schoolIDTwo);
+	        ArrayList<String> allStudents = school.getAllStudents();
+	        allStudents.add(identificationKey);
+	        school.setAllStudents(allStudents);
+	        return (db.updateSchoolData(schoolID, school) && db.addStudentData(student)); 
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-        int schoolIDTwo = currentStaff.getSchoolID(); 
-        School school = db.getSchoolData(schoolIDTwo);
-        ArrayList<String> allStudents = school.getAllStudents();
-        allStudents.add(identificationKey);
-        school.setAllStudents(allStudents);
-
-        return (db.updateSchoolData(schoolID, school) && db.addStudentData(student)); 
     }
 
     /**

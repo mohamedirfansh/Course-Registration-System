@@ -44,7 +44,7 @@ public class User implements Serializable{
 	public String getGender() { return this.gender; }
 	public String getNationality() { return this.nationality; }
 	public int getSchoolID() { return this.schoolID; }
-	public void updateSchoolID(String schoolID) { this.schoolID = schoolID; }
+	public void updateSchoolID(int schoolID) { this.schoolID = schoolID; }
 	public String getUserID() { return this.userID;	}
 	public String getUserPW() { return this.hashedPassword; }
 	public void updatePW(String hashedPassword) {this.hashedPassword = hashedPassword; }
