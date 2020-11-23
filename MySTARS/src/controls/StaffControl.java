@@ -2,6 +2,8 @@ package controls;
 
 import entities.*;
 import entities.Student;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,7 +52,13 @@ public class StaffControl {
      */
     public static boolean addStudent(Staff currentStaff, String name, String userID, String userPW, String gender, String nationality, int schoolID, String identificationKey) {
         
-        Student student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+        Student student;
+		try {
+			student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         int schoolIDTwo = currentStaff.getSchoolID(); 
         School school = db.getSchoolData(schoolIDTwo);
         ArrayList<String> allStudents = school.getAllStudents();
