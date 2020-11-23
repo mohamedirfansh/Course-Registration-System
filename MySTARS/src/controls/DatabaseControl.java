@@ -18,10 +18,10 @@ public class DatabaseControl {
 	private char domain; // either 'u' or 's'
 
 	// define filename constants
-	static final String STUDENT = "src\\data\\student.dat";
-	static final String STAFF = "src\\data\\staff.dat";
-	static final String COURSE = "src\\data\\course.dat";
-	static final String SCHOOL = "src\\data\\school.dat";
+	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
+	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
+	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
+	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
 
 	// No special Constructor for DatabaseControl needed 
 
