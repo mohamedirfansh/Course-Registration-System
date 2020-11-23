@@ -3,7 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 
-public class Staff extends Users{
+public class Staff extends User{
 	
 	/**
 	 * 2 new methods:
@@ -18,20 +18,19 @@ public class Staff extends Users{
 	 * @param (all): all required information to create a new student object.
 	 * @return: returns the new student to the caller
 	 */
-	public Staff(String name, String userID, String userPW,
-			String gender, String nationality, int schoolID,
-			String identificationKey) throws NoSuchAlgorithmException {
-		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+	public Staff(String name, String userID, String gender, 
+			String nationality, int schoolID,String identificationKey) throws NoSuchAlgorithmException {
+		super(name, userID, gender, nationality, schoolID, identificationKey);
 	}
 
 	public Course createCourse(String courseName, String courseCode, String schoolName, int au) {
 		return new Course(courseName, courseCode, schoolName, au);
 	}
 
-	public Student addStudentRecord(String name, String userID, String userPW,
+	public Student addStudentRecord(String name, String userID,
 			String gender, String nationality, int schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 
-		return new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+		return new Student(name, userID, gender, nationality, schoolID, identificationKey);
 	}
 }

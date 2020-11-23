@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
-public class Student extends Users{
+public class Student extends User{
 	/*
 	 * Attribute: HashMap<String, String> registeredCourses
 	 * -> Key: CourseID, Value: index of added course, which determines the timetable slot
@@ -17,11 +17,11 @@ public class Student extends Users{
 	private int academicUnits = 0;
 	public static final long serialVersionUID = 2L;
 
-	public Student(String name, String userID, String userPW,
+	public Student(String name, String userID,
 			String gender, String nationality, int schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 
-		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+		super(name, userID, gender, nationality, schoolID, identificationKey);
 	}
 
 	/*

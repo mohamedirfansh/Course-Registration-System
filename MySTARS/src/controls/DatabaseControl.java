@@ -1,8 +1,8 @@
 package controls;
 
 import entities.Student;
+import entities.User;
 import entities.Staff;
-import entities.Users;
 import entities.Course;
 import entities.School;
 import entities.Hash;
@@ -10,12 +10,14 @@ import controls.SerializeDB;
 import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.HashMap;
 
 public class DatabaseControl {
 
 	
 	private List temp; // temp List to store all the objects read in from the binary files
 	private char domain; // either 'u' or 's'
+	private HashMap<String, String> tempPW;
 
 	// define filename constants
 	static final String STUDENT = System.getProperty("user.dir") + "/student.dat";
@@ -25,6 +27,24 @@ public class DatabaseControl {
 
 	// No special Constructor for DatabaseControl needed 
 
+	public String getPassword(String userID) {
+
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(PASSWORD);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (String key: tempPW.keySet()) {
+			if (key.equals(userID)) {
+				System.out.println(key);
+				return tempPW.get(key);
+			}
+		}
+
+		return null;
+	}
+	
+	
 	// Student object retrieval based on userID
 	public Student getStudentData(String userID) {
 
@@ -136,7 +156,7 @@ public class DatabaseControl {
 	}
 
 	// Staff object update
-	public boolean updateStaffData(String userID, Users updatedUser) {
+	public boolean updateStaffData(String userID, User updatedUser) {
 
 		temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
 		

@@ -25,7 +25,7 @@ public class Course implements Serializable {
     private final int au;
     private ArrayList<Index> courseIndex;
     private Lesson[] lectures = new Lecture[2];
-    private static final long serialVersionUID = 2L; 
+    private static final long serialVersionUID = 2L;
 
     /**
      * Class constructor that is used on object instantiation.
@@ -50,8 +50,6 @@ public class Course implements Serializable {
         }
 
         this.courseIndex = new ArrayList<>();
-
-        System.out.println("Course Added.");
     }
 
 
@@ -150,23 +148,6 @@ public class Course implements Serializable {
     }
 
     /**
-     * getVacantIndices() can be used to check the number of vacant positions in each index. It uses a hashmap to store a key
-     * value pair, with the index code as the key and the number of vacancies as the value.
-     *
-     * @return a hashmap<String, Integer> containing the vacancies remaining for every index in the course.
-     */
-    public HashMap<String, Integer> getVacantIndices(){
-        HashMap<String, Integer> vacantIndex = new HashMap<>();
-        for(Index i : courseIndex){
-            if(i.getVacancy() > 0){
-                vacantIndex.put(i.getIndexCode(), i.getVacancy());
-            }
-        }
-
-        return vacantIndex;
-    }
-
-    /**
      * getWaitListSizes() can be used to find the size of the waitList for each index. It uses a hashmap to store the key value
      * pair where the key is the index code, and the value is the number of students in the index waitList.
      *
@@ -218,9 +199,9 @@ public class Course implements Serializable {
 
         return null;
     }
-    
+
     public String toString() {
-    	return "Course name: " + this.courseCode + "\tCourse Code " + this.courseName + "\tNumber of AUs " + this.au;
+        return "Course name: " + this.courseCode + "\tCourse Code " + this.courseName + "\tNumber of AUs " + this.au;
     }
 }
 
