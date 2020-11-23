@@ -10,12 +10,14 @@ import controls.SerializeDB;
 import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.HashMap;
 
 public class DatabaseControl {
 
 	
 	private List temp; // temp List to store all the objects read in from the binary files
 	private char domain; // either 'u' or 's'
+	private HashMap<String, String> tempPW;
 
 	// define filename constants
 	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
@@ -24,7 +26,24 @@ public class DatabaseControl {
 	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
 
 	// No special Constructor for DatabaseControl needed 
+	public String getPassword(String userID) {
 
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(PASSWORD);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (String key: tempPW.keySet()) {
+			if (key.equals(userID)) {
+				System.out.println(key);
+				return tempPW.get(key);
+			}
+		}
+
+		return null;
+	}
+	
+	
 	// Student object retrieval based on userID
 	public Student getStudentData(String userID) {
 

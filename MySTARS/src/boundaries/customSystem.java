@@ -2,9 +2,8 @@ package boundaries;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
-import controls.AuthenticationControl;
-import controls.AuthenticationController;
 import controls.DatabaseControl;
+import entities.Hash;
 import entities.PasswordField;
 import entities.Staff;
 import entities.Student;
@@ -13,7 +12,6 @@ import entities.User;
 public class customSystem {
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		Scanner input = new Scanner(System.in);
-		AuthenticationControl loginMgr = new AuthenticationController();
 		DatabaseControl allDetails = new DatabaseControl();
 		
 		System.out.println("Please select a domain:");
@@ -39,26 +37,42 @@ public class customSystem {
 		
 		boolean loginedSuccess = false;
 		Staff staff = null; Student student = null;
+		String hashed, storedID;
 		while (!loginedSuccess) {
 			System.out.println();
 			System.out.print("Enter your username: ");
 			String input_uid = input.next();
 //			String input_pw = PasswordField.readPassword();
-			String input_pw = input.next();
+			String input_pw = input.next().strip();
+			String hashedInput = Hash.encode(input_pw);
+			
 			if (choice == 2) {
 				student = allDetails.getStudentData(input_uid);
-				loginedSuccess = loginMgr.login(student, input_uid, input_pw);
+				if (student != null) {
+					storedID = student.getUserID();
+					hashed = allDetails.getPassword(storedID);
+				} else {
+					continue;
+				}
 			} else {
 				staff = allDetails.getStaffData(input_uid);
-				loginedSuccess = loginMgr.login(staff, input_uid, input_pw);
+				if (staff != null) {
+					storedID = staff.getUserID();
+					hashed = allDetails.getPassword(storedID);
+				} else {
+					continue;
+				}
 			}
+			
+			
+			loginedSuccess = hashed.equals(hashedInput) && storedID.equals(input_uid);
 		}
 		System.out.println("Initializing the interface...");
 		switch(choice) {
 		case 1:
-			StudentUI.StudentUIMain(student);
-		case 2:
 			StaffUI.staffUIInit(staff);
+		case 2:
+			StudentUI.StudentUIMain(student);
 		}
 	}
 }

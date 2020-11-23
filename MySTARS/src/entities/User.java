@@ -22,18 +22,16 @@ public class User implements Serializable{
 	private String nationality;
 	private int schoolID;
 	private final String identificationKey;
-	private String hashedPassword;
 	private final String userID;
 	private final String gender;
 
 	private static final long serialVersionUID = 2L;
 
-	public User(String name, String userID, String userPW,
-			String gender, String nationality, int schoolID,
+	public User(String name, String userID, String gender,
+			String nationality, int schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 		this.name = name;
 		this.userID = userID;
-		this.hashedPassword = Hash.encode(userPW);			// hashes the password to enhance privacy and security
 		this.gender = gender;
 		this.nationality = nationality;
 		this.schoolID = schoolID;
@@ -46,8 +44,6 @@ public class User implements Serializable{
 	public int getSchoolID() { return this.schoolID; }
 	public void updateSchoolID(int schoolID) { this.schoolID = schoolID; }
 	public String getUserID() { return this.userID;	}
-	public String getUserPW() { return this.hashedPassword; }
-	public void updatePW(String hashedPassword) {this.hashedPassword = hashedPassword; }
 	public String getIDKey() { return this.identificationKey; }
 }
 
