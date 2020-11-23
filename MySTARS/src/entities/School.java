@@ -124,10 +124,11 @@ public class School implements Serializable {
 	/**
 	 * Receives the access period for the school
 	 */
-	public void getAccessPeriod() { // Should we print here? or at the boundary class and return just start and end dates.
+	public AccessPeriod getAccessPeriod() { // Should we print here? or at the boundary class and return just start and end dates.
 		String startDate = this.accessPeriod.getStartDate();
 		String endDate = this.accessPeriod.getEndDate();
-		System.out.println(this.schoolName + "'s access period starts on " + startDate + " and ends on " + endDate);
+//		System.out.println(this.schoolName + "'s access period starts on " + startDate + " and ends on " + endDate);
+		return accessPeriod;
 	}
 
 	// All setter methods

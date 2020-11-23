@@ -2,7 +2,9 @@ package boundaries;
 
 import java.util.Scanner;
 
+import controls.DatabaseControl;
 import controls.StudentControl;
+import entities.School;
 import entities.Student;
 
 public class StudentUI {
@@ -10,6 +12,10 @@ public class StudentUI {
 	
 	public static void StudentUIMain(Student currentStudent) {
 		Scanner scn = new Scanner(System.in);
+		
+		if (!(allowedPeriod(currentStudent))) {
+			return;
+		}
 		
 		System.out.println("Welcome back " + currentStudent.getName() + "!");
 		while (loggedIn) {
@@ -97,5 +103,17 @@ public class StudentUI {
             		break;
             }
 		}
+	}
+	
+	public static boolean allowedPeriod(Student currentStudent) {
+		DatabaseControl dbControl = new DatabaseControl();
+		School studentSchool = dbControl.getSchoolData(currentStudent.getSchoolID());
+		
+		if (!(studentSchool.getAccessPeriod().isValidPeriod())) {
+			System.out.println("You are not allowed to access MYStars now. Come back when your access period starts!");
+			return false;
+		}
+		
+		return true;
 	}
 }
