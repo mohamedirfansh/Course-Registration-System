@@ -34,7 +34,7 @@ public class StudentUI {
             		String courseAdd = scn.nextLine();
             		System.out.println("Enter course index to add: ");
             		String indexAdd = scn.nextLine();
-            		StudentControl.addCourse(courseAdd, indexAdd);
+            		StudentControl.addCourse(currentStudent, courseAdd, indexAdd);
             		break;
             		
             	// Option for dropping a course
@@ -43,13 +43,16 @@ public class StudentUI {
             		String courseDrop = scn.nextLine();
             		System.out.println("Enter course index to drop: ");
             		String indexDrop = scn.nextLine();
-            		StudentControl.dropCourse(courseDrop, indexDrop);
+            		StudentControl.dropCourse(currentStudent, courseDrop, indexDrop);
             		break;
             		
             	// Option to check registered courses
             	case 3:
+            		System.out.println("Here are your registered courses: ");
+            		StudentControl.viewRegisteredCourses(currentStudent);
             		break;
             		
+            	// Check vacancies available
             	case 4:
             		System.out.println("Enter the course code you would like to check vacancy for: ");
             		String courseVacancy = scn.nextLine();
@@ -64,14 +67,22 @@ public class StudentUI {
             		String prevIndex = scn.nextLine();
             		System.out.println("Enter new index: ");
             		String newIndex = scn.nextLine();
-            		StudentControl.changeIndex(courseForIndex, prevIndex, newIndex);
+            		StudentControl.changeIndex(currentStudent, courseForIndex, prevIndex, newIndex);
             		break;
             	
             	// Swap index with another student
             	case 6:
             		System.out.println("Enter course code you want to change: ");
             		String courseWithFriend = scn.nextLine();
-            		System.out.println("Enter");
+            		System.out.println("Enter your current index: ");
+            		String currIndex = scn.nextLine();
+            		System.out.println("Enter your friend's username: ");
+            		String friendName = scn.nextLine();
+            		System.out.println("Enter your friend's password: ");
+            		String friendPassword = scn.nextLine();
+            		System.out.println("Enter your friend's index: ");
+            		String friendIndex = scn.nextLine();
+            		StudentControl.swapIndex(currentStudent, courseWithFriend, currIndex, friendName, friendPassword, friendIndex);
             		break;
             	
             	// Option to logout

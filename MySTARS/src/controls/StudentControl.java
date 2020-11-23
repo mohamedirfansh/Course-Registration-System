@@ -1,5 +1,6 @@
 package controls;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import boundaries.StudentUIMsg;
@@ -12,21 +13,15 @@ import entities.*;
  */
 public class StudentControl {
 
-	private static Student currentStudent;
+	private static DatabaseControl dbControl = new DatabaseControl();
 	Scanner scn = new Scanner(System.in);
-	
-	// Constructor
-	public StudentControl(Student currentStudent) {
-		this.currentStudent = currentStudent;
-	}
 	
 	/**
 	 * Method that contains logic to add course for a
 	 * student. Called by the student object.
 	 * @param courseID
 	 */
-	public static void addCourse(String courseID, String index) {
-		DatabaseControl dbControl = new DatabaseControl();
+	public static boolean addCourse(Student currentStudent, String courseID, String index) {
 		
 		Course currentCourse = dbControl.getCourseData(courseID);
 		Index currentIndex = currentCourse.findIndex(index);
@@ -35,22 +30,14 @@ public class StudentControl {
 		// then display the courseDoesNotExistMsg() and exit the method.
 		if (currentIndex == null) {
 			StudentUIMsg.courseDoesNotExistMsg();
-			return;
+			return false;
 		}
 		
-		// Check not needed as it is already done in the index class
-//		try {
-//			// Check if the current index already has this student enrolled in
-//			ArrayList<Student> listOfStudents = currentIndex.getEnrolled();
-//			for (Student student : listOfStudents) {
-//				if (student.getUserID() == studentID) {
-//					StudentUIMsg.alreadyEnrolledIndexMsg();
-//					return;
-//				}
-//			}
-//		}
+		if (clashBetIndex(currentStudent, courseID, index)) {
+			System.out.println("Clash of course timings.");
+			return false;
+		}
 		
-		// TODO: check for clash
 		currentIndex.registerStudent(currentStudent.getUserID());
 		StudentUIMsg.successfullyEnrolledMsg();
 
@@ -74,14 +61,15 @@ public class StudentControl {
 		
 		// Update the database with the new info of the student
 		dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+		
+		return true;
 	}
 	
 	/**
 	 * Method to drop the course for a student.
 	 * Called by the student object.
 	 */
-	public static boolean dropCourse(String courseID, String index) {
-		DatabaseControl dbControl = new DatabaseControl();
+	public static boolean dropCourse(Student currentStudent, String courseID, String index) {
 
 		Course currentCourse = dbControl.getCourseData(courseID);
 		//Check that the course is not null
@@ -109,9 +97,10 @@ public class StudentControl {
 					studentsAU -= currentCourse.getAu();
 					currentStudent.setAcademicUnits(studentsAU);
 					currentStudent.setRegisteredCourses(studentsCourses);
-				}else if(currentIndex.removeStudentFromWaitList(currentStudent.getUserID())){
+					
+				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) != null) {
 					//logic when student deregisters from a course that he is waitlisted into.
-				}else{
+				} else {
 					return false;
 				}
 
@@ -126,8 +115,7 @@ public class StudentControl {
 	}
 
 	
-	public static boolean changeIndex(String course, String prevIndex, String newIndex) {
-		DatabaseControl dbControl = new DatabaseControl();
+	public static boolean changeIndex(Student currentStudent, String course, String prevIndex, String newIndex) {
 		
 		Course currentCourse = dbControl.getCourseData(course);
 
@@ -160,13 +148,13 @@ public class StudentControl {
 		dbControl.updateCourseData(course, currentCourse);
 		dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
 		
+		return true;
+		
 	}
 	
-	public static void viewRegisteredCourses() {
-		DatabaseControl dbControl = new DatabaseControl();
-		
-		Student currentStud = dbControl.getStudentData(currentStudent.getUserID());
-		HashMap<String, String> listOfRegisteredCourses = currentStud.getRegisteredCourses();
+	public static void viewRegisteredCourses(Student currentStudent) {
+
+		HashMap<String, String> listOfRegisteredCourses = currentStudent.getRegisteredCourses();
 
 		System.out.println("Course\tIndex");
 		for (Map.Entry<String, String> mapElement : listOfRegisteredCourses.entrySet()) {
@@ -178,7 +166,6 @@ public class StudentControl {
 	}
 
 	public static void checkVacancy(String course) {
-		DatabaseControl dbControl = new DatabaseControl();
 
 		Course currentCourse = dbControl.getCourseData(course);
 		ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
@@ -189,20 +176,67 @@ public class StudentControl {
 		}
 	}
 	
-	public static void swapIndex(String friendID) {
-		//TODO
+	//TODO
+	public static boolean swapIndex(Student currentStudent, String courseID, String currIndex, String friendID, String friendPassword, String friendIndex) {
+		
+		Student friend = dbControl.getStudentData(friendID);
+		if (friend == null) {
+			System.out.println("Your friend's username is incorrect!");
+			return false;
+		}
+		
+		try {
+			if (Hash.encode(friendPassword) != friend.getUserPW()) { // Check friend's password here
+				System.out.println("Your friend's password is incorrect!");
+				return false;
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		Course currentCourse = dbControl.getCourseData(courseID);
+		
+		if(currentCourse != null) {
+			Index currentIndex = currentCourse.findIndex(currIndex);
+			Index frenIndex = currentCourse.findIndex(friendIndex);
+
+			if(currentIndex != null && frenIndex != null){
+				// Drop the current course for the student and the friend
+				dropCourse(currentStudent, courseID, currIndex);
+				dropCourse(friend, courseID, friendIndex);
+				
+				// Check for clash for the student
+				if (clashBetIndex(currentStudent, courseID, friendIndex)) {
+					System.out.println("You have a clash with your friend's index.");
+					addCourse(currentStudent, courseID, currIndex);
+					return false;
+				}
+				
+				// Check for clash for the friend
+				if (clashBetIndex(friend, courseID, currIndex)) {
+					System.out.println("Your friend has a clash with your index.");
+					addCourse(currentStudent, courseID, currIndex);
+					return false;
+				}
+				
+				// If no clash for both, add them to their respective courses
+				addCourse(currentStudent, courseID, friendIndex);
+				addCourse(friend, courseID, currIndex);
+				
+				return true;
+				
+			}
+
+		}
+		System.out.println("No such courses!");
+		return false;
 	}
 	
 	//TODO
-	public boolean isClashBetIndex(String courseID, String index) {
-		//Initialize database control
-		DatabaseControl dbControl = new DatabaseControl();
-
-		//current student
-		Student temp = dbControl.getStudentData(currentStudent.getUserID());
+	public static boolean clashBetIndex(Student currentStudent, String courseID, String index) {
 
 		//students registered courses
-		HashMap<String, String> studCourses = temp.getRegisteredCourses();
+		HashMap<String, String> studCourses = currentStudent.getRegisteredCourses();
 
 		//students registered courseID
 		Set<String> courses = studCourses.keySet();

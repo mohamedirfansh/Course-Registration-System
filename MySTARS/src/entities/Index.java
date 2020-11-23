@@ -239,7 +239,7 @@ public class Index implements Serializable {
      * @param studID, which is the ID of the student trying to deregister from the course
      * @return the student ID of the student that was removed from the waitList. Returns null if the student did not exist in the waitList.
      */
-    private String removeStudentFromWaitList(String studID){
+    public String removeStudentFromWaitList(String studID){
         Queue<String> temp = new LinkedList();
         String s = null;
         while(!waitList.isEmpty()){
