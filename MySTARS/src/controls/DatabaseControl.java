@@ -23,11 +23,7 @@ public class DatabaseControl {
 	static final String COURSE = "course.dat";
 	static final String SCHOOL = "school.dat";
 
-	// Constructor for DatabaseControl and assign the domain
-	// u for students and s for staff
-	/* DatabaseControl(char domain) {
-		this.domain = domain;
-	} */
+	// No special Constructor for DatabaseControl needed 
 
 	// Student object retrieval based on userID
 	public Student getStudentData(String userID) {
@@ -73,7 +69,7 @@ public class DatabaseControl {
 	}
 
 	// Student object addition
-	public void addStudentData(Student newUser) {
+	public boolean addStudentData(Student newUser) {
 
 		temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
 
@@ -82,21 +78,21 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			Student u = (Student)temp.get(i);
 			if (u.getUserID().equals(newUser.getUserID())) {
-				System.out.println("Student " + newUser.getUserID() + " already inside database!");
-				return;
+				return false;
 			}
 		}
 
 		// add to list the new User object
 		temp.add(newUser);
-		System.out.println("Added new Student with name " + newUser.getName());
 
 		// write to binary file
 		SerializeDB.writeSerializedObject(STUDENT, temp);
+
+		return true;
 	}
 
 	// Staff object addition
-	public void addStaffData(Staff newUser) {
+	public boolean addStaffData(Staff newUser) {
 
 		temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
 
@@ -105,22 +101,22 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			Staff u = (Staff)temp.get(i);
 			if (u.getUserID().equals(newUser.getUserID())) {
-				System.out.println("Staff " + newUser.getUserID() + " already inside database!");
-				return;
+				return false;
 			}
 		}
 
 		// add to list the new Staff object
 		temp.add(newUser);
-		System.out.println("Added new Staff with name " + newUser.getName());
 
 		// write to binary file
 		SerializeDB.writeSerializedObject(STAFF, temp);
+		
+		return true;
 	}
 
 
 	// Student object update
-	public void updateStudentData(String userID, Student updatedUser) {
+	public boolean updateStudentData(String userID, Student updatedUser) {
 
 		temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
 		
@@ -130,18 +126,17 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			Student u = (Student)temp.get(i);
 			if (u.getUserID().equals(userID)) {
-				System.out.println("Updating Student " + u.getUserID() + " ...");
 				temp.set(i, updatedUser);
 				SerializeDB.writeSerializedObject(STUDENT, temp);
-				return;
+				return true;
 			}
 		}
 
-		System.out.println("Student " + userID + " not found!");
+		return false;
 	}
 
 	// Staff object update
-	public void updateStaffData(String userID, Users updatedUser) {
+	public boolean updateStaffData(String userID, Users updatedUser) {
 
 		temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
 		
@@ -151,14 +146,13 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			Staff u = (Staff)temp.get(i);
 			if (u.getUserID().equals(userID)) {
-				System.out.println("Updating Staff " + u.getUserID() + " ...");
 				temp.set(i, updatedUser);
 				SerializeDB.writeSerializedObject(STAFF, temp);
-				return;
+				return true;
 			}
 		}
 
-		System.out.println("Staff " + userID + " not found!");
+		return false;
 	}
 
 	// Course object retrieval
@@ -183,7 +177,7 @@ public class DatabaseControl {
 	}
 
 	// add new Course object
-	public void addCourseData(Course newCourse) {
+	public boolean addCourseData(Course newCourse) {
 		
 		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
 
@@ -192,21 +186,21 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			Course c = (Course)temp.get(i);
 			if (newCourse.getCourseCode().equals(c.getCourseCode())) {
-				System.out.println("Course " + newCourse.getCourseCode() + " already inside database");
-				return;
+				return false;
 			}
 		}
 
 		// add new Course object to list
 		temp.add(newCourse);
-		System.out.println("Added new course with code " + newCourse.getCourseCode());
 
 		// Write to binary file
 		SerializeDB.writeSerializedObject("course.dat", temp);
+
+		return true;
 	}
 
 	// Update Course object
-	public void updateCourseData(String courseCode, Course updatedCourse) {
+	public boolean updateCourseData(String courseCode, Course updatedCourse) {
 		
 		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
 
@@ -214,14 +208,13 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			Course c = (Course)temp.get(i);
 			if (c.getCourseCode().equals(courseCode)) {
-				System.out.println("Updating course " + courseCode + " ...");
 				temp.set(i, updatedCourse);
 				SerializeDB.writeSerializedObject("course.dat", temp);	
-				return;
+				return true;
 			}
 		}
 
-		System.out.println("course " + courseCode + " not found");
+		return false;
 	}
 
 	// Retrieve School object
@@ -245,7 +238,7 @@ public class DatabaseControl {
 	}
 
 	// Add new School object
-	public void addSchoolData(School newSchool) {
+	public boolean addSchoolData(School newSchool) {
 		
 		temp = (ArrayList)SerializeDB.readSerializedObject(SCHOOL);
 
@@ -253,21 +246,21 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			School s = (School)temp.get(i);
 			if (newSchool.getSchoolID() == s.getSchoolID()) {
-				System.out.println("School with ID " + newSchool.getSchoolID() + " already inside database");
-				return;
+				return false;
 			}
 		}
 
 		// Add new object to the list
 		temp.add(newSchool);
-		System.out.println("Added new School with ID " + newSchool.getSchoolID());
 
 		// Write to binary file
 		SerializeDB.writeSerializedObject(SCHOOL, temp);
+
+		return true;
 	}
 
 	// Update School object
-	public void updateSchoolData(int schoolID, School updatedSchool) {
+	public boolean updateSchoolData(int schoolID, School updatedSchool) {
 		
 		temp = (ArrayList)SerializeDB.readSerializedObject(SCHOOL);
 
@@ -276,14 +269,13 @@ public class DatabaseControl {
 		for (int i = 0; i < temp.size(); i++) {
 			School s = (School)temp.get(i);
 			if (s.getSchoolID() == schoolID) {
-				System.out.println("Updating School with ID " + schoolID + " ...");
 				temp.set(i, updatedSchool);
 				SerializeDB.writeSerializedObject(SCHOOL, temp);	
-				return;
+				return true;
 			}
 		}
 
-		System.out.println("school with ID " + schoolID + " not found");
+		return false;
 	}
 }
 
