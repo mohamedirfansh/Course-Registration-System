@@ -68,7 +68,7 @@ public class createSchoolData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("src\\data\\school.dat", schoolData);
+			sdb.writeSerializedObject("school.dat", schoolData);
 		}
 
 		catch (Exception e) {

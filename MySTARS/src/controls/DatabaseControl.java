@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.HashMap;
+import java.io.File;
 
 public class DatabaseControl {
 
@@ -20,16 +21,19 @@ public class DatabaseControl {
 	private HashMap<String, String> tempPW;
 
 	// define filename constants
-	static final String STUDENT = System.getProperty("user.dir") + "/student.dat";
-	static final String STAFF = "staff.dat";
-	static final String COURSE = "course.dat";
-	static final String SCHOOL = "school.dat";
+	static final String parentDirectory = System.getProperty("user.dir");
+	static final String STUDENT = parentDirectory + File.separator + "student.dat";
+	static final String STAFF = parentDirectory + File.separator + "staff.dat";
+	static final String COURSE = parentDirectory + File.separator + "course.dat";
+	static final String SCHOOL = parentDirectory + File.separator + "school.dat";
+	static final String STUDENTPASSWORD = parentDirectory + File.separator + "studentPassword.dat";
+	static final String STAFFPASSWORD = parentDirectory + File.separator + "staffPassword.dat";
 
 	// No special Constructor for DatabaseControl needed 
 
-	public String getPassword(String userID) {
+	public String getStudentPassword(String userID) {
 
-		tempPW = (HashMap)SerializeDB.readSerializedMapObject(PASSWORD);
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STUDENTPASSWORD);
 		
 		// Search through list of Student objects
 		// if found, replace with new object
@@ -43,7 +47,23 @@ public class DatabaseControl {
 
 		return null;
 	}
-	
+
+	public String getStaffPassword(String userID) {
+
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STAFFPASSWORD);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (String key: tempPW.keySet()) {
+			if (key.equals(userID)) {
+				System.out.println(key);
+				return tempPW.get(key);
+			}
+		}
+
+		return null;
+	}
 	
 	// Student object retrieval based on userID
 	public Student getStudentData(String userID) {

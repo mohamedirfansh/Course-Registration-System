@@ -1,10 +1,11 @@
-package controls;
+package entities;
 import entities.Student;
 import entities.Staff;
 import entities.Users;
 import entities.Course;
 import entities.School;
 import entities.Hash;
+import controls.*;
 import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;

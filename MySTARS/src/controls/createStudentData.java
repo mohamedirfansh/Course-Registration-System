@@ -159,12 +159,18 @@ public class createStudentData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("src\\data\\student.dat", studentData);
+			sdb.writeSerializedObject("student.dat", studentData);
+			sdb.writeSerializedObject("studentPassword.dat", Password.getHashMap());
 		}
 
 		catch (Exception e) {
 			System.out.println("Exception >> " + e.getMessage());
 		}
+	}
+
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+		createStudentData create = new createStudentData();
+		create.createStudent();
 	}
 }
 
