@@ -165,12 +165,6 @@ public class StaffUI {
     }
     }
 
-    // C. Get all students
-    public static void getAllStudents() {
-        Student jo = db.getStudentData("JohnOliver123");
-        System.out.println(jo.getNationality() + " " + jo.getName());
-    }
-
     // 1. Update school's Access Period
     /**
      * updateAccPeriod: Updates a staff's school's access period using the newly
