@@ -125,16 +125,6 @@ public class Index implements Serializable {
                     lessons.add(temp);
                     break;
 
-//                case "LEC":
-//                    if(countLessonsOfType("LEC") >= 2){
-//                        System.out.println("Lectures already exists for this index.");
-//                        return false;
-//                    }
-//
-//                    temp = new Lecture(venue, timings);
-//                    lessons.add(temp);
-//                    break;
-
                 default:
                     System.out.println("Invalid lesson type.");
             }
@@ -195,22 +185,13 @@ public class Index implements Serializable {
         if(findStudentEnrolled(studID.toUpperCase()) != null){
             System.out.println("Student is already enrolled");
             return false;
-        }else if(studID == null){
+        }else if(studID == null || vacancy == 0){
             return false;
         }
 
-        if(vacancy == 0){
-            if(addStudentToWaitList(studID)){
-                System.out.println("Student added to waitlist.");
-            }else{
-                System.out.println("Student is already in the waitList");
-            }
-            return false;
-        }else{
-            --vacancy;
-            enrolled.add(studID);
-            return true;
-        }
+        --vacancy;
+        enrolled.add(studID);
+        return true;
     }
 
     /**
@@ -239,9 +220,9 @@ public class Index implements Serializable {
      * @param studID, which is the ID of the student trying to deregister from the course
      * @return the student ID of the student that was removed from the waitList. Returns null if the student did not exist in the waitList.
      */
-    public String removeStudentFromWaitList(String studID){
+    public boolean removeStudentFromWaitList(String studID){
         Queue<String> temp = new LinkedList();
-        String s = null;
+        String s;
         while(!waitList.isEmpty()){
             s = waitList.remove();
 
@@ -249,17 +230,16 @@ public class Index implements Serializable {
                 while(!waitList.isEmpty()){
                     temp.add(waitList.remove());
                 }
-                break;
+                waitList = temp;
+                return true;
             }else{
                 temp.add(s);
             }
         }
 
-        if(waitList.isEmpty()) {
-            waitList = temp;
-        }
+        waitList = temp;
 
-        return s;
+        return false;
     }
 
     /**
@@ -293,21 +273,11 @@ public class Index implements Serializable {
             return false;
         }else{
             int pos = findStudentPosInEnrolled(studID.toUpperCase());
-            int waitListPos = findStudentPosInWaitList(studID.toUpperCase());
-            if(pos >= 0){
+            if(pos >= 0) {
                 enrolled.remove(pos);
-
-                if(!waitList.isEmpty()){
-                    registerStudent(waitList.remove());
-                }
-
                 ++vacancy;
 
                 return true;
-            }else if(waitListPos >= 0){
-                if(removeStudentFromWaitList(studID) != null){
-                    return true;
-                }
             }
         }
 
