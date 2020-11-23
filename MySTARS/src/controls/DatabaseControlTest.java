@@ -21,6 +21,7 @@ public class DatabaseControlTest {
 			// Testing retrieval of particular Student object
 			String testStudentID = "Adeline1999";
 			Student testStudent = db.getStudentData(testStudentID);
+			System.out.println("Current directory: " + System.getProperty("user.dir") + "/student.dat");
 			System.out.println();
 
 			// Testing retrieval of particular Staff object
@@ -29,7 +30,7 @@ public class DatabaseControlTest {
 			System.out.println();
 
 			// Testing addition of new Student object
-			Student newStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
+			Student newStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", 11, "U084287J");
 			success = db.addStudentData(newStudent);
 			if (success == true) {
 				System.out.println("Added new Student with name " + newStudent.getName());
@@ -40,7 +41,7 @@ public class DatabaseControlTest {
 			System.out.println();
 
 			// Testing addition of new Staff object
-			Staff newStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
+			Staff newStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", 11, "S239723M");
 			success = db.addStaffData(newStaff);
 			if (success == true) {
 				System.out.println("Added new Staff with name " + newStaff.getName());
@@ -51,7 +52,7 @@ public class DatabaseControlTest {
 			System.out.println();
 			
 			// Testing update of Student object
-			Student updateStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", "SCSE", "U084287J");
+			Student updateStudent = new Student("John", "John1997", Hash.encode("JohnPassword"), "Male", "Malaysian", 11, "U084287J");
 			success = db.updateStudentData(updateStudent.getUserID(), updateStudent);
 			if (success == true) {
 				System.out.println("Student with userID " + updateStudent.getUserID() + " updated");
@@ -63,7 +64,7 @@ public class DatabaseControlTest {
 			System.out.println();
 			
 			// Testing update of Staff Object
-			Staff updateStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", "SCSE", "S239723M");
+			Staff updateStaff = new Staff("Miao Chunyan", "Miao123", Hash.encode("MiaoPassword"), "Female", "Chinese", 11, "S239723M");
 			success = db.updateStaffData(updateStaff.getUserID(), updateStaff);
 			if (success == true) {
 				System.out.println("Staff with userID " + updateStaff.getUserID() + " updated");

@@ -18,7 +18,7 @@ public class DatabaseControl {
 	private char domain; // either 'u' or 's'
 
 	// define filename constants
-	static final String STUDENT = "student.dat";
+	static final String STUDENT = System.getProperty("user.dir") + "/student.dat";
 	static final String STAFF = "staff.dat";
 	static final String COURSE = "course.dat";
 	static final String SCHOOL = "school.dat";
