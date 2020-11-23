@@ -23,14 +23,12 @@ public class DatabaseControl {
 	private HashMap<String, String> tempPW;
 
 	// define filename constants
-	static Path current = Paths.get(System.getProperty("user.dir"));
-	static final String parentDirectory = current.getParent().toString();
-	static final String STUDENT = parentDirectory + File.separator + "data" + File.separator + "student.dat";
-	static final String STAFF = parentDirectory + File.separator + "data" + File.separator + "staff.dat";
-	static final String COURSE = parentDirectory + File.separator + "data" + File.separator + "course.dat";
-	static final String SCHOOL = parentDirectory + File.separator + "data" + File.separator + "school.dat";
-	static final String STUDENTPASSWORD = parentDirectory + File.separator + "data" + File.separator + "studentPassword.dat";
-	static final String STAFFPASSWORD = parentDirectory + File.separator + "data" + File.separator + "staffPassword.dat";
+	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
+	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
+	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
+	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
+	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
 
 	// No special Constructor for DatabaseControl needed 
 
@@ -201,7 +199,7 @@ public class DatabaseControl {
 	// Course object retrieval
 	public Course getCourseData(String courseCode) {
 		
-		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
+		temp = (ArrayList)SerializeDB.readSerializedObject(COURSE);
 		Course empty = null;
 
 		// Search through list of Course objects
@@ -222,7 +220,7 @@ public class DatabaseControl {
 	// add new Course object
 	public boolean addCourseData(Course newCourse) {
 		
-		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
+		temp = (ArrayList)SerializeDB.readSerializedObject(COURSE);
 
 		// Search through list of Course objects
 		// return if new object already inside database
@@ -237,7 +235,7 @@ public class DatabaseControl {
 		temp.add(newCourse);
 
 		// Write to binary file
-		SerializeDB.writeSerializedObject("course.dat", temp);
+		SerializeDB.writeSerializedObject(COURSE, temp);
 
 		return true;
 	}
@@ -245,14 +243,14 @@ public class DatabaseControl {
 	// Update Course object
 	public boolean updateCourseData(String courseCode, Course updatedCourse) {
 		
-		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
+		temp = (ArrayList)SerializeDB.readSerializedObject(COURSE);
 
 		// Search and update if found
 		for (int i = 0; i < temp.size(); i++) {
 			Course c = (Course)temp.get(i);
 			if (c.getCourseCode().equals(courseCode)) {
 				temp.set(i, updatedCourse);
-				SerializeDB.writeSerializedObject("course.dat", temp);	
+				SerializeDB.writeSerializedObject(COURSE, temp);	
 				return true;
 			}
 		}

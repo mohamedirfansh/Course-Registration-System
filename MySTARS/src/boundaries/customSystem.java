@@ -50,7 +50,7 @@ public class customSystem {
 				student = allDetails.getStudentData(input_uid);
 				if (student != null) {
 					storedID = student.getUserID();
-					hashed = allDetails.getPassword(storedID);
+					hashed = allDetails.getStudentPassword(storedID);
 				} else {
 					continue;
 				}
@@ -58,7 +58,7 @@ public class customSystem {
 				staff = allDetails.getStaffData(input_uid);
 				if (staff != null) {
 					storedID = staff.getUserID();
-					hashed = allDetails.getPassword(storedID);
+					hashed = allDetails.getStaffPassword(storedID);
 				} else {
 					continue;
 				}
