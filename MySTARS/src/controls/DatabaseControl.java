@@ -1,8 +1,8 @@
 package controls;
 
 import entities.Student;
+import entities.User;
 import entities.Staff;
-import entities.Users;
 import entities.Course;
 import entities.School;
 import entities.Hash;
@@ -136,7 +136,7 @@ public class DatabaseControl {
 	}
 
 	// Staff object update
-	public boolean updateStaffData(String userID, Users updatedUser) {
+	public boolean updateStaffData(String userID, User updatedUser) {
 
 		temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
 		
