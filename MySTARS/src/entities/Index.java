@@ -56,6 +56,10 @@ public class Index implements Serializable {
     /**
      * Getters for the class attributes.
      */
+    
+    public int getClassSize() {
+    	return CLASS_SIZE;
+    }
 
     public String getIndexCode() {
         return indexCode;
