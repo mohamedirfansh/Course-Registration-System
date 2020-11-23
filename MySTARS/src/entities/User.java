@@ -20,7 +20,7 @@ public class User implements Serializable{
 
 	private String name;
 	private String nationality;
-	private String schoolID;
+	private int schoolID;
 	private final String identificationKey;
 	private String hashedPassword;
 	private final String userID;
@@ -29,7 +29,7 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 2L;
 
 	public User(String name, String userID, String userPW,
-			String gender, String nationality, String schoolID,
+			String gender, String nationality, int schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 		this.name = name;
 		this.userID = userID;
@@ -43,7 +43,7 @@ public class User implements Serializable{
 	public String getName() { return this.name; }
 	public String getGender() { return this.gender; }
 	public String getNationality() { return this.nationality; }
-	public String getSchoolID() { return this.schoolID; }
+	public int getSchoolID() { return this.schoolID; }
 	public void updateSchoolID(String schoolID) { this.schoolID = schoolID; }
 	public String getUserID() { return this.userID;	}
 	public String getUserPW() { return this.hashedPassword; }
