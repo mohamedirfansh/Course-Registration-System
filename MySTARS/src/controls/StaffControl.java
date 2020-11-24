@@ -5,11 +5,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TBD
-// Class description
-// BUGS:
-// 1) After adding a new student -> Try to login -> Hased is null
-// "String.equals(Object)" because "hashed" is null in custom system
+/* StaffControl
+This class handles all of the functionality for the staff (admin) user. Essentially
+it allows staff users to modify school, student, course and index objects.
+
+Attributes:
+-> Database db: DatabaseControl object that enables our staff to read and write to the respective binary files.
+*/ 
+
 
 public class StaffControl {
 
@@ -156,7 +159,6 @@ public class StaffControl {
         // Get all student objects belonging to enrolled student IDs
         ArrayList<Student> allStudents = new ArrayList<>();
         for (String id : allStudentsID) {
-            System.out.println("id: " + id); // For debug
             Student stu = db.getStudentDataID(id);
             if (stu != null) {
                 allStudents.add(stu);

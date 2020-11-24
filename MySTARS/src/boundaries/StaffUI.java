@@ -72,14 +72,15 @@ public class StaffUI {
                     System.out.println("Please enter the Course's Academic Units:");
                     int au = sc.nextInt();
                     addCourseToSchool(currentStaff, courseCode, courseName, schoolName, au);
-                    System.out.println("=================================================");
-                    System.out.println("Updated Course List:");
+                    System.out.println("=============Updated Course List================");
                     getAllCourses(currentStaff);
                     System.out.println("=================================================");
                     break;
                 
                 case 4:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's updated Name:");
                     sc.nextLine();
                     String coName = sc.nextLine();
@@ -94,21 +95,27 @@ public class StaffUI {
                     break;
 
                 case 5:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's Code:");
                     String checkCourseCode = sc.next();
                     checkCourseVacancy(checkCourseCode);
                     break;
                 
                 case 6:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's Code:");
                     String vacCourseCode = sc.next();
                     printCourseStudentList(vacCourseCode);
                     break;
 
                 case 7:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's Code:");
                     String vacCourseCode2 = sc.next();
                     getAllIndexes(vacCourseCode2);
