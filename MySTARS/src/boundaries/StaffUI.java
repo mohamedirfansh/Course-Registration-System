@@ -33,7 +33,6 @@ public class StaffUI {
             // Switch statement
             switch(option) {
                 case 1:
-                    getAllStudents();
                     System.out.println("Please enter the updated Acccess' period Start Date in the following format dd/MM/yyyy HH:mm :");
                     sc.nextLine();
                     String startDate = sc.nextLine();
@@ -81,15 +80,15 @@ public class StaffUI {
                 
                 case 4:
                     getAllCourses(currentStaff);
-                    System.out.println("Please enter the Course's Name:");
+                    System.out.println("Please enter the Course's updated Name:");
                     sc.nextLine();
                     String coName = sc.nextLine();
-                    System.out.println("Please enter the Course's Code:");
+                    System.out.println("Please enter the Course's updated Code:");
                     String coCode = sc.next();
-                    System.out.println("Please enter the Course's School name:");
+                    System.out.println("Please enter the Course's updated School name:");
                     sc.nextLine();
                     String schName = sc.nextLine();
-                    System.out.println("Please enter the Course's Academic Units:");
+                    System.out.println("Please enter the Course's updated Academic Units:");
                     int coAU = sc.nextInt();
                     updateCourseInSchool(currentStaff, coCode, coName, schName, coAU);
                     break;
@@ -243,7 +242,7 @@ public class StaffUI {
      * @return Prints result of update
      */
     public static void updateCourseInSchool(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
-        if (StaffControl.updateCourse(courseCode, courseName, schoolName, au)) {
+        if (StaffControl.updateCourse(currentStaff, courseCode, courseName, schoolName, au)) {
             System.out.println("Course updated successfully!");
         } else {
             System.out.println("Error updating course! Please try again");

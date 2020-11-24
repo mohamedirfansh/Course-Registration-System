@@ -57,7 +57,8 @@ public class StaffControl {
 		try {
 			student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
             Password.addNewPassword(userID, userPW);
-            
+            Password.writeToFile();
+
 			int schoolIDTwo = currentStaff.getSchoolID(); 
 	        School school = db.getSchoolData(schoolIDTwo);
 	        ArrayList<String> allStudents = school.getAllStudents();
@@ -157,7 +158,7 @@ public class StaffControl {
         ArrayList<Student> allStudents = new ArrayList<>();
         for (String id : allStudentsID) {
             System.out.println("id: " + id); // For debug
-            Student stu = db.getStudentData(id);
+            Student stu = db.getStudentDataID(id);
             if (stu != null) {
                 allStudents.add(stu);
             }
@@ -193,7 +194,7 @@ public class StaffControl {
         // Get all student objects belonging to enrolled student IDs
         ArrayList<Student> allStudentsIndex = new ArrayList<>();
         for (String idx : allIndexStudentsID) {
-            Student stud = db.getStudentData(idx);
+            Student stud = db.getStudentDataID(idx);
             if (stud != null) {
                 allStudentsIndex.add(stud);
             }
