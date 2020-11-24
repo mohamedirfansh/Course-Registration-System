@@ -7,6 +7,8 @@ import java.util.List;
 import java.security.NoSuchAlgorithmException;
 
 public class createCourseData {
+	
+	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		ArrayList<Course> courseData = new ArrayList();
@@ -128,7 +130,7 @@ public class createCourseData {
 		try {
 			SerializeDB sdb = new SerializeDB();
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("course.dat", courseData);
+			sdb.writeSerializedObject(COURSE, courseData);
 		}
 
 		catch (Exception e) {

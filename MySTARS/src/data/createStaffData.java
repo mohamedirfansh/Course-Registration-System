@@ -10,6 +10,9 @@ import java.util.List;
 import java.security.NoSuchAlgorithmException;
 
 public class createStaffData {
+	
+	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
 
 	public static void createStaff() throws NoSuchAlgorithmException {
 		ArrayList<Staff> staffData = new ArrayList();
@@ -29,8 +32,8 @@ public class createStaffData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("staff.dat", staffData);
-			sdb.writeSerializedObject("staffPassword.dat", Password.getHashMap());
+			sdb.writeSerializedObject(STAFF, staffData);
+			sdb.writeSerializedObject(STAFFPASSWORD, Password.getHashMap());
 
 		}
 

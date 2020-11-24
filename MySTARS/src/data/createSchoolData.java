@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.security.NoSuchAlgorithmException;
 
 public class createSchoolData {
+	
+	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		ArrayList<School> schoolData = new ArrayList();
@@ -69,7 +71,7 @@ public class createSchoolData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("school.dat", schoolData);
+			sdb.writeSerializedObject(SCHOOL, schoolData);
 		}
 
 		catch (Exception e) {

@@ -10,6 +10,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 public class createStudentData {
+	
+	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
+	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
 
 	public static void createStudent() throws NoSuchAlgorithmException {
 		ArrayList<Student> studentData = new ArrayList();
@@ -175,8 +178,8 @@ public class createStudentData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("student.dat", studentData);
-			sdb.writeSerializedObject("studentPassword.dat", Password.getHashMap());
+			sdb.writeSerializedObject(STUDENT, studentData);
+			sdb.writeSerializedObject(STUDENTPASSWORD, Password.getHashMap());
 		}
 
 		catch (Exception e) {
