@@ -354,9 +354,9 @@ public class StudentControl {
 		if (currentCourse != null) {
 			ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
 	
-			System.out.println("Index\tVacancy");
+			System.out.println("Index\t\tVacancy");
 			for (Index i : listOfIndex) {
-				System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
+				System.out.printf("%s\t%d/%d\n", i.getIndexCode(), i.getVacancy(), i.getClassSize());
 			}
 		}
 	}
