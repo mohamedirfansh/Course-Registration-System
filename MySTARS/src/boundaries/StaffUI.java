@@ -33,7 +33,6 @@ public class StaffUI {
             // Switch statement
             switch(option) {
                 case 1:
-                    getAllStudents();
                     System.out.println("Please enter the updated Acccess' period Start Date in the following format dd/MM/yyyy HH:mm :");
                     sc.nextLine();
                     String startDate = sc.nextLine();
@@ -243,7 +242,7 @@ public class StaffUI {
      * @return Prints result of update
      */
     public static void updateCourseInSchool(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
-        if (StaffControl.updateCourse(courseCode, courseName, schoolName, au)) {
+        if (StaffControl.updateCourse(currentStaff, courseCode, courseName, schoolName, au)) {
             System.out.println("Course updated successfully!");
         } else {
             System.out.println("Error updating course! Please try again");
