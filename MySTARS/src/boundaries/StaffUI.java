@@ -72,14 +72,15 @@ public class StaffUI {
                     System.out.println("Please enter the Course's Academic Units:");
                     int au = sc.nextInt();
                     addCourseToSchool(currentStaff, courseCode, courseName, schoolName, au);
-                    System.out.println("=================================================");
-                    System.out.println("Updated Course List:");
+                    System.out.println("=============Updated Course List================");
                     getAllCourses(currentStaff);
                     System.out.println("=================================================");
                     break;
                 
                 case 4:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's updated Name:");
                     sc.nextLine();
                     String coName = sc.nextLine();
@@ -94,21 +95,27 @@ public class StaffUI {
                     break;
 
                 case 5:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's Code:");
                     String checkCourseCode = sc.next();
                     checkCourseVacancy(checkCourseCode);
                     break;
                 
                 case 6:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's Code:");
                     String vacCourseCode = sc.next();
                     printCourseStudentList(vacCourseCode);
                     break;
 
                 case 7:
+                    System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     System.out.println("Please enter the Course's Code:");
                     String vacCourseCode2 = sc.next();
                     getAllIndexes(vacCourseCode2);
@@ -134,6 +141,13 @@ public class StaffUI {
     // Methods
     // 0. Display
     // A. Get all courses belonging to a staff's school for display
+    /**
+     * getAllCourses: Get all course at the school the staff belongs to.
+     * 
+     * @param currentStaff The currently logged in staff's Staff object
+     * 
+     * @return Prints all courses
+     */
     public static void getAllCourses(Staff currentStaff) {
         try {
         // Display all courses
@@ -150,6 +164,13 @@ public class StaffUI {
     }
 
     // B. Get all indexes for a given course within a staff's school for display
+    /**
+     * getAllIndexes: Get all indexes belonging to a given course.
+     * 
+     * @param courseCode Course code of interest
+     * 
+     * @return Prints all indexes
+     */
     public static void getAllIndexes(String courseCode) {
         try {
         // Display all indexes
