@@ -13,7 +13,6 @@ public class Password implements Serializable {
 	public static void addNewPassword(String userID, String inputPassword) throws NoSuchAlgorithmException {
 		String hashedPassword = Hash.encode(inputPassword);
 		allPW.put(userID, hashedPassword);
-		writeToFile();
 	}
 
 	public static void updatePassword(String userID, String updatedPassword) throws NoSuchAlgorithmException {
@@ -23,7 +22,6 @@ public class Password implements Serializable {
 				allPW.replace(key, newHashedPassword);
 			}
 		}
-		writeToFile();
 	}
 		
 	public static String getHash(String userID) {

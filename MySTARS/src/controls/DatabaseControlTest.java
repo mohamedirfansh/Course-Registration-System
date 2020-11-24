@@ -4,6 +4,7 @@ import entities.Staff;
 import entities.User;
 import entities.Course;
 import entities.School;
+import entities.Index;
 import entities.Hash;
 import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
@@ -18,7 +19,7 @@ public class DatabaseControlTest {
 			DatabaseControl db = new DatabaseControl();
 			boolean success;
 
-			// Testing retrieval of particular Student object
+		/* 	// Testing retrieval of particular Student object
 			String testStudentID = "Adeline1999";
 			Student testStudent = db.getStudentData(testStudentID);
 			System.out.println();
@@ -71,14 +72,18 @@ public class DatabaseControlTest {
 			else {
 				System.out.println("Staff with userID " + updateStaff.getUserID() + " not found!");
 			}
-			System.out.println();
+			System.out.println(); */
 			
 			// Testing retrieval of particular Course object
-			String testCode = "CZ1007";
+			String testCode = "CZ2001";
 			Course testCourse = db.getCourseData(testCode);
-			System.out.println();
+			Index ss2 = testCourse.findIndex("CZ2001SS1");
+			int pos = testCourse.findIndexPos("CZ2001SS1");
+			System.out.println(ss2.getVacancy());
+			System.out.println(pos);
+			System.out.println(testCourse.findIndexPos("CZ2001SS1"));
 			
-			// Testing addition of new Course Object
+			/* // Testing addition of new Course Object
 			Course newCourse = new Course("Data Structures", "CZ1007", "School of Computer Science and Engineering", 3);
 			success = db.addCourseData(newCourse);
 			if (success == true) {
@@ -130,7 +135,7 @@ public class DatabaseControlTest {
 			else {
 				System.out.println("school with ID " + updateSchool.getSchoolID() + " not found");
 			}
-			System.out.println();
+			System.out.println(); */
 		}
 		catch (Exception e) {
 			System.out.println("Exception >> " + e.getMessage());

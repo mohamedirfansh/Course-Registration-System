@@ -31,26 +31,35 @@ public class createCourseData {
 		course1.findIndex("CZ1007SS2").addLesson("LAB", "SPL", SS1LabHours);
 		course1.findIndex("CZ1007SS2").registerStudent("U234760H");
 		course1.findIndex("CZ1007SS2").registerStudent("U084287J");
+		course1.findIndex("CZ1007SS2").registerStudent("U092367P");
 
 		Course course2 = new Course("Algorithms", "CZ2001", "School of Computer Science and Engineering", 3);
 		WorkingHours course2LectureHours = new WorkingHours("08:30", "09:30", 3);
 		course2.addCourseLecture("LT2A", course2LectureHours);
 		course2.addIndex("CZ2001SS1", "SS1");
-		course2.addIndex("CZ2001SS2", "SS2");
+		
 
 		WorkingHours CZ2001SS1TutorialHours = new WorkingHours("09:30", "10:30", 3);
 		WorkingHours CZ2001SS1LabHours = new WorkingHours("13:30", "15:30", 3);
 		course2.findIndex("CZ2001SS1").addLesson("TUT", "TR16", CZ2001SS1TutorialHours); 
 		course2.findIndex("CZ2001SS1").addLesson("LAB", "SPL", CZ2001SS1LabHours);
-		course2.findIndex("CZ2001SS1").registerStudent("U190123A");
+		course2.getCourseIndex().get(course2.findIndexPos("CZ2001SS1")).registerStudent("U190123A");
 		course2.findIndex("CZ2001SS1").registerStudent("U234234D");
+		course2.findIndex("CZ2001SS1").registerStudent("U234760H");
+		course2.findIndex("CZ2001SS1").registerStudent("U084287J");
+		course2.findIndex("CZ2001SS1").registerStudent("U092367P");
+		course2.findIndex("CZ2001SS1").registerStudent("U092134A");
+		course2.findIndex("CZ2001SS1").registerStudent("U093154J");
+		course2.findIndex("CZ2001SS1").registerStudent("U973243E");
+		course2.findIndex("CZ2001SS1").registerStudent("U998342C");
+		course2.findIndex("CZ2001SS1").registerStudent("U198752A");
 
+
+		course2.addIndex("CZ2001SS2", "SS2");
 		WorkingHours CZ2001SS2TutorialHours = new WorkingHours("09:30", "10:30", 3);
 		WorkingHours CZ2001SS2LabHours = new WorkingHours("13:30", "15:30", 3);
 		course2.findIndex("CZ2001SS2").addLesson("TUT", "TR18", CZ2001SS2TutorialHours); 
 		course2.findIndex("CZ2001SS2").addLesson("LAB", "SPL", CZ2001SS2LabHours);
-		course2.findIndex("CZ2001SS2").registerStudent("U234760H");
-		course2.findIndex("CZ2001SS2").registerStudent("U084287J");
 
 		/* NBS Courses */
 		Course course3 = new Course("Business Finance", "BU8201", "Nanyang Business School", 3);
@@ -68,22 +77,7 @@ public class createCourseData {
 		course3.findIndex("BU8201BU2").addLesson("TUT", "TR28", BU8201BU2TutorialHours); 
 		course3.findIndex("BU8201BU2").registerStudent("U973243E");
 		course3.findIndex("BU8201BU2").registerStudent("U998342C");
-
-		Course course4 = new Course("Business Law", "AB1301", "Nanyang Business School", 3);
-		WorkingHours course4LectureHours = new WorkingHours("08:30", "09:30", 4);
-		course4.addCourseLecture("LT3", course4LectureHours);
-		course4.addIndex("AB1301BU1", "BU1");
-		course4.addIndex("AB1301BU2", "BU2");
-
-		WorkingHours AB1301BU1TutorialHours = new WorkingHours("09:30", "10:30", 4);
-		course4.findIndex("AB1301BU1").addLesson("TUT", "TR1", AB1301BU1TutorialHours); 
-		course4.findIndex("AB1301BU1").registerStudent("U092134A");
-		course4.findIndex("AB1301BU1").registerStudent("U093154J");
-
-		WorkingHours AB1301BU2TutorialHours = new WorkingHours("09:30", "10:30", 4);
-		course4.findIndex("AB1301BU2").addLesson("TUT", "TR28", AB1301BU2TutorialHours); 
-		course4.findIndex("AB1301BU2").registerStudent("U973243E");
-		course4.findIndex("AB1301BU2").registerStudent("U998342C");
+		course3.findIndex("BU8201BU2").registerStudent("U198752A");
 
 		// SSS Courses
 		Course course5 = new Course("Introduction to Psychology", "HP1000", "School of Social Sciences", 3);
@@ -101,32 +95,16 @@ public class createCourseData {
 		course5.findIndex("HP1000HP2").addLesson("TUT", "TR38", HP1000HP2TutorialHours); 
 		course5.findIndex("HP1000HP2").registerStudent("U298733J");
 		course5.findIndex("HP1000HP2").registerStudent("U129248J");
+		course5.findIndex("HP1000HP2").registerStudent("U193844K");
 
-		Course course6 = new Course("Principles of Economics", "HE9091", "School of Social Sciences", 3);
-		WorkingHours course6LectureHours = new WorkingHours("08:30", "09:30", 5);
-		course6.addCourseLecture("LT7", course6LectureHours);
-		course6.addIndex("HE9091HP1", "HP1");
-		course6.addIndex("HE9091HP2", "HP2");
 
-		WorkingHours HE9091HP1TutorialHours = new WorkingHours("09:30", "10:30", 5);
-		course6.findIndex("HE9091HP1").addLesson("TUT", "TR20", HE9091HP1TutorialHours); 
-		course6.findIndex("HE9091HP1").registerStudent("U912734G");
-		course6.findIndex("HE9091HP1").registerStudent("U193274P");
-
-		WorkingHours HE9091HP2TutorialHours = new WorkingHours("09:30", "10:30", 5);
-		course6.findIndex("HE9091HP2").addLesson("TUT", "TR38", HE9091HP2TutorialHours); 
-		course6.findIndex("HE9091HP2").registerStudent("U298733J");
-		course6.findIndex("HE9091HP2").registerStudent("U129248J");
-
-		
+				
 		 
 
 		courseData.add(course1);
 		courseData.add(course2);
 		courseData.add(course3);
-		courseData.add(course4);
 		courseData.add(course5);
-		courseData.add(course6);
 
 		try {
 			SerializeDB sdb = new SerializeDB();

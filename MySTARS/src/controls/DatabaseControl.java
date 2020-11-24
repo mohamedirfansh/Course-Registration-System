@@ -30,6 +30,9 @@ public class DatabaseControl {
 	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
 	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
 
+	
+	
+
 	// No special Constructor for DatabaseControl needed 
 
 	public String getStudentPassword(String userID) {
@@ -72,6 +75,7 @@ public class DatabaseControl {
 		temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
 
 		Student empty = null;
+		System.out.println(System.getProperty("user.dir"));
 		
 		// Search through the list of Student objects
 		// return object if found
