@@ -3,23 +3,18 @@ package controls;
 import entities.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-/* StaffControl
-This class handles all of the functionality for the staff (admin) user. Essentially
-it allows staff users to modify school, student, course and index objects.
-
-Attributes:
--> Database db: DatabaseControl object that enables our staff to read and write to the respective binary files.
-*/ 
-
+/**
+ * StaffControl is used to provide staff members with staff level access of the database and staff privileges
+ * after successful login to the database.
+ *
+ * Class Attributes:
+ * -> db : DatabaseControl, which defines a database control instance for the staff to access and modify the database.
+ */
 
 public class StaffControl {
 
-    // Attributes
     private static DatabaseControl db = new DatabaseControl();
-    
-    // Methods
 
     /**
      * updateAccessPeriod: Updates a staff's school's access period using the newly
@@ -37,7 +32,6 @@ public class StaffControl {
         int schoolID = currentStaff.getSchoolID();
         School school = db.getSchoolData(schoolID);
         return school.setAccessPeriod(startDate, endDate);
-
     }
 
     /**
@@ -59,7 +53,8 @@ public class StaffControl {
         Student student;
 		try {
 			student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
-            db.addStudentPassword(userID, userPW);
+            Password.addNewPassword(userID, userPW);
+            Password.writeToFile();
 
 			int schoolIDTwo = currentStaff.getSchoolID(); 
 	        School school = db.getSchoolData(schoolIDTwo);
@@ -119,7 +114,6 @@ public class StaffControl {
      * checkVacancy: Checks if there are vacancies in a Course.
      * 
      * @param courseCode Course code of choice
-     * @param indexCode  Index code of choice
      * 
      * @return A boolean variable. true if the update was successful else false.
      */
@@ -159,7 +153,7 @@ public class StaffControl {
         // Get all student objects belonging to enrolled student IDs
         ArrayList<Student> allStudents = new ArrayList<>();
         for (String id : allStudentsID) {
-            Student stu = db.getStudentDataID(id);
+            Student stu = db.getStudentData(id);
             if (stu != null) {
                 allStudents.add(stu);
             }
@@ -195,7 +189,7 @@ public class StaffControl {
         // Get all student objects belonging to enrolled student IDs
         ArrayList<Student> allStudentsIndex = new ArrayList<>();
         for (String idx : allIndexStudentsID) {
-            Student stud = db.getStudentDataID(idx);
+            Student stud = db.getStudentData(idx);
             if (stud != null) {
                 allStudentsIndex.add(stud);
             }
