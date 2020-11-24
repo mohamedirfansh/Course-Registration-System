@@ -303,7 +303,7 @@ public class Index implements Serializable {
      * @param studID, the student ID of the student being searched for in the enrolled list.
      * @return the studentID of the student if the student is found in the list.
      */
-    private String findStudentEnrolled(String studID){
+    public String findStudentEnrolled(String studID){
         //find a student in the registered list and return the position so that the student can be removed from the arrayList
         ListIterator<String> enrolledIterator = enrolled.listIterator();
 
