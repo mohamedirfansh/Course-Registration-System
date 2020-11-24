@@ -3,6 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.Serializable; // need this for object serialization (Jun Jie)
 
 /**
  * The course class is an entity that holds information regarding a course. A school can contain several courses whose data is stored in
@@ -15,6 +16,7 @@ import java.util.HashMap;
  * -> au : int, which is the number of creadits alloted to the course.
  * -> courseIndex : ArrayList<Index>, which is a list of indices or classes within the course.
  * -> lectures : Lesson[2], which is a list of lectures for the course, since lectures are shared by all indices.
+ * -> serialVersionUID : long, needed to verify that serialization and de-serialization is done correctly
  */
 public class Course implements Serializable {
     private final String courseName;
@@ -23,6 +25,7 @@ public class Course implements Serializable {
     private final int au;
     private ArrayList<Index> courseIndex;
     private Lesson[] lectures = new Lecture[2];
+    private static final long serialVersionUID = 2L;
 
     /**
      * Class constructor that is used on object instantiation.
@@ -47,8 +50,6 @@ public class Course implements Serializable {
         }
 
         this.courseIndex = new ArrayList<>();
-
-        System.out.println("Course Added.");
     }
 
 
@@ -147,23 +148,6 @@ public class Course implements Serializable {
     }
 
     /**
-     * getVacantIndices() can be used to check the number of vacant positions in each index. It uses a hashmap to store a key
-     * value pair, with the index code as the key and the number of vacancies as the value.
-     *
-     * @return a hashmap<String, Integer> containing the vacancies remaining for every index in the course.
-     */
-    public HashMap<String, Integer> getVacantIndices(){
-        HashMap<String, Integer> vacantIndex = new HashMap<>();
-        for(Index i : courseIndex){
-            if(i.getVacancy() > 0){
-                vacantIndex.put(i.getIndexCode(), i.getVacancy());
-            }
-        }
-
-        return vacantIndex;
-    }
-
-    /**
      * getWaitListSizes() can be used to find the size of the waitList for each index. It uses a hashmap to store the key value
      * pair where the key is the index code, and the value is the number of students in the index waitList.
      *
@@ -188,7 +172,7 @@ public class Course implements Serializable {
      * @return an integer representing the position of the index in the array list thus enabling easy access to the index data.
      *          The function returns -1 if the index does not exist in this course.
      */
-    private int findIndexPos(String indexCode){
+    public int findIndexPos(String indexCode){
         for(int i = 0; i < courseIndex.size(); ++i){
             if(courseIndex.get(i).getIndexCode().equals(indexCode)){
                 return i;
@@ -205,7 +189,8 @@ public class Course implements Serializable {
      * @param indexCode, which is the unique identifier for an index within the course.
      * @return an Index object. Returns null if the index does not exist in the course.
      */
-    private Index findIndex(String indexCode){
+    // Changed from private to public method
+    public Index findIndex(String indexCode){
         for(Index i : courseIndex){
             if(i.getIndexCode().toUpperCase().equals(indexCode.toUpperCase())){
                 return i;
@@ -213,6 +198,10 @@ public class Course implements Serializable {
         }
 
         return null;
+    }
+
+    public String toString() {
+        return "Course name: " + this.courseCode + "\tCourse Code " + this.courseName + "\tNumber of AUs " + this.au;
     }
 }
 

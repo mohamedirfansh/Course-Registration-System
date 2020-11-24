@@ -1,73 +1,56 @@
 package entities;
 
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
 
-public class Student extends Users implements Serializable{
-	private static HashMap<String, Student> listOfStudents = new HashMap<>();
-	private ArrayList<Course> registeredCourses = new ArrayList<>();
+
+/**
+ * Student is a specific implementation of a user. It extends from the user class and makes use of its general methods
+ * and attributes, as well as adds on to it with its own specialized attributes and methods that are unique to a student.
+ *
+ * Class Attributes:
+ * -> registeredCourses : HashMap<String, String>, which is a list of courseID's (key), and the corresponding index
+ * 				in the course (value) to which the student is enrolled into.
+ * -> waitListedCourses : HashMap<String, String>, which is a list of courseID's (key), and the corresponding index
+ *  				in the course (value) to which the student is waitlisted into.
+ *
+ * -> academicUnits : int, which is the sum total of all the credits for the courses the student is currently registered in.
+ */
+public class Student extends User{
+	private HashMap<String, String> registeredCourses = new HashMap<>();
+	private HashMap<String, String> waitListedCourses = new HashMap<>();
 	private int academicUnits = 0;
+	public static final long serialVersionUID = 2L;
 
-	public static void populateHashmap(String currentDir) throws IOException {
-		FileInputStream inFile = null;
-		ObjectInputStream input = null;
-		Student tempStudent;
 
-		try {
-			inFile = new FileInputStream(currentDir);
-			input = new ObjectInputStream(inFile);
-			while (true) {
-				tempStudent = (Student) input.readObject();
-				//System.out.println(tempStudent.getUserID() + ":    " + tempStudent.getName());
-				if (!listOfStudents.containsKey(tempStudent.getUserID())) {
-					listOfStudents.put(tempStudent.getUserID(), tempStudent);
-				}
-			}
-		} catch (EOFException E) {
-			System.out.println("Finish reading file...");
-		} catch (Exception E){
-			E.printStackTrace();
-		} finally {
-			inFile.close();
-			input.close();
-		}
+	/**
+	 * Student constructor to initialize the student object. It takes in the below specified parameters and calls the base
+	 * class constructor.
+	 *
+	 * @param name, the name of the student
+	 * @param userID, the unique userID of the student
+	 * @param gender, the gender of the student.
+	 * @param nationality, the nationality of the student
+	 * @param schoolID, the department in which the student resides.
+	 * @param identificationKey, the unique identifier that every student is given.
+	 */
+	public Student(String name, String userID,
+			String gender, String nationality, int schoolID,
+			String identificationKey){
+
+		super(name, userID, gender, nationality, schoolID, identificationKey);
 	}
 
-	public Student(String name, String userID, String userPW,
-			String gender, String nationality, String schoolID,
-			String identificationKey) throws NoSuchAlgorithmException {
-		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
 
-		// I need a method to write new student/staff to the binary file
-		if (!listOfStudents.containsKey(userID)) {
-			listOfStudents.put(userID, this);
-		} else
-			System.out.println("Error - Student already exists in system!");
-	}
+	/**
+	 * Setters and getters for the unique student attrubutes.
+	 */
+	public void setRegisteredCourses(HashMap<String, String> coursesDetails) { this.registeredCourses = coursesDetails; }
+	public HashMap<String, String> getRegisteredCourses() { return this.registeredCourses; }
 
-	public static int getNumAUforParticularStudent(String userID) { return listOfStudents.get(userID).academicUnits; }
-	public static ArrayList<Course> getRegisteredCoursesForParticularStud(String userID) {
-		return listOfStudents.get(userID).registeredCourses;
-	}
+	public void setWaitListedCourses(HashMap<String, String>  waitListedCourses){ this.waitListedCourses = waitListedCourses; }
+	public HashMap<String, String> getWaitListedCourses(){ return this.waitListedCourses; }
 
-	public static HashMap<String, Student> getStudentList() { return listOfStudents; }
-	private static void addAU(String userID, int AU) { listOfStudents.get(userID).academicUnits += AU;}
-	public static void addCourseToParticularStud(String userID, Course course) {
-		listOfStudents.get(userID).registeredCourses.add(course);
-		addAU(userID, course.getAu());
-	}
-	public static void removeCourseForParticularStud(String userID, Course course) {
-		listOfStudents.get(userID).registeredCourses.remove(course);
-		addAU(userID, course.getAu()*-1);
-	}
+	public void setAcademicUnits(int numberOfAU) { this.academicUnits = numberOfAU; }
+	public int getNumberOfAUs() { return this.academicUnits; }
 }
-
-

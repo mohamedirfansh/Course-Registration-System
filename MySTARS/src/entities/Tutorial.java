@@ -41,7 +41,6 @@ public class Tutorial extends Lesson{
             this.timings = newTimings;
             return true;
         } catch (IllegalArgumentException e){
-            System.out.println("Timings are not valid.");
             return false;
         }
     }
@@ -74,7 +73,8 @@ public class Tutorial extends Lesson{
         BufferedReader validVenues;
 
         try {
-            validVenues = new BufferedReader(new FileReader("/Users/aneez.jah/Documents/Java Projects/STARS Planner/Venue/tutorialVenues.txt"));
+	   String tutVenueFilePath = System.getProperty("user.dir") + "/src/data/tutorialVenues.txt"; 
+            validVenues = new BufferedReader(new FileReader(tutVenueFilePath));
 
             String temp = validVenues.readLine();
             while (temp != null) {
@@ -85,7 +85,7 @@ public class Tutorial extends Lesson{
                 temp = validVenues.readLine();
             }
         }catch(IOException i){
-            System.out.println("Unable to parse file.");
+            System.out.println("Unable to parse file for tutorial.");
             return false;
         }
 

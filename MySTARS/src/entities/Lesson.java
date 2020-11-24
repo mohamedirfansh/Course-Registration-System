@@ -1,4 +1,5 @@
 package entities;
+import java.io.Serializable;
 
 /**
  * Lesson is an abstract class that can be used to extend to different types of classes in terms of this application.
@@ -6,20 +7,21 @@ package entities;
  * Class Attributes:
  * -> lessonType : String, which holds the type of class in the lesson
  * -> venue : String, which holds the location where the class is being held
- * -> timings : WorkingHours, whcih holds the time during which the lesson takes place
+ * -> timings : WorkingHours, which holds the time during which the lesson takes place
  */
 
-public abstract class Lesson {
-    private final String lessonType; //lec/tut/lab
+public abstract class Lesson implements Serializable {
+    private final String lessonType; //tut/lab
     private String venue; //location
     WorkingHours timings; //dictionary that holds the lesson day and time
+    public static final long serialVersionUID = 2L;
 
     /**
      * Class constructor called by the children of the class upon instantiation of the child classes.
      *
-     * @param lessonType
-     * @param venue
-     * @param timings
+     * @param lessonType, which is the type of lesson
+     * @param venue, which is the location where the lesson will take place
+     * @param timings, the timings for the lesson
      */
     public Lesson(String lessonType, String venue, WorkingHours timings){
         this.lessonType = lessonType;

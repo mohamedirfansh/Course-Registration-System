@@ -4,77 +4,104 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.io.Serializable;
 
-/*  This class is used to store and validate the Access Period belonging to each School
-    within our planning system. Schools can then read, write and check if a given start date 
-    and end date is valid as a access period. A AccessPeriod object is stored within each School.
-*/
+/**
+ * This class is used for the access period to the registration system.
+ * Since each school can have different access periods, the period of
+ * time that they can access the system is linked to the school.
+ *
+ * Class Attributes:
+ * -> startDate : String, The starting date & time of the period.
+ * -> endDate : String, The ending date and tiem of the period
+ *
+ */
+public class AccessPeriod implements Serializable {
 
-public class AccessPeriod {
+	private String startDate;
+	private String endDate;
+	private static final long serialVersionUID = 2L;
 
-    private String startDate; // The starting date & time of the period.
-    private String endDate; // The ending date & time of the period.
+	/**
+	 * Constructor for the AccessPeriod
+	 * @param startDate, the starting date of the access period
+	 * @param endDate, the ending date of the access period
+	 */
+	public AccessPeriod(String startDate, String endDate) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
 
-    // Constructor
+	/**
+	 * Method to check if the current system date & time is within the start
+	 * date & end date for the school. If it is within the period, then returns true else false.
+	 * @return A boolean variable of whether the current period is valid for the school.
+	 */
+	public boolean isValidPeriod(){
+		// Only check if there is a date already available for the start & end dates.
+		Date validStartDate = null;
+		Date validEndDate = null;
 
-    public AccessPeriod(String startDate, String endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+		if (startDate != null && endDate != null){
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			Date currentDate = new Date();	// Get the current date
+			// Try catch block in case date cannot be parsed properly, 
+			// Parse needed to convert the date from string type to date type for comparison
+			try {
+				validStartDate = dateFormat.parse(this.startDate);
+				validEndDate = dateFormat.parse(this.endDate);
 
-    /*
-     * Method to check if the current system date & time is within the start date &
-     * end date for the school. If it is within the period, then returns true else
-     * false.
-     */
+				// Checking if current date is within the access window (-ve if currDate is before validEndDate)
+				return (currentDate.compareTo(validEndDate) <= 0 && validStartDate.compareTo(validEndDate) < 0);
 
-    public boolean isValidPeriod() {
-        // Only check if there is a date already available for the start & end dates.
-        Date validStartDate;
-        Date validEndDate;
+			} catch (ParseException e){
+				System.out.println("Date entered in the wrong format! Please enter a valid date format.");
+				return false;
+			}
 
-        if (startDate != null && endDate != null) {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            Date currentDate = new Date(); // Get the current date
-            // Try catch block incase date cannot be parsed properly,
-            // Parse needed to convert the date from string type to date type for comparison
-            try {
-                validStartDate = dateFormat.parse(this.startDate);
-                validEndDate = dateFormat.parse(this.endDate);
-                boolean isValid = (currentDate.compareTo(validStartDate) >= 0 && currentDate.compareTo(validEndDate) < 0);
-                return isValid;
+		}
+		// Temporary for now, can change to boundary classes later...
+		else {
+			System.out.println("Cannot get access period for school");
+			return false;
+		}
+	}
 
-            } catch (ParseException e) {
-                // Temporary for now, move to boundary class later...
-                System.out.println("Cannot parse date; Error: " + e);
-            }
-            // Checking if current date is within the access window
+	// Getter methods
 
-            // Temporary for now, can change to boundary classes later...
-        }
+	/**
+	 * Getter method to get the start date of Access Period
+	 * @return startDate
+	 */
+	public String getStartDate(){
+		return startDate;
+	}
 
-        System.out.println("Cannot get access period for school");
-        return false;
-    }
+	/**
+	 * Getter method to get the end date of Access Period
+	 * @return endDate
+	 */
+	public String getEndDate(){
+		return endDate;
+	}
 
-        // Getter methods
+	// Setter methods
 
-    public String getStartDate () {
-        return startDate;
-    }
+	/**
+	 * Setter method to set the start date of the Access Period
+	 * @param startDate
+	 */
+	public void setStartDate(String startDate){
+		this.startDate = startDate;
+	}
 
-    public String getEndDate () {
-        return endDate;
-    }
+	/**
+	 * Setter method to set the end date of the Access Period
+	 * @param endDate
+	 */
+	public void setEndDate(String endDate){
+		this.endDate = endDate;
+	}
 
-    // Setter methods
-
-    public void setStartDate (String startDate){
-        this.startDate = startDate;
-    }
-
-    public void setEndDate (String endDate){
-        this.endDate = endDate;
-    }
 }
 

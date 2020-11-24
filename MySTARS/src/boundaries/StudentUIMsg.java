@@ -1,5 +1,6 @@
 package boundaries;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -21,40 +22,37 @@ public class StudentUIMsg {
 	}
 	
 	/**
-	 * Prints message to ask user to enter the course they want to enroll in.
+	 * Prints message to ask user to enter the course/index they want to enroll in.
 	 * Carries out a check to see if the input is valid, if invalid, asks the user
 	 * to enter valid input again.
+	 * @param an integer, 1 for courseMsg, 2 for indexMsg
 	 * @return course
 	 */
-	public static String addCourseMsg() {
-		System.out.println("Enter the course code you would like to enroll in: ");
-		while (true) {
-			try {
-				String course = scn.nextLine();
-				return course;
-			} catch (InputMismatchException e) {
-				System.out.println("Please enter a course code: ");
+	public static String addCourseMsg(int n) {
+		if (n <= 1) {
+			System.out.println("Enter the course code you would like to enroll in: ");
+			while (true) {
+				try {
+					String course = scn.nextLine();
+					return course;
+				} catch (InputMismatchException e) {
+					System.out.println("Please enter a course code: ");
+				}
+			}
+		}
+		else {
+			System.out.println("Enter course index to add: ");
+			while (true) {
+				try {
+					String index = scn.nextLine();
+					return index;
+				} catch(InputMismatchException e){
+					System.out.println("Please enter a valid index: ");
+				}
 			}
 		}
 	}
 	
-	/**
-	 * Prints message to ask user to enter the index they want to register to.
-	 * Carries out a check to see if the input is valid, if invalid, asks the user
-	 * to enter valid input again.
-	 * @return index
-	 */
-	public static String addCourseIndexMsg() {
-		System.out.println("Enter course index to add: ");
-		while (true) {
-			try {
-				String index = scn.nextLine();
-				return index;
-			} catch(InputMismatchException e){
-				System.out.println("Please enter a valid index: ");
-			}
-		}
-	}
 	
 	/**
 	 * Prints message that the course requested does not exist.
@@ -79,35 +77,32 @@ public class StudentUIMsg {
 	}
 	
 	/**
-	 * Prints message to ask user to enter the course they want to drop.
+	 * Prints message to ask user to enter the course/index they want to drop.
 	 * Carries out a check to see if the input is valid, if invalid, asks the user
 	 * to enter valid input again.
+	 * @param an integer, 1 for courseMsg, 2 for indexMsg
 	 * @return course
 	 */
-	public static String dropCourseMsg() {
-		System.out.println("Enter the course code you would like to drop: ");
-		while (true) {
-			try {
-				String course = scn.nextLine();
-				return course;
-			} catch (InputMismatchException e){
-				System.out.println("Please enter a valid course: ");
+	public static String dropCourseMsg(int n) {
+		if (n <= 1) {
+			System.out.println("Enter the course code you would like to drop: ");
+			while (true) {
+				try {
+					String course = scn.nextLine();
+					return course;
+				} catch (InputMismatchException e){
+					System.out.println("Please enter a valid course: ");
+				}
 			}
-		}
-	}
-	
-	/**
-	 * Prints message to ask user to enter index of the course they want to drop.
-	 * @return index
-	 */
-	public static String dropCourseIndexMsg() {
-		System.out.println("Enter course index to drop: ");
-		while (true) {
-			try {
-				String index = scn.nextLine();
-				return index;
-			} catch(InputMismatchException e){
-				System.out.println("Please enter a valid index: ");
+		} else {
+			System.out.println("Enter course index to drop: ");
+			while (true) {
+				try {
+					String index = scn.nextLine();
+					return index;
+				} catch(InputMismatchException e){
+					System.out.println("Please enter a valid index: ");
+				}
 			}
 		}
 	}
@@ -116,4 +111,33 @@ public class StudentUIMsg {
 		System.out.println("You are not enrolled in that index. Please try again.");
 	}
 	
+	public static String checkVacancyMsg() {
+		System.out.println("Enter the course code you would like to check vacancy for: ");
+		while (true) {
+			try {
+				String course = scn.nextLine();
+				return course;
+			} catch (InputMismatchException e){
+				System.out.println("Please enter a valid course: ");
+			}
+		} 
+	}
+	
+	public static ArrayList<String> changeIndexMsg() {
+		ArrayList<String> s = new ArrayList<String>();
+		
+		System.out.println("Enter course code you want to change: ");
+		String course = scn.nextLine();
+		s.add(course);
+		
+		System.out.println("Enter old index: ");
+		String prevIndex = scn.nextLine();
+		s.add(prevIndex);
+		
+		System.out.println("Enter new index: ");
+		String newIndex = scn.nextLine();
+		s.add(newIndex);
+		
+		return s;
+	}
 }
