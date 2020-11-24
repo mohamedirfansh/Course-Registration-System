@@ -23,7 +23,7 @@ public class Password implements Serializable {
 			}
 		}
 	}
-		
+
 	public static String getHash(String userID) {
 		return allPW.get(userID);
 	}
@@ -31,7 +31,10 @@ public class Password implements Serializable {
 	public static HashMap<String, String> getHashMap() {
 		return allPW;
 	}
-	
+
+	/**
+	 * writeToFile() writes all the updated passwords to the binary file.
+	 */
 	public static void writeToFile() {
 		try {
 			SerializeDB sdb = new SerializeDB();

@@ -7,6 +7,9 @@ import java.util.Arrays;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Class used to pre-load school data into the database.
+ */
 public class createSchoolData {
 	
 	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";

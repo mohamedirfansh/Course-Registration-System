@@ -9,6 +9,9 @@ import java.util.List;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Class used to pre-load staff data into the database.
+ */
 public class createStaffData {
 	
 	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";

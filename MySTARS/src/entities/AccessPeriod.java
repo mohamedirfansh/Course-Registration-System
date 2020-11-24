@@ -10,30 +10,27 @@ import java.io.Serializable;
  * This class is used for the access period to the registration system.
  * Since each school can have different access periods, the period of
  * time that they can access the system is linked to the school.
+ *
+ * Class Attributes:
+ * -> startDate : String, The starting date & time of the period.
+ * -> endDate : String, The ending date and tiem of the period
+ *
  */
 public class AccessPeriod implements Serializable {
 
-	/**
-	 * The starting date & time of the period.
-	 */
-  	private String startDate;
-	
-	/**
-	 * The ending date & time of the period.
-	 */
-  	private String endDate;
+	private String startDate;
+	private String endDate;
+	private static final long serialVersionUID = 2L;
 
-  	private static final long serialVersionUID = 2L; 
-	
-    /**
-     * Constructor for the AccessPeriod
-     * @param startDate
-     * @param endDate
-     */
-  	public AccessPeriod(String startDate, String endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+	/**
+	 * Constructor for the AccessPeriod
+	 * @param startDate, the starting date of the access period
+	 * @param endDate, the ending date of the access period
+	 */
+	public AccessPeriod(String startDate, String endDate) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
 
 	/**
 	 * Method to check if the current system date & time is within the start
@@ -44,7 +41,7 @@ public class AccessPeriod implements Serializable {
 		// Only check if there is a date already available for the start & end dates.
 		Date validStartDate = null;
 		Date validEndDate = null;
-		
+
 		if (startDate != null && endDate != null){
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			Date currentDate = new Date();	// Get the current date
@@ -53,10 +50,10 @@ public class AccessPeriod implements Serializable {
 			try {
 				validStartDate = dateFormat.parse(this.startDate);
 				validEndDate = dateFormat.parse(this.endDate);
-				
+
 				// Checking if current date is within the access window (-ve if currDate is before validEndDate)
 				return (currentDate.compareTo(validEndDate) <= 0 && validStartDate.compareTo(validEndDate) < 0);
-				
+
 			} catch (ParseException e){
 				System.out.println("Date entered in the wrong format! Please enter a valid date format.");
 				return false;
@@ -79,7 +76,7 @@ public class AccessPeriod implements Serializable {
 	public String getStartDate(){
 		return startDate;
 	}
-	
+
 	/**
 	 * Getter method to get the end date of Access Period
 	 * @return endDate
