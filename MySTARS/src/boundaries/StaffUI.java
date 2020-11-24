@@ -6,12 +6,15 @@ import controls.StaffControl;
 import controls.DatabaseControl;
 import entities.*;
 
+/**
+ * Provides an interface UI and the corresponding methods for a staff member to access and modify the database
+ * with staff level access.
+ */
 public class StaffUI {
 
     private static boolean loggedIn = true;
     private static DatabaseControl db = new DatabaseControl();
 
-    // Driver
     public static void staffUIInit(Staff currentStaff) {
 
         while (loggedIn) {
@@ -28,11 +31,11 @@ public class StaffUI {
             Scanner sc = new Scanner(System.in);
             System.out.println(" ");
             System.out.println("Option: ");
-            int option = sc.nextInt();
+            char option = sc.next().charAt(0);
 
             // Switch statement
             switch(option) {
-                case 1:
+                case '1':
                     System.out.println("Please enter the updated Acccess' period Start Date in the following format dd/MM/yyyy HH:mm :");
                     sc.nextLine();
                     String startDate = sc.nextLine();
@@ -41,7 +44,7 @@ public class StaffUI {
                     updateAccPeriod(currentStaff, startDate, endDate);
                     break;
 
-                case 2:
+                case '2':
                     System.out.println("Please enter the Student's Name:");
                     sc.nextLine();
                     String name = sc.nextLine();
@@ -59,8 +62,8 @@ public class StaffUI {
                     String identificationKey = sc.next();
                     addStudentToSchool(currentStaff, name, userID, userPW, gender, nationality, schoolID, identificationKey);
                     break;
-                
-                case 3:
+
+                case '3':
                     System.out.println("Please enter the Course's Name:");
                     sc.nextLine();
                     String courseName = sc.nextLine();
@@ -76,8 +79,8 @@ public class StaffUI {
                     getAllCourses(currentStaff);
                     System.out.println("=================================================");
                     break;
-                
-                case 4:
+
+                case '4':
                     System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
                     System.out.println("=================================================");
@@ -94,7 +97,7 @@ public class StaffUI {
                     updateCourseInSchool(currentStaff, coCode, coName, schName, coAU);
                     break;
 
-                case 5:
+                case '5':
                     System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
                     System.out.println("=================================================");
@@ -102,8 +105,8 @@ public class StaffUI {
                     String checkCourseCode = sc.next();
                     checkCourseVacancy(checkCourseCode);
                     break;
-                
-                case 6:
+
+                case '6':
                     System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
                     System.out.println("=================================================");
@@ -112,7 +115,7 @@ public class StaffUI {
                     printCourseStudentList(vacCourseCode);
                     break;
 
-                case 7:
+                case '7':
                     System.out.println("=============List of Existing Courses===========");
                     getAllCourses(currentStaff);
                     System.out.println("=================================================");
@@ -124,7 +127,7 @@ public class StaffUI {
                     printIndexStudentList(vacCourseCode2, vacIndexCode2);
                     break;
 
-                case 8:
+                case '8':
                     System.out.println("Thanks for using myStars. See you again!");
                     loggedIn = false;
                     sc.close();
@@ -134,62 +137,59 @@ public class StaffUI {
                     System.out.println("No such option! Please enter a valid option.");
                     sc.close();
                     break;
-            }   
+            }
         }
     }
 
-    // Methods
-    // 0. Display
-    // A. Get all courses belonging to a staff's school for display
+
     /**
      * getAllCourses: Get all course at the school the staff belongs to.
-     * 
+     *
      * @param currentStaff The currently logged in staff's Staff object
-     * 
+     *
      * @return Prints all courses
      */
     public static void getAllCourses(Staff currentStaff) {
         try {
-        // Display all courses
-        int schoolID = currentStaff.getSchoolID();
-        School school = db.getSchoolData(schoolID);
-        ArrayList<String> allCourses = school.getAllCourses();
-        System.out.println("Courses available:");
-        for (String course : allCourses) {
-            System.out.println(course);
+            // Display all courses
+            int schoolID = currentStaff.getSchoolID();
+            School school = db.getSchoolData(schoolID);
+            ArrayList<String> allCourses = school.getAllCourses();
+            System.out.println("Courses available:");
+            for (String course : allCourses) {
+                System.out.println(course);
+            }
+        } catch(NullPointerException e) {
+            System.out.println("");
         }
-    } catch(NullPointerException e) {
-        System.out.println("");
-    }
     }
 
     // B. Get all indexes for a given course within a staff's school for display
     /**
      * getAllIndexes: Get all indexes belonging to a given course.
-     * 
+     *
      * @param courseCode Course code of interest
-     * 
+     *
      * @return Prints all indexes
      */
     public static void getAllIndexes(String courseCode) {
         try {
-        // Display all indexes
-        Course course = db.getCourseData(courseCode);
-        ArrayList<Index> allIndexes = course.getCourseIndex();
-        System.out.println("Indexes available for " + courseCode + ":");
-        for (Index idx : allIndexes) {
-            System.out.println(idx.getIndexCode());
+            // Display all indexes
+            Course course = db.getCourseData(courseCode);
+            ArrayList<Index> allIndexes = course.getCourseIndex();
+            System.out.println("Indexes available for " + courseCode + ":");
+            for (Index idx : allIndexes) {
+                System.out.println(idx.getIndexCode());
+            }
+        } catch(NullPointerException e) {
+            System.out.println("");
         }
-    } catch(NullPointerException e) {
-        System.out.println("");
-    }
     }
 
-    // 1. Update school's Access Period
     /**
      * updateAccPeriod: Updates a staff's school's access period using the newly
      * given start date and end date.
-     * 
+     *
      * @param currentStaff The currently logged in staff's Staff object
      * @param startDate    The new start date of the school's access period in the
      *                     format of dd/MM/yyyy HH:mm
@@ -205,11 +205,10 @@ public class StaffUI {
         }
     }
 
-    // 2. Add student to school
     /**
      * addStudentToSchool: Adds a new student to a staff's school and to the student
      * database.
-     * 
+     *
      * @param currentStaff      The currently logged in staff's Staff object
      * @param name              Name of the new student
      * @param userID            New student's userID
@@ -218,7 +217,7 @@ public class StaffUI {
      * @param nationality       New student's nationality
      * @param schoolID          New student's schoolID
      * @param identificationKey New student's identification number
-     * 
+     *
      * @return Prints result of update
      */
     public static void addStudentToSchool(Staff currentStaff, String name, String userID, String userPW, String gender, String nationality, int schoolID, String identificationKey) {
@@ -229,17 +228,16 @@ public class StaffUI {
         }
     }
 
-    // 3. Add course to school
     /**
      * addCourseToSchool: Adds a new course to a staff's school and to the course
      * database.
-     * 
+     *
      * @param currentStaff The currently logged in staff's Staff object
      * @param courseCode   New course's course code
      * @param courseName   New course's course name
      * @param schoolName   Name of school new course belongs to
      * @param au           New course's academic units
-     * 
+     *
      * @return Prints result of update
      */
     public static void addCourseToSchool(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
@@ -250,16 +248,15 @@ public class StaffUI {
         }
     }
 
-    // 4. Update course belonging to school and course database
     /**
      * updateCourseInSchool: Updates a course in the course database given a its
      * course code.
-     * 
+     *
      * @param courseCode Updated course code
      * @param courseName Updated course name
      * @param schoolName Name of school course belongs to
      * @param au         Updated course's academic units
-     * 
+     *
      * @return Prints result of update
      */
     public static void updateCourseInSchool(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
@@ -270,25 +267,22 @@ public class StaffUI {
         }
     }
 
-    // 5. Check course vacancy
     /**
      * checkCourseVacancy: Checks if there are vacancies in a Course.
-     * 
+     *
      * @param courseCode Course code of choice
-     * @param indexCode  Index code of choice
-     * 
+     *
      * @return Prints result of update
      */
     public static void checkCourseVacancy(String courseCode) {
         StaffControl.checkVacancy(courseCode);
     }
 
-    // 6. Print student's list (By course and by index)
     /**
      * printCourseStudentList: Returns all students enrolled in a given course.
-     * 
+     *
      * @param courseCode Course code of choice
-     * 
+     *
      * @return Prints result of update
      */
     public static void printCourseStudentList(String courseCode) {
@@ -306,10 +300,10 @@ public class StaffUI {
     /**
      * getAllStudentsInIndex: Returns all students enrolled in a given course and
      * index.
-     * 
+     *
      * @param courseCode Course code of choice
      * @param indexCode  Index code of choice
-     * 
+     *
      * @return Prints result of update
      */
     public static void printIndexStudentList(String courseCode, String indexCode) {

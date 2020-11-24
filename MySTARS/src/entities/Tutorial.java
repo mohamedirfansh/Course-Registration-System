@@ -41,7 +41,6 @@ public class Tutorial extends Lesson{
             this.timings = newTimings;
             return true;
         } catch (IllegalArgumentException e){
-            System.out.println("Timings are not valid.");
             return false;
         }
     }

@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class SerializeDB
 {
+
 	public static List readSerializedObject(String filename) {
 		List pDetails = null;
 		FileInputStream fis = null;

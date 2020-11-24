@@ -9,6 +9,9 @@ import java.util.List;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
+/**
+ * Class used to pre-load student data into the database.
+ */
 public class createStudentData {
 	
 	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
