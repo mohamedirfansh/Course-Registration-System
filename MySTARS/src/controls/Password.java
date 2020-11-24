@@ -26,7 +26,6 @@ public class Password implements Serializable {
 		writeToFile();
 	}
 		
-
 	public static String getHash(String userID) {
 		return allPW.get(userID);
 	}

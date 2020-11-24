@@ -3,12 +3,13 @@ package boundaries;
 import java.util.ArrayList;
 import java.util.Scanner;
 import controls.StaffControl;
-import entities.Student;
-import entities.Staff;
+import controls.DatabaseControl;
+import entities.*;
 
 public class StaffUI {
 
     private static boolean loggedIn = true;
+    private static DatabaseControl db = new DatabaseControl();
 
     // Driver
     public static void staffUIInit(Staff currentStaff) {
@@ -22,7 +23,7 @@ public class StaffUI {
             System.out.println("5) Check a course's vacancy");
             System.out.println("6) Print a course's list of enrolled students");
             System.out.println("7) Print a index's list of enrolled students");
-            System.out.println("8) Logout of myStars");
+            System.out.println("8) Logout of MyStars");
 
             Scanner sc = new Scanner(System.in);
             System.out.println(" ");
@@ -32,16 +33,19 @@ public class StaffUI {
             // Switch statement
             switch(option) {
                 case 1:
-                    System.out.println("Please enter the updated Acccess' period Start Date:");
-                    String startDate = sc.next();
-                    System.out.println("Please enter the updated Acccess' period End Date:");
-                    String endDate = sc.next();
+                    getAllStudents();
+                    System.out.println("Please enter the updated Acccess' period Start Date in the following format dd/MM/yyyy HH:mm :");
+                    sc.nextLine();
+                    String startDate = sc.nextLine();
+                    System.out.println("Please enter the updated Acccess' period End Date in the following format dd/MM/yyyy HH:mm :");
+                    String endDate = sc.nextLine();
                     updateAccPeriod(currentStaff, startDate, endDate);
                     break;
 
                 case 2:
                     System.out.println("Please enter the Student's Name:");
-                    String name = sc.next();
+                    sc.nextLine();
+                    String name = sc.nextLine();
                     System.out.println("Please enter the Student's User ID:");
                     String userID = sc.next();
                     System.out.println("Please enter the Student's User Password:");
@@ -49,7 +53,8 @@ public class StaffUI {
                     System.out.println("Please enter the Student's Gender:");
                     String gender = sc.next();
                     System.out.println("Please enter the Student's Nationality:");
-                    String nationality = sc.next();
+                    sc.nextLine();
+                    String nationality = sc.nextLine();
                     int schoolID = currentStaff.getSchoolID(); // Can only add students to your own school
                     System.out.println("Please enter the Student's Identification Key:");
                     String identificationKey = sc.next();
@@ -58,45 +63,56 @@ public class StaffUI {
                 
                 case 3:
                     System.out.println("Please enter the Course's Name:");
-                    String courseName = sc.next();
+                    sc.nextLine();
+                    String courseName = sc.nextLine();
                     System.out.println("Please enter the Course's Code:");
                     String courseCode = sc.next();
                     System.out.println("Please enter the Course's School name:");
-                    String schoolName = sc.next();
+                    sc.nextLine();
+                    String schoolName = sc.nextLine();
                     System.out.println("Please enter the Course's Academic Units:");
                     int au = sc.nextInt();
                     addCourseToSchool(currentStaff, courseCode, courseName, schoolName, au);
+                    System.out.println("=================================================");
+                    System.out.println("Updated Course List:");
+                    getAllCourses(currentStaff);
+                    System.out.println("=================================================");
                     break;
                 
                 case 4:
+                    getAllCourses(currentStaff);
                     System.out.println("Please enter the Course's Name:");
-                    String coName = sc.next();
+                    sc.nextLine();
+                    String coName = sc.nextLine();
                     System.out.println("Please enter the Course's Code:");
                     String coCode = sc.next();
                     System.out.println("Please enter the Course's School name:");
-                    String schName = sc.next();
+                    sc.nextLine();
+                    String schName = sc.nextLine();
                     System.out.println("Please enter the Course's Academic Units:");
                     int coAU = sc.nextInt();
                     updateCourseInSchool(currentStaff, coCode, coName, schName, coAU);
                     break;
 
                 case 5:
+                    getAllCourses(currentStaff);
                     System.out.println("Please enter the Course's Code:");
                     String checkCourseCode = sc.next();
-                    System.out.println("Please enter the Index's Code:");
-                    String checkIndexCode = sc.next();
-                    checkCourseVacancy(checkCourseCode, checkIndexCode);
+                    checkCourseVacancy(checkCourseCode);
                     break;
                 
                 case 6:
+                    getAllCourses(currentStaff);
                     System.out.println("Please enter the Course's Code:");
                     String vacCourseCode = sc.next();
                     printCourseStudentList(vacCourseCode);
                     break;
 
                 case 7:
+                    getAllCourses(currentStaff);
                     System.out.println("Please enter the Course's Code:");
                     String vacCourseCode2 = sc.next();
+                    getAllIndexes(vacCourseCode2);
                     System.out.println("Please enter the Index's Code:");
                     String vacIndexCode2 = sc.next();
                     printIndexStudentList(vacCourseCode2, vacIndexCode2);
@@ -105,16 +121,50 @@ public class StaffUI {
                 case 8:
                     System.out.println("Thanks for using myStars. See you again!");
                     loggedIn = false;
+                    sc.close();
                     break;
 
                 default:
                     System.out.println("No such option! Please enter a valid option.");
+                    sc.close();
                     break;
             }   
         }
     }
 
     // Methods
+    // 0. Display
+    // A. Get all courses belonging to a staff's school for display
+    public static void getAllCourses(Staff currentStaff) {
+        try {
+        // Display all courses
+        int schoolID = currentStaff.getSchoolID();
+        School school = db.getSchoolData(schoolID);
+        ArrayList<String> allCourses = school.getAllCourses();
+        System.out.println("Courses available:");
+        for (String course : allCourses) {
+            System.out.println(course);
+        }
+    } catch(NullPointerException e) {
+        System.out.println("");
+    }
+    }
+
+    // B. Get all indexes for a given course within a staff's school for display
+    public static void getAllIndexes(String courseCode) {
+        try {
+        // Display all indexes
+        Course course = db.getCourseData(courseCode);
+        ArrayList<Index> allIndexes = course.getCourseIndex();
+        System.out.println("Indexes available for " + courseCode + ":");
+        for (Index idx : allIndexes) {
+            System.out.println(idx.getIndexCode());
+        }
+    } catch(NullPointerException e) {
+        System.out.println("");
+    }
+    }
+
     // 1. Update school's Access Period
     /**
      * updateAccPeriod: Updates a staff's school's access period using the newly
@@ -202,22 +252,15 @@ public class StaffUI {
 
     // 5. Check course vacancy
     /**
-     * checkCourseVacancy: Checks if there are vacancies in a given course's index.
+     * checkCourseVacancy: Checks if there are vacancies in a Course.
      * 
      * @param courseCode Course code of choice
      * @param indexCode  Index code of choice
      * 
      * @return Prints result of update
      */
-    public static void checkCourseVacancy(String courseCode, String indexCode) {
-        int numVacancy = StaffControl.checkVacancy(courseCode, indexCode);
-        if (numVacancy > 0) {
-            System.out.println("Course: " + courseCode);
-            System.out.println("Index: " + indexCode);
-            System.out.println("Vacancies: " + numVacancy);
-        } else {
-            System.out.println("The index " + indexCode + " is currently full!");
-        }
+    public static void checkCourseVacancy(String courseCode) {
+        StaffControl.checkVacancy(courseCode);
     }
 
     // 6. Print student's list (By course and by index)

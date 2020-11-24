@@ -10,6 +10,7 @@ import entities.Student;
 import entities.User;
 
 public class customSystem {
+	
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		Scanner input = new Scanner(System.in);
 		DatabaseControl allDetails = new DatabaseControl();
