@@ -68,13 +68,13 @@ public class Lecture extends Lesson{
     public boolean checkValidVenue(String newVenue) {
         BufferedReader validVenues;
         try {
-            validVenues = new BufferedReader(new FileReader("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/lectureVenues.txt"));
+	String lectureVenueFilePath = System.getProperty("user.dir") + "/src/data/lectureVenues.txt";
+            validVenues = new BufferedReader(new FileReader(lectureVenueFilePath));
 
             String temp = validVenues.readLine();
             while (temp != null) {
                 if (newVenue.toUpperCase().equals(temp.toUpperCase())) {
                     validVenues.close();
-		    System.out.println("Successfully added LEC");
                     return true;
                 }
                 temp = validVenues.readLine();

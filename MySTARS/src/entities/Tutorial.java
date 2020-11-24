@@ -74,13 +74,13 @@ public class Tutorial extends Lesson{
         BufferedReader validVenues;
 
         try {
-            validVenues = new BufferedReader(new FileReader("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/tutorialVenues.txt"));
+	   String tutVenueFilePath = System.getProperty("user.dir") + "/src/data/tutorialVenues.txt"; 
+            validVenues = new BufferedReader(new FileReader(tutVenueFilePath));
 
             String temp = validVenues.readLine();
             while (temp != null) {
                 if (newVenue.toUpperCase().equals(temp.toUpperCase())) {
                     validVenues.close();
-		    System.out.println("Successfully added TUT");
                     return true;
                 }
                 temp = validVenues.readLine();
