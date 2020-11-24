@@ -20,7 +20,7 @@ import java.util.*;
  * -> lessons : ArrayList<Lesson>, which is a list of lessons and its timings for this index instance.
  */
 public class Index implements Serializable {
-    private static final int CLASS_SIZE = 30;
+    private static final int CLASS_SIZE = 10;
     private final String indexCode;
     private final String groupName;
     private int vacancy;

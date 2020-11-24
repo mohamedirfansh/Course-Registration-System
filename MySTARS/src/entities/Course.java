@@ -172,7 +172,7 @@ public class Course implements Serializable {
      * @return an integer representing the position of the index in the array list thus enabling easy access to the index data.
      *          The function returns -1 if the index does not exist in this course.
      */
-    private int findIndexPos(String indexCode){
+    public int findIndexPos(String indexCode){
         for(int i = 0; i < courseIndex.size(); ++i){
             if(courseIndex.get(i).getIndexCode().equals(indexCode)){
                 return i;

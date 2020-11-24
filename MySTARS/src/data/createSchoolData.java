@@ -50,11 +50,11 @@ public class createSchoolData {
 		school1.setAllCourses(school1Courses);
 
 		ArrayList<String> school2Courses = new ArrayList<String>(
-				Arrays.asList("BU8201", "AB1301"));
+				Arrays.asList("BU8201"));
 		school2.setAllCourses(school2Courses);
 
 		ArrayList<String> school3Courses = new ArrayList<String>(
-				Arrays.asList("HP1000", "HE9091"));
+				Arrays.asList("HP1000"));
 		school3.setAllCourses(school3Courses);
 
 		school1.setAccessPeriod("20/11/2020 08:00", "25/11/2020 23:00"); 
