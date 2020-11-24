@@ -164,9 +164,14 @@ public class StudentControl {
 	}
 
 	
-	public static boolean changeIndex(Student currentStudent, String course, String prevIndex, String newIndex) {
+	public static boolean changeIndex(Student currentStudent, String course, String newIndex) {
 		
 		Course currentCourse = dbControl.getCourseData(course);
+		String prevIndex = currentStudent.getRegisteredCourses().get(course);
+
+		if (prevIndex == null) {
+			return false;
+		}
 
 		if(currentCourse != null) {
 			if(dropCourse(currentStudent, course, prevIndex, false)){
@@ -334,9 +339,9 @@ public class StudentControl {
 		if (currentCourse != null) {
 			ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
 	
-			System.out.println("Index\tVacancy");
+			System.out.println("Index\t\tVacancy");
 			for (Index i : listOfIndex) {
-				System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
+				System.out.printf("%s\t%d/%d\n", i.getIndexCode(), i.getVacancy(), i.getClassSize());
 			}
 		}
 	}
