@@ -134,6 +134,13 @@ public class StaffUI {
     // Methods
     // 0. Display
     // A. Get all courses belonging to a staff's school for display
+    /**
+     * getAllCourses: Get all course at the school the staff belongs to.
+     * 
+     * @param currentStaff The currently logged in staff's Staff object
+     * 
+     * @return Prints all courses
+     */
     public static void getAllCourses(Staff currentStaff) {
         try {
         // Display all courses
@@ -150,6 +157,13 @@ public class StaffUI {
     }
 
     // B. Get all indexes for a given course within a staff's school for display
+    /**
+     * getAllIndexes: Get all indexes belonging to a given course.
+     * 
+     * @param courseCode Course code of interest
+     * 
+     * @return Prints all indexes
+     */
     public static void getAllIndexes(String courseCode) {
         try {
         // Display all indexes
