@@ -27,18 +27,29 @@ public class StudentControl {
 		if(currentCourse == null){
 			return false;
 		}
+
 		Index currentIndex = currentCourse.findIndex(index);
-		
+
+
 		// Check to see if there actually is a course with that index, if there is not
 		// then display the courseDoesNotExistMsg() and exit the method.
 		if (currentIndex == null) {
 			StudentUIMsg.courseDoesNotExistMsg();
 			return false;
 		}
-		
+
 		if (clashBetIndex(currentStudent, courseID, index)) {
 			System.out.println("Clash of course timings.");
 			return false;
+		}
+
+		//check if student is already in the course
+		ArrayList<Index> allIndices = currentCourse.getCourseIndex();
+		for(Index i : allIndices){
+			if(i.findStudentEnrolled(currentStudent.getUserID()) != null){
+				System.out.println("Student already enrolled to course.");
+				return false;
+			}
 		}
 
 		if(!currentIndex.registerStudent(currentStudent.getUserID())) {
@@ -53,6 +64,8 @@ public class StudentControl {
 				// Update the database with the new info
 				dbControl.updateCourseData(courseID, currentCourse);
 				dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+			}else{
+				System.out.println("Student already in waitlist.");
 			}
 
 			return false;
@@ -86,7 +99,6 @@ public class StudentControl {
 	 * Called by the student object.
 	 */
 	public static boolean dropCourse(Student currentStudent, String courseID, String index, boolean checkWaitList) {
-
 		Course currentCourse = dbControl.getCourseData(courseID);
 		//Check that the course is not null
 		if(currentCourse != null) {
@@ -126,8 +138,6 @@ public class StudentControl {
 							addCourse(newStudent, courseID, index, false);
 						}
 					}
-
-					
 				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) && checkWaitList) {
 					HashMap<String, String> studentsCourses = currentStudent.getWaitListedCourses();
 					if(!studentsCourses.containsKey(courseID))
@@ -154,14 +164,9 @@ public class StudentControl {
 	}
 
 	
-	public static boolean changeIndex(Student currentStudent, String course, String newIndex) {
+	public static boolean changeIndex(Student currentStudent, String course, String prevIndex, String newIndex) {
 		
 		Course currentCourse = dbControl.getCourseData(course);
-		String prevIndex = currentStudent.getRegisteredCourses().get(course);
-		
-		if (prevIndex == null) {
-			return false;
-		}
 
 		if(currentCourse != null) {
 			if(dropCourse(currentStudent, course, prevIndex, false)){
@@ -184,8 +189,7 @@ public class StudentControl {
 		}
 
 		try {
-			// != Password.getHash(friendID)
-			if (!(Hash.encode(friendPassword).equals(dbControl.getStudentPassword(friendID)))) { // Check friend's password here
+			if (!Hash.encode(friendPassword).equals(dbControl.getStudentPassword(friendID))) { // Check friend's password here
 				System.out.println("Your friend's password is incorrect!");
 				return false;
 			}
@@ -233,7 +237,10 @@ public class StudentControl {
 
 		//Lectures in the new course
 		Lesson[] newLecture = newCourse.getLectures();
+//		System.out.println(newLecture[0].getTimings().findDuration());
 		ArrayList<WorkingHours> newCourseTimings = new ArrayList<>();
+
+
 
 		//all the timings for the lectures of the new course
 		for(Lesson l : newLecture){
@@ -253,6 +260,10 @@ public class StudentControl {
 					newCourseTimings.add(l.getTimings());
 				}
 			}
+		}
+
+		for(WorkingHours h : newCourseTimings){
+			System.out.println(h.findDuration());
 		}
 
 		//newCourseTimings contains all the timings for all lessons and lectures in the new course and index
@@ -302,7 +313,7 @@ public class StudentControl {
 
 		return false;
 	}
-	
+
 	public static void viewRegisteredCourses(Student currentStudent) {
 
 		HashMap<String, String> listOfRegisteredCourses = currentStudent.getRegisteredCourses();
@@ -323,9 +334,9 @@ public class StudentControl {
 		if (currentCourse != null) {
 			ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
 	
-			System.out.println("Index\t\tVacancy");
+			System.out.println("Index\tVacancy");
 			for (Index i : listOfIndex) {
-				System.out.printf("%s\t%d/%d\n", i.getIndexCode(), i.getVacancy(), i.getClassSize());
+				System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
 			}
 		}
 	}
