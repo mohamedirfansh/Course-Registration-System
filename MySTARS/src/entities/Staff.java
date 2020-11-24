@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Staff extends User{
 	
-	public static final long serialVersionUID = 52826733048240957L; // Change to 2L back later
+	public static final long serialVersionUID = 2L; // Change to 2L back later
 	
 	public Staff(String name, String userID, String gender, 
 			String nationality, int schoolID,String identificationKey) throws NoSuchAlgorithmException {
