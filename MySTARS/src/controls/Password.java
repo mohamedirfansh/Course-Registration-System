@@ -24,7 +24,6 @@ public class Password implements Serializable {
 		}
 	}
 		
-
 	public static String getHash(String userID) {
 		return allPW.get(userID);
 	}

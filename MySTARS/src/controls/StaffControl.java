@@ -1,20 +1,21 @@
 package controls;
 
 import entities.*;
-import entities.Student;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+// TBD
+// Class description
+// BUGS:
+// 1) After adding a new student -> Try to login -> Hased is null
+// "String.equals(Object)" because "hashed" is null in custom system
 
 public class StaffControl {
 
     // Attributes
     private static DatabaseControl db = new DatabaseControl();
     
-    // Constructor
-    public StaffControl() {}
-
     // Methods
 
     /**
@@ -54,16 +55,18 @@ public class StaffControl {
         
         Student student;
 		try {
-			student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
-			Password.addNewPassword(userID, userPW);
+			student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+            Password.addNewPassword(userID, userPW);
+            
 			int schoolIDTwo = currentStaff.getSchoolID(); 
 	        School school = db.getSchoolData(schoolIDTwo);
 	        ArrayList<String> allStudents = school.getAllStudents();
 	        allStudents.add(identificationKey);
-	        school.setAllStudents(allStudents);
-	        return (db.updateSchoolData(schoolID, school) && db.addStudentData(student)); 
+            school.setAllStudents(allStudents);
+            
+            return (db.updateSchoolData(schoolID, school) && db.addStudentData(student)); 
+            
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -102,7 +105,7 @@ public class StaffControl {
      * 
      * @return A boolean variable. true if the update was successful else false.
      */
-    public static boolean updateCourse(String courseCode, String courseName, String schoolName, int au) {
+    public static boolean updateCourse(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
 
         // No need to update school since courseCode is unique and persistent
         Course newCourse = new Course(courseCode, courseName, schoolName, au);
@@ -110,22 +113,24 @@ public class StaffControl {
     }
 
     /**
-     * checkVacancy: Checks if there are vacancies in a given course's index.
+     * checkVacancy: Checks if there are vacancies in a Course.
      * 
      * @param courseCode Course code of choice
      * @param indexCode  Index code of choice
      * 
      * @return A boolean variable. true if the update was successful else false.
      */
-    public static int checkVacancy(String courseCode, String indexCode) {
-        
-        Course course = db.getCourseData(courseCode);
-        HashMap<String, Integer> vacantIndices = course.getVacantIndices();
-        boolean isVacant = vacantIndices.containsKey(indexCode);
-        if (isVacant) {
-            return vacantIndices.get(indexCode);
-        } else {
-            return 0;
+    public static void checkVacancy(String courseCode) {
+
+        Course currentCourse = db.getCourseData(courseCode);
+
+        if (currentCourse != null) {
+            ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
+
+            System.out.println("Index\tVacancy");
+            for (Index i : listOfIndex) {
+                System.out.printf("%s\t%d\n", i.getIndexCode(),   i.getVacancy());
+            }
         }
     }
 
@@ -138,7 +143,8 @@ public class StaffControl {
      */
     public static ArrayList<Student> getAllStudentsInCourse(String courseCode) {
         
-        Course course = db.getCourseData(courseCode); 
+        try {
+        Course course = db.getCourseData(courseCode);
         ArrayList<String> allStudentsID = new ArrayList<>();
         
         // Get all enrolled student IDs from all course indices
@@ -150,9 +156,17 @@ public class StaffControl {
         // Get all student objects belonging to enrolled student IDs
         ArrayList<Student> allStudents = new ArrayList<>();
         for (String id : allStudentsID) {
-            allStudents.add(db.getStudentData(id));
+            System.out.println("id: " + id); // For debug
+            Student stu = db.getStudentData(id);
+            if (stu != null) {
+                allStudents.add(stu);
+            }
         }
         return allStudents;
+    } catch(NullPointerException e) {
+        System.out.println("");
+        return new ArrayList<>();
+    }
     }
 
     /**
@@ -164,7 +178,7 @@ public class StaffControl {
      * @return An ArrayList of Student objects
      */
     public static ArrayList<Student> getAllStudentsInIndex(String courseCode, String indexCode) {
-        
+        try {
         Course course = db.getCourseData(courseCode);
         ArrayList<Index> allIndices = course.getCourseIndex();
         ArrayList<String> allIndexStudentsID = new ArrayList<>();
@@ -179,8 +193,15 @@ public class StaffControl {
         // Get all student objects belonging to enrolled student IDs
         ArrayList<Student> allStudentsIndex = new ArrayList<>();
         for (String idx : allIndexStudentsID) {
-            allStudentsIndex.add(db.getStudentData(idx));
+            Student stud = db.getStudentData(idx);
+            if (stud != null) {
+                allStudentsIndex.add(stud);
+            }
         }
         return allStudentsIndex;
+    } catch(NullPointerException e) {
+        System.out.println("");
+        return new ArrayList<>();
+        }
     }
 }

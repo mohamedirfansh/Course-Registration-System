@@ -1,7 +1,7 @@
 package controls;
 import entities.Student;
 import entities.Staff;
-import entities.Users;
+import entities.User;
 import entities.Course;
 import entities.School;
 import entities.Index;
