@@ -72,6 +72,7 @@ public class DatabaseControl {
 		temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
 
 		Student empty = null;
+		System.out.println(System.getProperty("user.dir"));
 		
 		// Search through the list of Student objects
 		// return object if found
