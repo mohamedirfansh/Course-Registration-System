@@ -45,9 +45,21 @@ public class Index implements Serializable {
         lessons = new ArrayList<>();
     }
 
+    public String getFrontOfWaitList(){
+        if(waitList.isEmpty()){
+            return null;
+        }
+
+        return waitList.remove();
+    }
+
     /**
      * Getters for the class attributes.
      */
+    
+    public int getClassSize() {
+    	return CLASS_SIZE;
+    }
 
     public String getIndexCode() {
         return indexCode;
@@ -203,7 +215,7 @@ public class Index implements Serializable {
      * @return true, if the student was added to the waitList successfully.
      *          False, if the student already exists in the waitList or if the student ID passed is invalid.
      */
-    private boolean addStudentToWaitList(String studID){
+    public boolean addStudentToWaitList(String studID){
         if(findStudentInWaitList(studID) != null || studID == null){
             return false;
         }else{
