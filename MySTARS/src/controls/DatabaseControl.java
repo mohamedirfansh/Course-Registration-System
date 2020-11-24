@@ -23,13 +23,21 @@ public class DatabaseControl {
 	private HashMap<String, String> tempPW;
 
 	// define filename constants
+	/*
 	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
 	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
 	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
 	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
 	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
-	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
-
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat"; 
+	*/
+	
+	static final String STUDENT = System.getProperty("user.dir") + "/../data/student.dat";                                                                                    
+	static final String STAFF = System.getProperty("user.dir") + "/../data/staff.dat";                                                                                        
+	static final String COURSE = System.getProperty("user.dir") + "/../data/course.dat";                                                                                      
+	static final String SCHOOL = System.getProperty("user.dir") + "/../data/school.dat";                                                                                      
+	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/../data/studentPassword.dat";                                                                    
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/../data/staffPassword.dat";
 	
 	
 
@@ -67,6 +75,21 @@ public class DatabaseControl {
 		}
 
 		return null;
+	}
+
+	public boolean addStudentPassword(String userID, String newPassword) throws NoSuchAlgorithmException {
+
+		tempPW = (HashMap<String, String>)SerializeDB.readSerializedMapObject(STUDENTPASSWORD);
+
+		String newHashedPassword = Hash.encode(newPassword);
+
+		// add to the HashMap the new User ID-Password pair
+		tempPW.put(userID, newHashedPassword);
+
+		// write to binary file
+		SerializeDB.writeSerializedObject(STUDENT, temp);
+
+		return true;
 	}
 	
 	// Student object retrieval based on userID

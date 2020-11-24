@@ -68,18 +68,19 @@ public class Lecture extends Lesson{
     public boolean checkValidVenue(String newVenue) {
         BufferedReader validVenues;
         try {
-            validVenues = new BufferedReader(new FileReader("/Users/aneez.jah/Documents/Java Projects/STARS Planner/Venue/lectureVenues.txt"));
+            validVenues = new BufferedReader(new FileReader("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/lectureVenues.txt"));
 
             String temp = validVenues.readLine();
             while (temp != null) {
                 if (newVenue.toUpperCase().equals(temp.toUpperCase())) {
                     validVenues.close();
+		    System.out.println("Successfully added LEC");
                     return true;
                 }
                 temp = validVenues.readLine();
             }
         }catch(IOException i){
-            System.out.println("Unable to parse file.");
+            System.out.println("Unable to parse file for lecture.");
         }
 
         return false;

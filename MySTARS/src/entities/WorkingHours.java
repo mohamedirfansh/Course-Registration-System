@@ -1,4 +1,5 @@
 package entities;
+import java.io.Serializable;
 
 /**
  * The WorkingHours class stores a time range, and has custom functions to check the validity of the timings passed to it, as well as to convert them into a usable format.
@@ -15,7 +16,7 @@ package entities;
  * – DayOfWeek : enum, contains all the days in the week.
  */
 
-public class WorkingHours {
+public class WorkingHours implements Serializable {
     private static final String[] DayOfWeek = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     private int startHour;
     private int endHour;
@@ -23,6 +24,7 @@ public class WorkingHours {
     private int endMin;
     private String day;
     private String week;
+    public static final long serialVersionUID = 2L;
 
 
     /**

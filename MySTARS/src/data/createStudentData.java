@@ -18,8 +18,8 @@ public class createStudentData {
 		ArrayList<Student> studentData = new ArrayList();
 
 		// SCSE students
-		Student student1 = new Student("Tom", "Tom1998", "Male", "Singaporean", 11, "U190123A");
-		Password.addNewPassword("Tom1998", "TomPassword");
+		Student student1 = new Student("Tom", "C190122", "Male", "Singaporean", 11, "U190123A");
+		Password.addNewPassword("C190122", "TomPassword");
 
 		student1.setAcademicUnits(6);
 		HashMap<String,String> stud1Courses = new HashMap<String, String>();

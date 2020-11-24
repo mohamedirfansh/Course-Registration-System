@@ -16,7 +16,7 @@ public class Lab extends Lesson{
      *      a lab.
      */
     public Lab(String venue, WorkingHours timings) throws IllegalArgumentException{
-        super("Lab", venue, timings);
+        super("LAB", venue, timings);
 
         if(!checkValidVenue(venue) || !timings.checkValidTimings(2f)){
             throw new IllegalArgumentException("Invalid venue or timings.");
@@ -74,18 +74,22 @@ public class Lab extends Lesson{
         BufferedReader validVenues;
 
         try {
-            validVenues = new BufferedReader(new FileReader("/Users/aneez.jah/Documents/Java Projects/STARS Planner/Venue/labVenues.txt"));
+	    String labVenueFilePath = System.getProperty("user.dir") + "/src/data/labVenues.txt";
+            /* validVenues = new BufferedReader(new FileReader("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/labVenues.txt")); */
+
+	    validVenues = new BufferedReader(new FileReader(labVenueFilePath));
 
             String temp = validVenues.readLine();
             while (temp != null) {
                 if (newVenue.toUpperCase().equals(temp.toUpperCase())) {
                     validVenues.close();
+		    System.out.println("Successfully added LAB");
                     return true;
                 }
                 temp = validVenues.readLine();
             }
         }catch(IOException i){
-            System.out.println("Unable to parse file.");
+            System.out.println("Unable to parse file for lab.");
         }
 
         return false;
