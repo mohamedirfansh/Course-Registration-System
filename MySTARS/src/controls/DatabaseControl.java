@@ -1,8 +1,8 @@
 package controls;
 
 import entities.Student;
+import entities.User;
 import entities.Staff;
-import entities.Users;
 import entities.Course;
 import entities.School;
 import entities.Hash;
@@ -10,21 +10,62 @@ import controls.SerializeDB;
 import java.util.ArrayList;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.HashMap;
+import java.io.File;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class DatabaseControl {
 
 	
 	private List temp; // temp List to store all the objects read in from the binary files
 	private char domain; // either 'u' or 's'
+	private HashMap<String, String> tempPW;
 
 	// define filename constants
-	static final String STUDENT = "student.dat";
-	static final String STAFF = "staff.dat";
-	static final String COURSE = "course.dat";
-	static final String SCHOOL = "school.dat";
+	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
+	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
+	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
+	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
+	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
 
 	// No special Constructor for DatabaseControl needed 
 
+	public String getStudentPassword(String userID) {
+
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STUDENTPASSWORD);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (String key: tempPW.keySet()) {
+			if (key.equals(userID)) {
+				System.out.println(key);
+				return tempPW.get(key);
+			}
+		}
+
+		return null;
+	}
+
+	public String getStaffPassword(String userID) {
+
+		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STAFFPASSWORD);
+		
+		// Search through list of Student objects
+		// if found, replace with new object
+		// write to binary file and return
+		for (String key: tempPW.keySet()) {
+			if (key.equals(userID)) {
+				System.out.println(key);
+				return tempPW.get(key);
+			}
+		}
+
+		return null;
+	}
+	
 	// Student object retrieval based on userID
 	public Student getStudentData(String userID) {
 
@@ -136,7 +177,7 @@ public class DatabaseControl {
 	}
 
 	// Staff object update
-	public boolean updateStaffData(String userID, Users updatedUser) {
+	public boolean updateStaffData(String userID, User updatedUser) {
 
 		temp = (ArrayList)SerializeDB.readSerializedObject(STAFF);
 		
@@ -158,7 +199,7 @@ public class DatabaseControl {
 	// Course object retrieval
 	public Course getCourseData(String courseCode) {
 		
-		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
+		temp = (ArrayList)SerializeDB.readSerializedObject(COURSE);
 		Course empty = null;
 
 		// Search through list of Course objects
@@ -179,7 +220,7 @@ public class DatabaseControl {
 	// add new Course object
 	public boolean addCourseData(Course newCourse) {
 		
-		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
+		temp = (ArrayList)SerializeDB.readSerializedObject(COURSE);
 
 		// Search through list of Course objects
 		// return if new object already inside database
@@ -194,7 +235,7 @@ public class DatabaseControl {
 		temp.add(newCourse);
 
 		// Write to binary file
-		SerializeDB.writeSerializedObject("course.dat", temp);
+		SerializeDB.writeSerializedObject(COURSE, temp);
 
 		return true;
 	}
@@ -202,14 +243,14 @@ public class DatabaseControl {
 	// Update Course object
 	public boolean updateCourseData(String courseCode, Course updatedCourse) {
 		
-		temp = (ArrayList)SerializeDB.readSerializedObject("course.dat");
+		temp = (ArrayList)SerializeDB.readSerializedObject(COURSE);
 
 		// Search and update if found
 		for (int i = 0; i < temp.size(); i++) {
 			Course c = (Course)temp.get(i);
 			if (c.getCourseCode().equals(courseCode)) {
 				temp.set(i, updatedCourse);
-				SerializeDB.writeSerializedObject("course.dat", temp);	
+				SerializeDB.writeSerializedObject(COURSE, temp);	
 				return true;
 			}
 		}

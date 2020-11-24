@@ -1,15 +1,10 @@
 package controls;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 import boundaries.StudentUIMsg;
-import entities.Course;
-import entities.Index;
-import entities.Student;
+import entities.*;
 
 /**
  * This is a control class for the Student object.
@@ -18,177 +13,299 @@ import entities.Student;
  */
 public class StudentControl {
 
-	private static Student currentStudent;
+	private static DatabaseControl dbControl = new DatabaseControl();
 	Scanner scn = new Scanner(System.in);
-	
-	// Constructor
-	public StudentControl(Student currentStudent) {
-		this.currentStudent = currentStudent;
-	}
 	
 	/**
 	 * Method that contains logic to add course for a
 	 * student. Called by the student object.
-	 * @param studentID
+	 * @param courseID
 	 */
-	public static void addCourse(String courseID, String index) {
-		DatabaseControl dbControl = new DatabaseControl();
+	public static boolean addCourse(Student currentStudent, String courseID, String index, boolean checkWaitList) {
 		
 		Course currentCourse = dbControl.getCourseData(courseID);
+		if(currentCourse == null){
+			return false;
+		}
 		Index currentIndex = currentCourse.findIndex(index);
 		
 		// Check to see if there actually is a course with that index, if there is not
 		// then display the courseDoesNotExistMsg() and exit the method.
 		if (currentIndex == null) {
 			StudentUIMsg.courseDoesNotExistMsg();
-			return;
+			return false;
 		}
 		
-		// Check not needed as it is already done in the index class
-//		try {
-//			// Check if the current index already has this student enrolled in
-//			ArrayList<Student> listOfStudents = currentIndex.getEnrolled();
-//			for (Student student : listOfStudents) {
-//				if (student.getUserID() == studentID) {
-//					StudentUIMsg.alreadyEnrolledIndexMsg();
-//					return;
-//				}
-//			}
-//		}
-		
-		// TODO: check for clash
-		currentIndex.registerStudent(currentStudent.getUserID());
-		StudentUIMsg.successfullyEnrolledMsg();
+		if (clashBetIndex(currentStudent, courseID, index)) {
+			System.out.println("Clash of course timings.");
+			return false;
+		}
 
-		// Update back to the database
-		dbControl.updateCourseData(courseID, currentCourse);
-		
-		// TODO: some error checking if needed
+		if(!currentIndex.registerStudent(currentStudent.getUserID())) {
+			System.out.println("Failed to register student. Adding student to waitList.");
+
+			if(currentIndex.addStudentToWaitList(currentStudent.getUserID())){
+				System.out.println("Student added to waitlist.");
+				HashMap<String, String> studentsWaitListedCourses = currentStudent.getWaitListedCourses();
+				studentsWaitListedCourses.put(courseID, index);
+				currentStudent.setWaitListedCourses(studentsWaitListedCourses);
+
+				// Update the database with the new info
+				dbControl.updateCourseData(courseID, currentCourse);
+				dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+			}
+
+			return false;
+		}
+
+		StudentUIMsg.successfullyEnrolledMsg();
+		//Update au
+		int studentsAU = currentStudent.getNumberOfAUs();
+		studentsAU += currentCourse.getAu();
+		currentStudent.setAcademicUnits(studentsAU);
 		
 		// Retrieve student's list of registered courses and add the current
 		// course and index to the list
 		HashMap<String, String> studentsCourses = currentStudent.getRegisteredCourses();
 		studentsCourses.put(courseID, index);
-		
-		// Retrieve the student's AUs and update it with the latest info
-		int studentsAU = currentStudent.getNumberOfAUs();
-		studentsAU += currentCourse.getAu();
-		currentStudent.setAcademicUnits(studentsAU);
-		
-		// Put back the new list of registered courses into the student entity
 		currentStudent.setRegisteredCourses(studentsCourses);
 		
-		// Update the database with the new info of the student
+		// Update the database with the new info
+		dbControl.updateCourseData(courseID, currentCourse);
 		dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+		
+		return true;
+	}
+
+	public static boolean addCourse(Student currentStudent, String courseID, String index){
+		return addCourse(currentStudent, courseID, index, true);
 	}
 	
 	/**
 	 * Method to drop the course for a student.
 	 * Called by the student object.
 	 */
-	public static void dropCourse(String courseID, String index) {
-		DatabaseControl dbControl = new DatabaseControl();
-		
-		Course currentCourse = dbControl.getCourseData(courseID);
-		Index currentIndex = currentCourse.findIndex(index);
-		
-		// Check if the current index really has this student enrolled in
-		ArrayList<String> listOfStudents = currentIndex.getEnrolled();
-		if (!(listOfStudents.contains(currentStudent.getUserID()))) {
-			StudentUIMsg.notInIndexMsg();
-			return;
-		}
-		
-		// If all's good, remove the student
-		currentIndex.deregisterStudent(currentStudent.getUserID());
-		/* Successfully dropped msg */
-		
-		// Update back to the database
-		dbControl.updateCourseData(courseID, currentCourse);
-		
-		// TODO: some error checking if needed
-		
-		// Retrieve student's list of registered courses and add the current
-		// course and index to the list
-		HashMap<String, String> studentsCourses = currentStudent.getRegisteredCourses();
-		studentsCourses.remove(courseID, index);
-		
-		// Retrieve the student's AUs and update it with the latest info
-		int studentsAU = currentStudent.getNumberOfAUs();
-		studentsAU -= currentCourse.getAu();
-		currentStudent.setAcademicUnits(studentsAU);
-		
-		// Put back the new list of registered courses into the student entity
-		currentStudent.setRegisteredCourses(studentsCourses);
-		
-		// Update the database with the new info of the student
-		dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+	public static boolean dropCourse(Student currentStudent, String courseID, String index, boolean checkWaitList) {
 
-	}
-	
-	public static void checkVacancy(String course) {
-		DatabaseControl dbControl = new DatabaseControl();
-		
-		Course currentCourse = dbControl.getCourseData(course);
-		ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
-		
-		System.out.println("Index\tVacancy");
-		for (Index i : listOfIndex) {
-			System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
+		Course currentCourse = dbControl.getCourseData(courseID);
+		//Check that the course is not null
+		if(currentCourse != null) {
+
+			//Check that the index is not null
+			Index currentIndex = currentCourse.findIndex(index);
+			if (currentIndex != null) {
+
+				//Check the student exists in the course
+				ArrayList<String> listOfStudents = currentIndex.getEnrolled();
+				if (!(listOfStudents.contains(currentStudent.getUserID()))) {
+					StudentUIMsg.notInIndexMsg();
+					return false;
+				}
+
+				if(currentIndex.deregisterStudent(currentStudent.getUserID())){
+					HashMap<String, String> studentsCourses = currentStudent.getRegisteredCourses();
+					if(!studentsCourses.containsKey(courseID))
+						return false;
+
+					studentsCourses.remove(courseID, index);
+					// Retrieve the student's AUs and update it with the latest info
+					int studentsAU = currentStudent.getNumberOfAUs();
+					studentsAU -= currentCourse.getAu();
+					currentStudent.setAcademicUnits(studentsAU);
+					currentStudent.setRegisteredCourses(studentsCourses);
+
+					//need to enroll the student in front of the queue
+
+					//check the waitlist to retrive the student at the front of the waitlist
+					if(checkWaitList){
+						String newStudentID = currentIndex.getFrontOfWaitList();
+
+						//check if the student exists
+						if(newStudentID != null) {
+							Student newStudent = dbControl.getStudentData(newStudentID);
+							addCourse(newStudent, courseID, index, false);
+						}
+					}
+
+					return true;
+					
+				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) && checkWaitList) {
+					HashMap<String, String> studentsCourses = currentStudent.getWaitListedCourses();
+					if(!studentsCourses.containsKey(courseID))
+						return false;
+
+					studentsCourses.remove(courseID, index);
+					currentStudent.setWaitListedCourses(studentsCourses);
+				} else {
+					return false;
+				}
+
+				//Update the database.
+				dbControl.updateCourseData(courseID, currentCourse);
+				dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+				return true;
+			}
 		}
+
+		return false;
 	}
+
+	public static boolean dropCourse(Student currentStudent, String courseID, String index){
+		return dropCourse(currentStudent, courseID, index, true);
+	}
+
 	
-	public static void changeIndex(String course, String prevIndex, String newIndex) {
-		DatabaseControl dbControl = new DatabaseControl();
+	public static boolean changeIndex(Student currentStudent, String course, String prevIndex, String newIndex) {
 		
 		Course currentCourse = dbControl.getCourseData(course);
-		Index currentOldIndex = currentCourse.findIndex(prevIndex);
-		Index currentNewIndex = currentCourse.findIndex(newIndex);
-		
-		currentOldIndex.deregisterStudent(currentStudent.getUserID());
-		currentNewIndex.registerStudent(currentStudent.getUserID());
-		
-		// if cannot register to new index, add the student back to the old index
-		//For student as well
-		
-		// TODO: Error checking and adding back student if they never got the index
-		dbControl.updateCourseData(course, currentCourse);
-		dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
-		
+
+		if(currentCourse != null) {
+			if(dropCourse(currentStudent, course, prevIndex, false)){
+				if(addCourse(currentStudent, course, newIndex, false)){
+					return true;
+				}else {
+					addCourse(currentStudent, course, prevIndex, false);
+				}
+			}
+		}
+		return false;
 	}
-	
-	public static void viewRegisteredCourses() {
-		DatabaseControl dbControl = new DatabaseControl();
-		
-		Student currentStud = dbControl.getStudentData(currentStudent.getUserID());
-		HashMap<String, String> listOfRegisteredCourses = currentStud.getRegisteredCourses();
-		
+
+	public static boolean swapIndex(Student currentStudent, String courseID, String currIndex, String friendID, String friendPassword, String friendIndex) {
+
+		Student friend = dbControl.getStudentData(friendID);
+		if (friend == null) {
+			System.out.println("Your friend's username is incorrect!");
+			return false;
+		}
+
+		try {
+			if (Hash.encode(friendPassword) != Password.getHash(friendID)) { // Check friend's password here
+				System.out.println("Your friend's password is incorrect!");
+				return false;
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		if (dropCourse(currentStudent, courseID, currIndex, false) && dropCourse(friend, courseID, friendIndex, false)) {
+			if (addCourse(currentStudent, courseID, friendIndex, false)) {
+				if (addCourse(friend, courseID, currIndex)) {
+					return true;
+				} else {
+					dropCourse(currentStudent, courseID, friendIndex, false);
+				}
+			}
+		}
+
+		addCourse(currentStudent, courseID, currIndex, false);
+		addCourse(friend, courseID, friendIndex, false);
+		return false;
+	}
+
+
+	public static boolean clashBetIndex(Student currentStudent, String courseID, String index) {
+
+		//students registered courses
+		HashMap<String, String> studCourses = currentStudent.getRegisteredCourses();
+
+		//students waitListed courses
+		HashMap<String, String> waitListedCourses = currentStudent.getWaitListedCourses();
+
+		//students registered courseID
+		Set<String> courses = studCourses.keySet();
+		courses.addAll(waitListedCourses.keySet());
+
+		//Course object of the new course
+		Course newCourse = dbControl.getCourseData(courseID);
+
+		//Lectures in the new course
+		Lesson[] newLecture = newCourse.getLectures();
+		ArrayList<WorkingHours> newCourseTimings = new ArrayList<>();
+
+		//all the timings for the lectures of the new course
+		for(Lesson l : newLecture){
+			newCourseTimings.add(l.getTimings());
+		}
+
+		//Working hours of the new lessons
+		for(Index i : newCourse.getCourseIndex()){
+			if(i.getIndexCode().equals(index)){
+				for(Lesson l : i.getLessons()){
+					newCourseTimings.add(l.getTimings());
+				}
+			}
+		}
+
+		//newCourseTimings contains all the timings for all lessons and lectures in the new course and index
+
+		//loop through all the registered courses
+		for(String s : courses){
+
+			//Index code within the course to which the student is enrolled
+			String tempIndexCode = studCourses.get(s);
+
+			//getting the course object for the current iteration
+			Course tempCourse = dbControl.getCourseData(s);
+			//Lecture timings for the registered course
+			Lesson[] tempLecture = tempCourse.getLectures();
+			ArrayList<WorkingHours> registeredCourseTimings = new ArrayList<>();
+			for(Lesson l : tempLecture){
+				registeredCourseTimings.add(l.getTimings());
+			}
+
+			//looping through all the indices in the course to find the index the student is registered to
+			for(Index i : tempCourse.getCourseIndex()){
+
+				//match found, now get the timings of the index for lectures and lessons
+				if(i.getIndexCode().toUpperCase().equals(tempIndexCode.toUpperCase())){
+					for(Lesson l : i.getLessons()){
+						registeredCourseTimings.add(l.getTimings());
+					}
+				}
+
+				//registeredCourseTimings contains all the timings in the registered course.
+				//now check for clash by looping through all the timings
+
+				for(WorkingHours h1 : newCourseTimings){
+					for(WorkingHours h2 : registeredCourseTimings){
+						if(h1.checkClash(h2)){
+							return true;
+						}else{
+							continue;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public static void viewRegisteredCourses(Student currentStudent) {
+
+		HashMap<String, String> listOfRegisteredCourses = currentStudent.getRegisteredCourses();
+
 		System.out.println("Course\tIndex");
 		for (Map.Entry<String, String> mapElement : listOfRegisteredCourses.entrySet()) {
-			String key = (String)mapElement.getKey();
-			String value = (String)mapElement.getValue();
-			
+			String key = mapElement.getKey();
+			String value = mapElement.getValue();
+
 			System.out.printf("%s\t%s\n", key, value);
 		}
 	}
-	
-	public static void swapIndex(String friendID) {
-		//TODO
-	}
-	
-	//TODO
-	public void isClashBetIndex(Index newIndex) {
-		// get every course the student is already enrolled in and check evry course
-		// check for index in student clashes with the new index
-		DatabaseControl dbControl = new DatabaseControl();
+
+	public static void checkVacancy(String course) {
+
+		Course currentCourse = dbControl.getCourseData(course);
 		
-		Student temp = dbControl.getStudentData(currentStudent.getUserID());
-		List<String> listOfIndices = new ArrayList<String>(temp.getRegisteredCourses().values());
-		
-		for (int i=0; i<listOfIndices.size(); i++) {
-			//if (listOfIndices.get(i))
-				//retrieve index from database for each index
-				//check for clash with the new index
+		if (currentCourse != null) {
+			ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
+	
+			System.out.println("Index\tVacancy");
+			for (Index i : listOfIndex) {
+				System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
+			}
 		}
 	}
 }

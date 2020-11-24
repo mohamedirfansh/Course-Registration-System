@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
-public class Student extends Users{
+public class Student extends User{
 	/*
 	 * Attribute: HashMap<String, String> registeredCourses
 	 * -> Key: CourseID, Value: index of added course, which determines the timetable slot
@@ -14,6 +14,7 @@ public class Student extends Users{
 	 */
 
 	private HashMap<String, String> registeredCourses = new HashMap<>();
+	private HashMap<String, String> waitListedCourses = new HashMap<>();
 	private int academicUnits = 0;
 	public static final long serialVersionUID = 2L;
 
@@ -21,7 +22,7 @@ public class Student extends Users{
 			String gender, String nationality, int schoolID,
 			String identificationKey) throws NoSuchAlgorithmException {
 
-		super(name, userID, userPW, gender, nationality, schoolID, identificationKey);
+		super(name, userID, gender, nationality, schoolID, identificationKey);
 	}
 
 	/*
@@ -41,6 +42,9 @@ public class Student extends Users{
 
 	public void setRegisteredCourses(HashMap<String, String> coursesDetails) { this.registeredCourses = coursesDetails; }
 	public HashMap<String, String> getRegisteredCourses() { return this.registeredCourses; }
+
+	public void setWaitListedCourses(HashMap<String, String>  waitListedCourses){ this.waitListedCourses = waitListedCourses; }
+	public HashMap<String, String> getWaitListedCourses(){ return this.waitListedCourses; }
 
 	public void setAcademicUnits(int numberOfAU) { this.academicUnits = numberOfAU; }
 	public int getNumberOfAUs() { return this.academicUnits; }
