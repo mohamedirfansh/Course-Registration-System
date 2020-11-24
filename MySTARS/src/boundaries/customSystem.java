@@ -72,8 +72,10 @@ public class customSystem {
 		switch(choice) {
 		case 1:
 			StaffUI.staffUIInit(staff);
+			break;
 		case 2:
 			StudentUI.StudentUIMain(student);
+			break;
 		}
 	}
 }

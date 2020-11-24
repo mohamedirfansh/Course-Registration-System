@@ -80,15 +80,15 @@ public class StaffUI {
                 
                 case 4:
                     getAllCourses(currentStaff);
-                    System.out.println("Please enter the Course's Name:");
+                    System.out.println("Please enter the Course's updated Name:");
                     sc.nextLine();
                     String coName = sc.nextLine();
-                    System.out.println("Please enter the Course's Code:");
+                    System.out.println("Please enter the Course's updated Code:");
                     String coCode = sc.next();
-                    System.out.println("Please enter the Course's School name:");
+                    System.out.println("Please enter the Course's updated School name:");
                     sc.nextLine();
                     String schName = sc.nextLine();
-                    System.out.println("Please enter the Course's Academic Units:");
+                    System.out.println("Please enter the Course's updated Academic Units:");
                     int coAU = sc.nextInt();
                     updateCourseInSchool(currentStaff, coCode, coName, schName, coAU);
                     break;

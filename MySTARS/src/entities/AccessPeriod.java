@@ -52,9 +52,7 @@ public class AccessPeriod implements Serializable {
 			// Parse needed to convert the date from string type to date type for comparison
 			try {
 				validStartDate = dateFormat.parse(this.startDate);
-				System.out.println("New Start Date: " + validStartDate);
 				validEndDate = dateFormat.parse(this.endDate);
-				System.out.println("New End Date: " + validEndDate);
 				
 				// Checking if current date is within the access window (-ve if currDate is before validEndDate)
 				return (currentDate.compareTo(validEndDate) <= 0 && validStartDate.compareTo(validEndDate) < 0);
