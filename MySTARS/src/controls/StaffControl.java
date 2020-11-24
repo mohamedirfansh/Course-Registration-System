@@ -56,8 +56,7 @@ public class StaffControl {
         Student student;
 		try {
 			student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
-            Password.addNewPassword(userID, userPW);
-            Password.writeToFile();
+            db.addStudentPassword(userID, userPW);
 
 			int schoolIDTwo = currentStaff.getSchoolID(); 
 	        School school = db.getSchoolData(schoolIDTwo);
