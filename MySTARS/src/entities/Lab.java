@@ -75,7 +75,6 @@ public class Lab extends Lesson{
 
         try {
 	    String labVenueFilePath = System.getProperty("user.dir") + "/src/data/labVenues.txt";
-            /* validVenues = new BufferedReader(new FileReader("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/labVenues.txt")); */
 
 	    validVenues = new BufferedReader(new FileReader(labVenueFilePath));
 
@@ -83,7 +82,6 @@ public class Lab extends Lesson{
             while (temp != null) {
                 if (newVenue.toUpperCase().equals(temp.toUpperCase())) {
                     validVenues.close();
-		    System.out.println("Successfully added LAB");
                     return true;
                 }
                 temp = validVenues.readLine();
