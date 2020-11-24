@@ -27,7 +27,7 @@ public class createCourseData {
 
 		WorkingHours SS2TutorialHours = new WorkingHours("09:30", "10:30", 2);
 		WorkingHours SS2LabHours = new WorkingHours("13:30", "15:30", 2);
-		course1.findIndex("CZ1007SS2").addLesson("TUT", "TR18", SS1TutorialHours); 
+		course1.findIndex("CZ1007SS2").addLesson("TUT", "TR15", SS1TutorialHours); 
 		course1.findIndex("CZ1007SS2").addLesson("LAB", "SPL", SS1LabHours);
 		course1.findIndex("CZ1007SS2").registerStudent("U234760H");
 		course1.findIndex("CZ1007SS2").registerStudent("U084287J");
@@ -53,28 +53,29 @@ public class createCourseData {
 		course2.findIndex("CZ2001SS1").registerStudent("U973243E");
 		course2.findIndex("CZ2001SS1").registerStudent("U998342C");
 		course2.findIndex("CZ2001SS1").registerStudent("U198752A");
+		System.out.println(course2.getLectures()[0].getVenue());
 
 
 		course2.addIndex("CZ2001SS2", "SS2");
 		WorkingHours CZ2001SS2TutorialHours = new WorkingHours("09:30", "10:30", 3);
 		WorkingHours CZ2001SS2LabHours = new WorkingHours("13:30", "15:30", 3);
-		course2.findIndex("CZ2001SS2").addLesson("TUT", "TR18", CZ2001SS2TutorialHours); 
+		course2.findIndex("CZ2001SS2").addLesson("TUT", "TR15", CZ2001SS2TutorialHours); 
 		course2.findIndex("CZ2001SS2").addLesson("LAB", "SPL", CZ2001SS2LabHours);
 
 		/* NBS Courses */
 		Course course3 = new Course("Business Finance", "BU8201", "Nanyang Business School", 3);
 		WorkingHours course3LectureHours = new WorkingHours("08:30", "09:30", 2);
-		course3.addCourseLecture("LT3", course3LectureHours);
+		course3.addCourseLecture("LT16", course3LectureHours);
 		course3.addIndex("BU8201BU1", "BU1");
 		course3.addIndex("BU8201BU2", "BU2");
 
 		WorkingHours BU8201BU1TutorialHours = new WorkingHours("09:30", "10:30", 2);
-		course3.findIndex("BU8201BU1").addLesson("TUT", "TR1", BU8201BU1TutorialHours); 
+		course3.findIndex("BU8201BU1").addLesson("TUT", "TR+77", BU8201BU1TutorialHours); 
 		course3.findIndex("BU8201BU1").registerStudent("U092134A");
 		course3.findIndex("BU8201BU1").registerStudent("U093154J");
 
 		WorkingHours BU8201BU2TutorialHours = new WorkingHours("09:30", "10:30", 3);
-		course3.findIndex("BU8201BU2").addLesson("TUT", "TR28", BU8201BU2TutorialHours); 
+		course3.findIndex("BU8201BU2").addLesson("TUT", "TR+16", BU8201BU2TutorialHours); 
 		course3.findIndex("BU8201BU2").registerStudent("U973243E");
 		course3.findIndex("BU8201BU2").registerStudent("U998342C");
 		course3.findIndex("BU8201BU2").registerStudent("U198752A");
@@ -82,24 +83,20 @@ public class createCourseData {
 		// SSS Courses
 		Course course5 = new Course("Introduction to Psychology", "HP1000", "School of Social Sciences", 3);
 		WorkingHours course5LectureHours = new WorkingHours("08:30", "09:30", 4);
-		course5.addCourseLecture("LT7", course5LectureHours);
+		course5.addCourseLecture("LT15", course5LectureHours);
 		course5.addIndex("HP1000HP1", "HP1");
 		course5.addIndex("HP1000HP2", "HP2");
 
 		WorkingHours HP1000HP1TutorialHours = new WorkingHours("09:30", "10:30", 4);
-		course5.findIndex("HP1000HP1").addLesson("TUT", "TR20", HP1000HP1TutorialHours); 
+		course5.findIndex("HP1000HP1").addLesson("TUT", "TR15", HP1000HP1TutorialHours); 
 		course5.findIndex("HP1000HP1").registerStudent("U912734G");
 		course5.findIndex("HP1000HP1").registerStudent("U193274P");
 
 		WorkingHours HP1000HP2TutorialHours = new WorkingHours("09:30", "10:30", 4);
-		course5.findIndex("HP1000HP2").addLesson("TUT", "TR38", HP1000HP2TutorialHours); 
+		course5.findIndex("HP1000HP2").addLesson("TUT", "TR16", HP1000HP2TutorialHours); 
 		course5.findIndex("HP1000HP2").registerStudent("U298733J");
 		course5.findIndex("HP1000HP2").registerStudent("U129248J");
 		course5.findIndex("HP1000HP2").registerStudent("U193844K");
-
-
-				
-		 
 
 		courseData.add(course1);
 		courseData.add(course2);
