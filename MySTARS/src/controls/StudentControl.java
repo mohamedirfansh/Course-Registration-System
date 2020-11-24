@@ -14,6 +14,7 @@ import entities.*;
 public class StudentControl {
 
 	private static DatabaseControl dbControl = new DatabaseControl();
+	private static Notification notif = new Email();
 	Scanner scn = new Scanner(System.in);
 	
 	/**
@@ -55,7 +56,7 @@ public class StudentControl {
 		if(!currentIndex.registerStudent(currentStudent.getUserID())) {
 			System.out.println("Failed to register student. Adding student to waitList.");
 
-			if(currentIndex.addStudentToWaitList(currentStudent.getUserID())){
+			if(currentIndex.addStudentToWaitList(currentStudent.getUserID()) && checkWaitList == true){
 				System.out.println("Student added to waitlist.");
 				HashMap<String, String> studentsWaitListedCourses = currentStudent.getWaitListedCourses();
 				studentsWaitListedCourses.put(courseID, index);
@@ -64,6 +65,7 @@ public class StudentControl {
 				// Update the database with the new info
 				dbControl.updateCourseData(courseID, currentCourse);
 				dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+				notif.sendWaitListedMessage(currentStudent.getUserID(), courseID, index);
 			}else{
 				System.out.println("Student already in waitlist.");
 			}
@@ -86,6 +88,10 @@ public class StudentControl {
 		// Update the database with the new info
 		dbControl.updateCourseData(courseID, currentCourse);
 		dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+
+		if(checkWaitList){
+			notif.sendRegisterSuccessfulMessage(currentStudent.getUserID(), courseID, index);
+		}
 		
 		return true;
 	}
@@ -135,7 +141,9 @@ public class StudentControl {
 						//check if the student exists
 						if(newStudentID != null) {
 							Student newStudent = dbControl.getStudentData(newStudentID);
-							addCourse(newStudent, courseID, index, false);
+							if(addCourse(newStudent, courseID, index, false)){
+								notif.sendRegisterSuccessfulMessage(newStudent.getUserID(), courseID, index);
+							}
 						}
 					}
 				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) && checkWaitList) {
@@ -150,6 +158,10 @@ public class StudentControl {
 				}
 
 				//Update the database.
+				if(checkWaitList){
+					notif.sendDropCourseMessage(currentStudent.getUserID(), courseID, index);
+				}
+
 				dbControl.updateCourseData(courseID, currentCourse);
 				dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
 				return true;
@@ -176,6 +188,13 @@ public class StudentControl {
 		if(currentCourse != null) {
 			if(dropCourse(currentStudent, course, prevIndex, false)){
 				if(addCourse(currentStudent, course, newIndex, false)){
+					String frontOfWaitList = currentCourse.findIndex(prevIndex).getFrontOfWaitList();
+					Student waitListedStudent = dbControl.getStudentData(frontOfWaitList);
+
+					if(waitListedStudent != null) {
+						addCourse(waitListedStudent, course, prevIndex);
+					}
+					notif.sendRegisterSuccessfulMessage(currentStudent.getUserID(), course, newIndex);
 					return true;
 				}else {
 					addCourse(currentStudent, course, prevIndex, false);
@@ -204,7 +223,9 @@ public class StudentControl {
 
 		if (dropCourse(currentStudent, courseID, currIndex, false) && dropCourse(friend, courseID, friendIndex, false)) {
 			if (addCourse(currentStudent, courseID, friendIndex, false)) {
-				if (addCourse(friend, courseID, currIndex)) {
+				if (addCourse(friend, courseID, currIndex, false)) {
+					notif.sendRegisterSuccessfulMessage(currentStudent.getUserID(), courseID, friendIndex);
+					notif.sendRegisterSuccessfulMessage(friend.getUserID(), courseID, currIndex);
 					return true;
 				} else {
 					dropCourse(currentStudent, courseID, friendIndex, false);
@@ -242,9 +263,7 @@ public class StudentControl {
 
 		//Lectures in the new course
 		Lesson[] newLecture = newCourse.getLectures();
-//		System.out.println(newLecture[0].getTimings().findDuration());
 		ArrayList<WorkingHours> newCourseTimings = new ArrayList<>();
-
 
 
 		//all the timings for the lectures of the new course
@@ -265,10 +284,6 @@ public class StudentControl {
 					newCourseTimings.add(l.getTimings());
 				}
 			}
-		}
-
-		for(WorkingHours h : newCourseTimings){
-			System.out.println(h.findDuration());
 		}
 
 		//newCourseTimings contains all the timings for all lessons and lectures in the new course and index
@@ -339,9 +354,9 @@ public class StudentControl {
 		if (currentCourse != null) {
 			ArrayList<Index> listOfIndex = currentCourse.getCourseIndex();
 	
-			System.out.println("Index\t\tVacancy");
+			System.out.println("Index\tVacancy");
 			for (Index i : listOfIndex) {
-				System.out.printf("%s\t%d/%d\n", i.getIndexCode(), i.getVacancy(), i.getClassSize());
+				System.out.printf("%s\t%d\n", i.getIndexCode(), i.getVacancy());
 			}
 		}
 	}
