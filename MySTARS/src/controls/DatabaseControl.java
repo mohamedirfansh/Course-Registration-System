@@ -32,6 +32,23 @@ public class DatabaseControl {
 
 	// No special Constructor for DatabaseControl needed 
 
+	public boolean addStudentPassword(String userID, String newPassword) throws NoSuchAlgorithmException {
+
+                tempPW = (HashMap<String, String>)SerializeDB.readSerializedMapObject(STUDENTPASSWORD);
+
+                String newHashedPassword = Hash.encode(newPassword);
+
+                // add to the HashMap the new User ID-Password pair
+                tempPW.put(userID, newHashedPassword);
+
+                // write to binary file
+                SerializeDB.writeSerializedObject(STUDENT, temp);
+
+                System.out.println("in DatabaseControl.addStudentPassword, added password successfully");
+
+				return true;
+	}
+
 	public String getStudentPassword(String userID) {
 
 		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STUDENTPASSWORD);
@@ -85,6 +102,27 @@ public class DatabaseControl {
 
 		// return null object if not found
 		System.out.println("Student " + userID + " not found!");
+		return empty;
+	}
+	
+	public Student getStudentDataID(String identificationKey) {
+
+		temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
+
+		Student empty = null;
+
+		// Search through the list of Student objects
+		// return object if found
+		for (int i = 0; i < temp.size(); i++) {
+			Student u = (Student) temp.get(i);
+			if (u.getIDKey().equals(identificationKey)) {
+				System.out.println("Student " + identificationKey + " found!");
+				return u;
+			}
+		}
+
+		// return null object if not found
+		System.out.println("Student " + identificationKey + " not found!");
 		return empty;
 	}
 

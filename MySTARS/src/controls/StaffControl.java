@@ -4,6 +4,8 @@ import entities.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /* StaffControl
 This class handles all of the functionality for the staff (admin) user. Essentially
@@ -55,16 +57,31 @@ public class StaffControl {
      * @return A boolean variable. true if the update was successful else false.
      */
     public static boolean addStudent(Staff currentStaff, String name, String userID, String userPW, String gender, String nationality, int schoolID, String identificationKey) {
-        
-        Student student;
-		try {
-			student = new Student(name, userID, userPW, gender, nationality, schoolID, identificationKey);
-            db.addStudentPassword(userID, userPW);
+        try {
 
-			int schoolIDTwo = currentStaff.getSchoolID(); 
-	        School school = db.getSchoolData(schoolIDTwo);
-	        ArrayList<String> allStudents = school.getAllStudents();
-	        allStudents.add(identificationKey);
+            // Check if identificationKey matches UXXXXXXX[A-Z]
+            Pattern p = Pattern.compile("U[0-9]{8}[A-Z]");
+            Matcher m = p.matcher(identificationKey);
+            if (!m.find()) {
+                System.out.println("Please enter a valid indentification key!");
+                return false;
+            }
+
+            int schoolIDTwo = currentStaff.getSchoolID();
+            School school = db.getSchoolData(schoolIDTwo);
+            ArrayList<String> allStudents = school.getAllStudents();
+
+            // Check if student already exists
+            for (String stuID : allStudents) {
+                if (stuID.equals(identificationKey)) {
+                    System.out.println("Student already exists!");
+                    return false;
+                }
+            }
+
+            Student student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
+            db.addStudentPassword(userID, userPW);
+            allStudents.add(identificationKey);
             school.setAllStudents(allStudents);
             
             return (db.updateSchoolData(schoolID, school) && db.addStudentData(student)); 
@@ -74,7 +91,7 @@ public class StaffControl {
 			return false;
 		}
     }
-
+    // Shows class twice
     /**
      * addCourse: Adds a new course to a staff's school and to the course database.
      * 
@@ -92,6 +109,14 @@ public class StaffControl {
         int schoolIDThree = currentStaff.getSchoolID();
         School school = db.getSchoolData(schoolIDThree);
         ArrayList <String> allCourses = school.getAllCourses();
+
+        // Check if course already exists
+        for (String courseID : allCourses) {
+            if (courseCode.equals(courseID)) {
+                System.out.println("Course code already exists!");
+                return false;
+            }
+        }
         allCourses.add(courseCode);
         school.setAllCourses(allCourses);
         
@@ -187,7 +212,7 @@ public class StaffControl {
 
         // Get all student IDs enrolled in chosen index of course 
         for (Index i : allIndices) {
-            if (i.getIndexCode() == indexCode) {
+            if (i.getIndexCode().equals(indexCode)) {
                 allIndexStudentsID.addAll(i.getEnrolled());
             }
         }
