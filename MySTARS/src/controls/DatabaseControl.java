@@ -84,7 +84,7 @@ public class DatabaseControl {
 
 		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STAFFPASSWORD);
 		
-		// Search through list of Student objects
+		// Search through list of Staff objects
 		// if found, replace with new object
 		// write to binary file and return
 		for (String key: tempPW.keySet()) {
