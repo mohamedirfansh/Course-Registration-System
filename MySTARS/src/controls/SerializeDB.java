@@ -1,5 +1,6 @@
 package controls;
 import java.io.IOException;
+import entities.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -34,7 +35,30 @@ public class SerializeDB
 			fis = new FileInputStream(filename);
 			in = new ObjectInputStream(fis);
 			pDetails = (ArrayList) in.readObject();
+			System.out.println("in SerializeDB");
+			System.out.println("Read in Array size " + pDetails.size());
 			in.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		return pDetails;
+	}
+
+	public static List readSerializedStudentObject(String filename) {
+		ArrayList<Student> pDetails = new ArrayList<Student>(); 
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try {
+			fis = new FileInputStream(filename);
+			in = new ObjectInputStream(fis);
+			pDetails = (ArrayList) in.readObject();
+			in.close();
+			fis.close();
+			System.out.println("in SerializeDB");
+			System.out.println("Read in Array size " + pDetails.size());
+			
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (ClassNotFoundException ex) {
@@ -103,6 +127,7 @@ public class SerializeDB
 			out = new ObjectOutputStream(fos);
 			out.writeObject(list);
 			out.close();
+			fos.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

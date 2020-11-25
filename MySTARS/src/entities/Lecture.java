@@ -68,7 +68,9 @@ public class Lecture extends Lesson{
     public boolean checkValidVenue(String newVenue) {
         BufferedReader validVenues;
         try {
-	String lectureVenueFilePath = System.getProperty("user.dir") + "/src/data/lectureVenues.txt";
+	//String lectureVenueFilePath = System.getProperty("user.dir") + "/src/data/lectureVenues.txt";
+	String lectureVenueFilePath = System.getProperty("user.dir") + "/../data/lectureVenues.txt";
+
             validVenues = new BufferedReader(new FileReader(lectureVenueFilePath));
 
             String temp = validVenues.readLine();

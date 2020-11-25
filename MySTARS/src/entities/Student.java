@@ -1,6 +1,5 @@
 package entities;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 
@@ -17,10 +16,9 @@ import java.util.HashMap;
  * -> academicUnits : int, which is the sum total of all the credits for the courses the student is currently registered in.
  */
 public class Student extends User{
-	private HashMap<String, String> registeredCourses = new HashMap<>();
-	private HashMap<String, String> waitListedCourses = new HashMap<>();
+	private HashMap<String, String> registeredCourses = new HashMap<>(20);
+	private HashMap<String, String> waitListedCourses = new HashMap<>(20);
 	private int academicUnits = 0;
-	public static final long serialVersionUID = 2L;
 
 
 	/**

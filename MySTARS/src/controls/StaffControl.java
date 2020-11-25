@@ -68,6 +68,11 @@ public class StaffControl {
             school.setAllStudents(allStudents);
 
             return (db.updateSchoolData(schoolID, school) && db.addStudentData(student));
+	    //db.updateSchoolData(schoolID, school);
+	    //db.addStudentData(student);
+
+	    //return true;
+
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

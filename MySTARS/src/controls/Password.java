@@ -41,4 +41,18 @@ public class Password implements Serializable {
 	public static HashMap<String, String> getHashMap() {
 		return allPW;
 	}
+	
+	public static void addNewPassword(String userID, String inputPassword) throws NoSuchAlgorithmException {
+		String hashedPassword = Hash.encode(inputPassword);
+		allPW.put(userID, hashedPassword);
+	}
+
+	public static void updatePassword(String userID, String updatedPassword) throws NoSuchAlgorithmException {
+		String newHashedPassword = Hash.encode(updatedPassword);
+		for (String key : allPW.keySet()) {
+			if (key.equals(userID)) {
+				allPW.replace(key, newHashedPassword);
+			}
+		}
+	}
 }

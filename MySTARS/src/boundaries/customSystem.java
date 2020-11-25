@@ -6,6 +6,7 @@ import controls.DatabaseControl;
 import entities.Hash;
 import entities.Staff;
 import entities.Student;
+import entities.*;
 
 /**
  * The custom system class provides a UI to the user that can be used to access the student or staff accounts.
@@ -46,7 +47,8 @@ public class customSystem {
 			System.out.println();
 			System.out.print("Enter your username: ");
 			String input_uid = input.next();
-			String input_pw = input.next().strip();
+			String input_pw = PasswordField.readPassword();
+			//String input_pw = input.next().strip();
 			String hashedInput = Hash.encode(input_pw);
 			
 			if (choice == '2') {

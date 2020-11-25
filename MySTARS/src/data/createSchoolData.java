@@ -12,7 +12,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public class createSchoolData {
 	
-	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
+	//static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
+	static final String SCHOOL = System.getProperty("user.dir") + "/../data/school.dat";
+
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		ArrayList<School> schoolData = new ArrayList();
