@@ -20,7 +20,7 @@ public class Student extends User{
 	private HashMap<String, String> waitListedCourses = new HashMap<>(20);
 	private int academicUnits = 0;
 
-
+  
 	/**
 	 * Student constructor to initialize the student object. It takes in the below specified parameters and calls the base
 	 * class constructor.

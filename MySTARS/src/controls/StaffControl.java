@@ -68,7 +68,7 @@ public class StaffControl {
                 System.out.println("Please enter a valid indentification key!");
                 return false;
             }
-
+          
             int schoolIDTwo = currentStaff.getSchoolID();
             School school = db.getSchoolData(schoolIDTwo);
             ArrayList<String> allStudents = school.getAllStudents();
@@ -95,6 +95,17 @@ public class StaffControl {
             int schoolIDTwo = currentStaff.getSchoolID();
             School school = db.getSchoolData(schoolIDTwo);
             ArrayList<String> allStudents = school.getAllStudents();
+
+            // Check if student already exists
+            for (String stuID : allStudents) {
+                if (stuID.equals(identificationKey)) {
+                    System.out.println("Student already exists!");
+                    return false;
+                }
+            }
+
+            Student student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
+            db.addStudentPassword(userID, userPW);
             allStudents.add(identificationKey);
             school.setAllStudents(allStudents);
 
@@ -110,7 +121,7 @@ public class StaffControl {
             return false;
         }
     }
-
+    // Shows class twice
     /**
      * addCourse: Adds a new course to a staff's school and to the course database.
      *
