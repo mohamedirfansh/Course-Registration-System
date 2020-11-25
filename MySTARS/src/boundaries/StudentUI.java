@@ -132,7 +132,7 @@ public class StudentUI {
 		DatabaseControl dbControl = new DatabaseControl();
 		School studentSchool = dbControl.getSchoolData(currentStudent.getSchoolID());
 		
-		if (!(studentSchool.getAccessPeriod().isValidPeriod())) {
+		if (!(studentSchool.getAccessPeriod().isValidLoginPeriod())) {
 			System.out.println("You are not allowed to access MYStars now. Come back when your access period starts!");
 			return false;
 		}

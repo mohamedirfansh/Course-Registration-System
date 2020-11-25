@@ -74,7 +74,8 @@ public class Lab extends Lesson{
         BufferedReader validVenues;
 
         try {
-	    String labVenueFilePath = System.getProperty("user.dir") + "/src/data/labVenues.txt";
+	    /*String labVenueFilePath = System.getProperty("user.dir") + "/src/data/labVenues.txt";*/
+	    String labVenueFilePath = System.getProperty("user.dir") + "/../data/labVenues.txt";
 
 	    validVenues = new BufferedReader(new FileReader(labVenueFilePath));
 

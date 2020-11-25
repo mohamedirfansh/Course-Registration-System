@@ -11,7 +11,10 @@ import java.security.NoSuchAlgorithmException;
  */
 public class createCourseData {
 	
-	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
+/* 	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
+ *  	*/
+
+	static final String COURSE = System.getProperty("user.dir") + "/course.dat";
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		ArrayList<Course> courseData = new ArrayList();

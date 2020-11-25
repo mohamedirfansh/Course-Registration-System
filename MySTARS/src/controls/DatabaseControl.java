@@ -41,13 +41,14 @@ public class DatabaseControl {
 	 * The below attributes define the pathnames to acess the database files. This pathname could differ according
 	 * to the OS.
 	 */
-	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
+	
+  static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
 	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
 	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
 	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
 	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
 	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
-	
+
 	/**
 	 * getStudentPassword() is used to read the student account password from the database, and can be used to
 	 * verify the student trying to access the database.
@@ -76,7 +77,7 @@ public class DatabaseControl {
 
 		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STAFFPASSWORD);
 		
-		// Search through list of Student objects
+		// Search through list of Staff objects
 		// if found, replace with new object
 		// write to binary file and return
 		for (String key: tempPW.keySet()) {
@@ -109,6 +110,8 @@ public class DatabaseControl {
 
 		// write to binary file
 		SerializeDB.writeSerializedObject(STUDENT, temp);
+
+		System.out.println("in DatabaseControl.addStudentPassword, added password successfully");
 
 		return true;
 	}
@@ -201,7 +204,10 @@ public class DatabaseControl {
 	 */
 	public boolean addStudentData(Student newUser) {
 
-		temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
+		System.out.println("In DBControl addStudentData");
+		SerializeDB sdb = new SerializeDB();
+		temp = (ArrayList)sdb.readSerializedObject("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/student.ser");
+		System.out.println("size of object array" + temp.size());
 		for (int i = 0; i < temp.size(); i++) {
 			Student u = (Student)temp.get(i);
 			if (u.getUserID().equals(newUser.getUserID())) {
@@ -213,7 +219,7 @@ public class DatabaseControl {
 		temp.add(newUser);
 
 		// write to binary file
-		SerializeDB.writeSerializedObject(STUDENT, temp);
+		SerializeDB.writeSerializedObject("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/student.ser",temp);
 
 		return true;
 	}
@@ -261,12 +267,12 @@ public class DatabaseControl {
 	 */
 	public boolean updateStudentData(String userID, Student updatedUser) {
 
-		temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
+		temp = (ArrayList)SerializeDB.readSerializedObject("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/student.ser");
 		for (int i = 0; i < temp.size(); i++) {
 			Student u = (Student)temp.get(i);
 			if (u.getUserID().equals(userID)) {
 				temp.set(i, updatedUser);
-				SerializeDB.writeSerializedObject(STUDENT, temp);
+				SerializeDB.writeSerializedObject("/home/jjkoh/Desktop/y2s1/cz2002/OODP-Project/MySTARS/src/data/student.ser", temp);
 				return true;
 			}
 		}
