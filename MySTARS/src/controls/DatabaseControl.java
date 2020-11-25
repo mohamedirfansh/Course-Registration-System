@@ -48,14 +48,6 @@ public class DatabaseControl {
 	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
 	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
 	
-//	static final String STUDENT = System.getProperty("user.dir") + "/../data/student.dat";
-//	static final String STAFF = System.getProperty("user.dir") + "/../data/staff.dat";
-//	static final String COURSE = System.getProperty("user.dir") + "/../data/course.dat";
-//	static final String SCHOOL = System.getProperty("user.dir") + "/../data/school.dat";
-//	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/../data/studentPassword.dat";
-//	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/../data/staffPassword.dat";
-
-
 	/**
 	 * getStudentPassword() is used to read the student account password from the database, and can be used to
 	 * verify the student trying to access the database.
@@ -156,6 +148,27 @@ public class DatabaseControl {
 			}
 		}
 		return null;
+	}
+	
+	public Student getStudentDataID(String identificationKey) {
+
+		temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
+
+		Student empty = null;
+
+		// Search through the list of Student objects
+		// return object if found
+		for (int i = 0; i < temp.size(); i++) {
+			Student u = (Student) temp.get(i);
+			if (u.getIDKey().equals(identificationKey)) {
+				System.out.println("Student " + identificationKey + " found!");
+				return u;
+			}
+		}
+
+		// return null object if not found
+		System.out.println("Student " + identificationKey + " not found!");
+		return empty;
 	}
 
 

@@ -22,7 +22,7 @@ public class Student extends User{
 	private int academicUnits = 0;
 	public static final long serialVersionUID = 2L;
 
-
+  
 	/**
 	 * Student constructor to initialize the student object. It takes in the below specified parameters and calls the base
 	 * class constructor.
