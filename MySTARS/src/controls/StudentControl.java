@@ -37,6 +37,7 @@ public class StudentControl {
 		
 		Course currentCourse = dbControl.getCourseData(courseID);
 		if(currentCourse == null){
+			StudentUIMsg.courseDoesNotExistMsg();
 			return false;
 		}
 
@@ -143,12 +144,12 @@ public class StudentControl {
 
 				//Check the student exists in the course
 				ArrayList<String> listOfStudents = currentIndex.getEnrolled();
-				if (!(listOfStudents.contains(currentStudent.getUserID()))) {
+				if (!(listOfStudents.contains(currentStudent.getIDKey()))) {
 					StudentUIMsg.notInIndexMsg();
 					return false;
 				}
 
-				if(currentIndex.deregisterStudent(currentStudent.getUserID())){
+				if(currentIndex.deregisterStudent(currentStudent.getIDKey())){
 					HashMap<String, String> studentsCourses = currentStudent.getRegisteredCourses();
 					if(!studentsCourses.containsKey(courseID))
 						return false;
@@ -169,12 +170,13 @@ public class StudentControl {
 						//check if the student exists
 						if(newStudentID != null) {
 							Student newStudent = dbControl.getStudentData(newStudentID);
+							System.out.println(newStudent.getName());
 							if(addCourse(newStudent, courseID, index, false)){
 								notif.sendRegisterSuccessfulMessage(newStudent.getUserID(), courseID, index);
 							}
 						}
 					}
-				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) && checkWaitList) {
+				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getIDKey()) && checkWaitList) {
 					HashMap<String, String> studentsCourses = currentStudent.getWaitListedCourses();
 					if(!studentsCourses.containsKey(courseID))
 						return false;
@@ -452,6 +454,9 @@ public class StudentControl {
 			for (Index i : listOfIndex) {
 				System.out.printf("%s\t%d/%d\n", i.getIndexCode(), i.getVacancy(), i.getClassSize());
 			}
+		}
+		else {
+			System.out.println("Course entered is not valid.");
 		}
 	}
 }

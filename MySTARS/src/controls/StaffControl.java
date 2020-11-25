@@ -4,6 +4,8 @@ import entities.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /* StaffControl
 This class handles all of the functionality for the staff (admin) user. Essentially
@@ -36,8 +38,9 @@ public class StaffControl {
 
         int schoolID = currentStaff.getSchoolID();
         School school = db.getSchoolData(schoolID);
-        return school.setAccessPeriod(startDate, endDate);
-
+        boolean isUpdated =  school.setAccessPeriod(startDate, endDate);
+	db.updateSchoolData(schoolID, school);
+	return isUpdated;
     }
 
     /**
@@ -56,9 +59,37 @@ public class StaffControl {
      */
     public static boolean addStudent(Staff currentStaff, String name, String userID, String userPW, String gender, String nationality, int schoolID, String identificationKey) {
 
-        Student student;
         try {
-            student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
+        
+            // Check if identificationKey matches UXXXXXXX[A-Z]
+            Pattern p = Pattern.compile("U[0-9]{6}[A-Z]");
+            Matcher m = p.matcher(identificationKey);
+            if (!m.find()) {
+                System.out.println("Please enter a valid indentification key!");
+                return false;
+            }
+
+            int schoolIDTwo = currentStaff.getSchoolID();
+            School school = db.getSchoolData(schoolIDTwo);
+            ArrayList<String> allStudents = school.getAllStudents();
+
+            // Check if student already exists
+            for (String stuID : allStudents) {
+                if (stuID.equals(identificationKey)) {
+                    System.out.println("Student already exists!");
+                    return false;
+                }
+            }
+
+            Student student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
+            db.addStudentPassword(userID, userPW);
+            allStudents.add(identificationKey);
+            school.setAllStudents(allStudents);
+
+            return (db.updateSchoolData(schoolID, school) && db.addStudentData(student));
+
+            
+            /*student = new Student(name, userID, gender, nationality, schoolID, identificationKey);
             db.addStudentPassword(userID, userPW);
 
             int schoolIDTwo = currentStaff.getSchoolID();
@@ -71,7 +102,7 @@ public class StaffControl {
 	    //db.updateSchoolData(schoolID, school);
 	    //db.addStudentData(student);
 
-	    //return true;
+	    //return true;*/
 
 
         } catch (NoSuchAlgorithmException e) {
@@ -93,10 +124,27 @@ public class StaffControl {
      */
     public static boolean addCourse(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
 
+        /*Course newCourse = new Course(courseCode, courseName, schoolName, au);
+        int schoolIDThree = currentStaff.getSchoolID();
+        School school = db.getSchoolData(schoolIDThree);
+        ArrayList <String> allCourses = school.getAllCourses();
+        allCourses.add(courseCode);
+        school.setAllCourses(allCourses);
+
+        return (db.updateSchoolData(schoolIDThree, school) && db.addCourseData(newCourse));*/
+        
         Course newCourse = new Course(courseCode, courseName, schoolName, au);
         int schoolIDThree = currentStaff.getSchoolID();
         School school = db.getSchoolData(schoolIDThree);
         ArrayList <String> allCourses = school.getAllCourses();
+
+        // Check if course already exists
+        for (String courseID : allCourses) {
+            if (courseCode.equals(courseID)) {
+                System.out.println("Course code already exists!");
+                return false;
+            }
+        }
         allCourses.add(courseCode);
         school.setAllCourses(allCourses);
 
@@ -151,6 +199,7 @@ public class StaffControl {
     public static ArrayList<Student> getAllStudentsInCourse(String courseCode) {
 
         try {
+        
             Course course = db.getCourseData(courseCode);
             ArrayList<String> allStudentsID = new ArrayList<>();
 
@@ -184,7 +233,7 @@ public class StaffControl {
      * @return An ArrayList of Student objects
      */
     public static ArrayList<Student> getAllStudentsInIndex(String courseCode, String indexCode) {
-        try {
+        /*try {
             Course course = db.getCourseData(courseCode);
             ArrayList<Index> allIndices = course.getCourseIndex();
             ArrayList<String> allIndexStudentsID = new ArrayList<>();
@@ -196,6 +245,31 @@ public class StaffControl {
                 }
             }
 
+            // Get all student objects belonging to enrolled student IDs
+            ArrayList<Student> allStudentsIndex = new ArrayList<>();
+            for (String idx : allIndexStudentsID) {
+                Student stud = db.getStudentDataID(idx);
+                if (stud != null) {
+                    allStudentsIndex.add(stud);
+                }
+            }
+            return allStudentsIndex;
+        } catch(NullPointerException e) {
+            System.out.println("");
+            return new ArrayList<>();
+        }*/
+        
+        try {
+        Course course = db.getCourseData(courseCode);
+        ArrayList<Index> allIndices = course.getCourseIndex();
+        ArrayList<String> allIndexStudentsID = new ArrayList<>();
+
+        // Get all student IDs enrolled in chosen index of course 
+        for (Index i : allIndices) {
+            if (i.getIndexCode().equals(indexCode)) {
+                allIndexStudentsID.addAll(i.getEnrolled());
+            }
+        }
             // Get all student objects belonging to enrolled student IDs
             ArrayList<Student> allStudentsIndex = new ArrayList<>();
             for (String idx : allIndexStudentsID) {

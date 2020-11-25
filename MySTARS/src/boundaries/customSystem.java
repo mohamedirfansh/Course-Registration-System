@@ -71,6 +71,9 @@ public class customSystem {
 			
 			
 			loginedSuccess = hashed.equals(hashedInput) && storedID.equals(input_uid);
+			if (loginedSuccess == false) {
+				System.out.println("UserID or password is incorrect, please try again.");
+			}		
 		}
 		System.out.println("Initializing the interface...");
 		switch(choice) {

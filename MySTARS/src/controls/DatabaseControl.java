@@ -49,7 +49,7 @@ public class DatabaseControl {
 	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
 	*/
 	
-	static final String STUDENT = System.getProperty("user.dir") + "/../data/student.dat";
+	static final String STUDENT = System.getProperty("user.dir") + "/../data/student.ser";
 	static final String STAFF = System.getProperty("user.dir") + "/../data/staff.dat";
 	static final String COURSE = System.getProperty("user.dir") + "/../data/course.dat";
 	static final String SCHOOL = System.getProperty("user.dir") + "/../data/school.dat";
