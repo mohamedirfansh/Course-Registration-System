@@ -1,45 +1,50 @@
 package entities;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
-public class Student extends User{
-	/*
-	 * Attribute: HashMap<String, String> registeredCourses
-	 * -> Key: CourseID, Value: index of added course, which determines the timetable slot
-	 *
-	 * Attribute: academicUnits
-	 * the integer value which represents the current academic load of the student
-	 */
 
+/**
+ * Student is a specific implementation of a user. It extends from the user class and makes use of its general methods
+ * and attributes, as well as adds on to it with its own specialized attributes and methods that are unique to a student.
+ *
+ * Class Attributes:
+ * -> registeredCourses : HashMap<String, String>, which is a list of courseID's (key), and the corresponding index
+ * 				in the course (value) to which the student is enrolled into.
+ * -> waitListedCourses : HashMap<String, String>, which is a list of courseID's (key), and the corresponding index
+ *  				in the course (value) to which the student is waitlisted into.
+ *
+ * -> academicUnits : int, which is the sum total of all the credits for the courses the student is currently registered in.
+ */
+public class Student extends User{
 	private HashMap<String, String> registeredCourses = new HashMap<>();
 	private HashMap<String, String> waitListedCourses = new HashMap<>();
 	private int academicUnits = 0;
 	public static final long serialVersionUID = 2L;
 
+  
+	/**
+	 * Student constructor to initialize the student object. It takes in the below specified parameters and calls the base
+	 * class constructor.
+	 *
+	 * @param name, the name of the student
+	 * @param userID, the unique userID of the student
+	 * @param gender, the gender of the student.
+	 * @param nationality, the nationality of the student
+	 * @param schoolID, the department in which the student resides.
+	 * @param identificationKey, the unique identifier that every student is given.
+	 */
 	public Student(String name, String userID,
 			String gender, String nationality, int schoolID,
-			String identificationKey) throws NoSuchAlgorithmException {
+			String identificationKey){
 
 		super(name, userID, gender, nationality, schoolID, identificationKey);
 	}
 
-	/*
-	 * updateRegisteredCourses:
-	 * @param coursesDetails: updated HashMap containing all the details of courses of the student, whether
-	 *  					  is dropping or adding of new courses for the student
-	 *
-	 * retrieveRegisteredCourses:
-	 * @return: all the registered courses of the student
-	 *
-	 * updateAcademicUnits:
-	 * @param: new value of academic units after changes had been made
-	 *
-	 * retrieveNumberOfAUs:
-	 * @return: integer value of the total number of academic units the student had registered for
-	 */
 
+	/**
+	 * Setters and getters for the unique student attrubutes.
+	 */
 	public void setRegisteredCourses(HashMap<String, String> coursesDetails) { this.registeredCourses = coursesDetails; }
 	public HashMap<String, String> getRegisteredCourses() { return this.registeredCourses; }
 

@@ -7,7 +7,12 @@ import java.util.Arrays;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Class used to pre-load school data into the database.
+ */
 public class createSchoolData {
+	
+	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		ArrayList<School> schoolData = new ArrayList();
@@ -50,11 +55,11 @@ public class createSchoolData {
 		school1.setAllCourses(school1Courses);
 
 		ArrayList<String> school2Courses = new ArrayList<String>(
-				Arrays.asList("BU8201", "AB1301"));
+				Arrays.asList("BU8201"));
 		school2.setAllCourses(school2Courses);
 
 		ArrayList<String> school3Courses = new ArrayList<String>(
-				Arrays.asList("HP1000", "HE9091"));
+				Arrays.asList("HP1000"));
 		school3.setAllCourses(school3Courses);
 
 		school1.setAccessPeriod("20/11/2020 08:00", "25/11/2020 23:00"); 
@@ -69,7 +74,7 @@ public class createSchoolData {
 			SerializeDB sdb = new SerializeDB();
 
 			// write to serialized file - update/insert/delete
-			sdb.writeSerializedObject("school.dat", schoolData);
+			sdb.writeSerializedObject(SCHOOL, schoolData);
 		}
 
 		catch (Exception e) {

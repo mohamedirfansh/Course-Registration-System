@@ -68,7 +68,8 @@ public class Lecture extends Lesson{
     public boolean checkValidVenue(String newVenue) {
         BufferedReader validVenues;
         try {
-            validVenues = new BufferedReader(new FileReader("/Users/aneez.jah/Documents/Java Projects/STARS Planner/Venue/lectureVenues.txt"));
+	String lectureVenueFilePath = System.getProperty("user.dir") + "/src/data/lectureVenues.txt";
+            validVenues = new BufferedReader(new FileReader(lectureVenueFilePath));
 
             String temp = validVenues.readLine();
             while (temp != null) {
@@ -79,7 +80,7 @@ public class Lecture extends Lesson{
                 temp = validVenues.readLine();
             }
         }catch(IOException i){
-            System.out.println("Unable to parse file.");
+            System.out.println("Unable to parse file for lecture.");
         }
 
         return false;

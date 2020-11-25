@@ -4,11 +4,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import controls.DatabaseControl;
 import entities.Hash;
-import entities.PasswordField;
 import entities.Staff;
 import entities.Student;
-import entities.User;
 
+/**
+ * The custom system class provides a UI to the user that can be used to access the student or staff accounts.
+ * After selecting the account type accordingly, and verifying their identity with a password, the respective
+ * methods are displayed depending on their level of access.
+ */
 public class customSystem {
 	
 	public static void main(String[] args) throws NoSuchAlgorithmException {
@@ -20,19 +23,19 @@ public class customSystem {
 		System.out.println("2) Student");
 		System.out.print("> ");
 		
-		int choice = input.nextInt();
+		char choice = input.next().charAt(0);
 		mainloop:
 		while (true) {
 			switch(choice) {
-			case 1:
+			case '1':
 				System.out.println("Staff domain selected...");
 				break mainloop;
-			case 2:
+			case '2':
 				System.out.println("Student domain selected...");
 				break mainloop;
 			default:
 				System.out.println("No selection made with input!");
-				choice = input.nextInt();
+				choice = input.next().charAt(0);
 			}
 		}
 		
@@ -43,11 +46,10 @@ public class customSystem {
 			System.out.println();
 			System.out.print("Enter your username: ");
 			String input_uid = input.next();
-//			String input_pw = PasswordField.readPassword();
 			String input_pw = input.next().strip();
 			String hashedInput = Hash.encode(input_pw);
 			
-			if (choice == 2) {
+			if (choice == '2') {
 				student = allDetails.getStudentData(input_uid);
 				if (student != null) {
 					storedID = student.getUserID();
@@ -70,10 +72,10 @@ public class customSystem {
 		}
 		System.out.println("Initializing the interface...");
 		switch(choice) {
-		case 1:
+		case '1':
 			StaffUI.staffUIInit(staff);
 			break;
-		case 2:
+		case '2':
 			StudentUI.StudentUIMain(student);
 			break;
 		}

@@ -20,7 +20,7 @@ import java.util.*;
  * -> lessons : ArrayList<Lesson>, which is a list of lessons and its timings for this index instance.
  */
 public class Index implements Serializable {
-    private static final int CLASS_SIZE = 30;
+    private static final int CLASS_SIZE = 10;
     private final String indexCode;
     private final String groupName;
     private int vacancy;
@@ -56,6 +56,10 @@ public class Index implements Serializable {
     /**
      * Getters for the class attributes.
      */
+    
+    public int getClassSize() {
+    	return CLASS_SIZE;
+    }
 
     public String getIndexCode() {
         return indexCode;
@@ -299,7 +303,7 @@ public class Index implements Serializable {
      * @param studID, the student ID of the student being searched for in the enrolled list.
      * @return the studentID of the student if the student is found in the list.
      */
-    private String findStudentEnrolled(String studID){
+    public String findStudentEnrolled(String studID){
         //find a student in the registered list and return the position so that the student can be removed from the arrayList
         ListIterator<String> enrolledIterator = enrolled.listIterator();
 
