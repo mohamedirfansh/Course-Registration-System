@@ -12,7 +12,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public class createSchoolData {
 	
-	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
+	//static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
+	static final String SCHOOL = System.getProperty("user.dir") + "/../data/school.ser";
+
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		ArrayList<School> schoolData = new ArrayList();
@@ -64,7 +66,7 @@ public class createSchoolData {
 
 		school1.setAccessPeriod("20/11/2020 08:00", "25/11/2020 23:00"); 
 		school2.setAccessPeriod("21/11/2020 08:00", "25/11/2020 23:00");
-		school3.setAccessPeriod("22/11/2020 08:00", "25/11/2020 23:00");
+		school3.setAccessPeriod("30/11/2020 08:00", "12/12/2020 23:00");
 
 		schoolData.add(school1);
 		schoolData.add(school2);

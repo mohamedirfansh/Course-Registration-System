@@ -14,8 +14,12 @@ import java.security.NoSuchAlgorithmException;
  */
 public class createStaffData {
 	
-	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
-	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
+	/*static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";  */
+
+	static final String STAFF = System.getProperty("user.dir") + "/../data/staff.ser";
+	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/../data/staffPassword.ser";
+
 
 	public static void createStaff() throws NoSuchAlgorithmException {
 		ArrayList<Staff> staffData = new ArrayList();

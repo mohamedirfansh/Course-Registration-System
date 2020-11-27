@@ -33,10 +33,11 @@ public class StudentControl {
 	 * @return boolean, true if the course was enrolled to successfully, and the student was added to the course.
 	 * 			false, in every other case, even if the student is added to the waitlist.
 	 */
-	public static boolean addCourse(Student currentStudent, String courseID, String index, boolean checkWaitList) {
+	public static boolean addCourse(Student currentStudent, String courseID, String index, boolean checkWaitList, boolean checkClash) {
 		
 		Course currentCourse = dbControl.getCourseData(courseID);
 		if(currentCourse == null){
+			StudentUIMsg.courseDoesNotExistMsg();
 			return false;
 		}
 
@@ -49,18 +50,18 @@ public class StudentControl {
 		//check if student is already in the course
 		ArrayList<Index> allIndices = currentCourse.getCourseIndex();
 		for(Index i : allIndices){
-			if(i.findStudentEnrolled(currentStudent.getUserID()) != null){
+			if(i.findStudentEnrolled(currentStudent.getIDKey()) != null){
 				System.out.println("Student already enrolled to course.");
 				return false;
 			}
 		}
 
-		if (clashBetIndex(currentStudent, courseID, index)) {
+		if (clashBetIndex(currentStudent, courseID, index) && checkClash) {
 			System.out.println("Clash of course timings.");
 			return false;
 		}
 
-		if(!currentIndex.registerStudent(currentStudent.getUserID())) {
+		if(!currentIndex.registerStudent(currentStudent.getIDKey())) {
 			System.out.println("No vacancies in index. Attempting to add student to waitList...\n");
 			if(currentIndex.addStudentToWaitList(currentStudent.getUserID()) && checkWaitList == true){
 				HashMap<String, String> studentsWaitListedCourses = currentStudent.getWaitListedCourses();
@@ -73,6 +74,11 @@ public class StudentControl {
 				notif.sendWaitListedMessage(currentStudent.getUserID(), courseID, index);
 				System.out.println("Student added to waitList successfully.\n");
 			}else{
+				//System.out.println("Current waitlist:");
+				// currentIndex.printWaitList();
+				// currentIndex.removeStudentFromWaitList("Kenny1999");
+				//currentIndex.removeStudentFromWaitList("C190122");
+
 				System.out.println("Student already in waitlist.");
 			}
 
@@ -115,7 +121,11 @@ public class StudentControl {
 	 * 			false, in every other case, even if the student is added to the waitlist.
 	 */
 	public static boolean addCourse(Student currentStudent, String courseID, String index){
-		return addCourse(currentStudent, courseID, index, true);
+		return addCourse(currentStudent, courseID, index, true, true);
+	}
+
+	public static boolean addCourse(Student currentStudent, String courseID, String index, boolean checkWaitList){
+		return addCourse(currentStudent, courseID, index, checkWaitList, true);
 	}
 
 	/**
@@ -143,12 +153,12 @@ public class StudentControl {
 
 				//Check the student exists in the course
 				ArrayList<String> listOfStudents = currentIndex.getEnrolled();
-				if (!(listOfStudents.contains(currentStudent.getUserID()))) {
+				if (!(listOfStudents.contains(currentStudent.getIDKey()))) {
 					StudentUIMsg.notInIndexMsg();
 					return false;
 				}
 
-				if(currentIndex.deregisterStudent(currentStudent.getUserID())){
+				if(currentIndex.deregisterStudent(currentStudent.getIDKey())){
 					HashMap<String, String> studentsCourses = currentStudent.getRegisteredCourses();
 					if(!studentsCourses.containsKey(courseID))
 						return false;
@@ -159,28 +169,41 @@ public class StudentControl {
 					studentsAU -= currentCourse.getAu();
 					currentStudent.setAcademicUnits(studentsAU);
 					currentStudent.setRegisteredCourses(studentsCourses);
+					
+					dbControl.updateCourseData(courseID, currentCourse);
+					dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
 
 					//need to enroll the student in front of the queue
 
 					//check the waitlist to retrive the student at the front of the waitlist
 					if(checkWaitList){
 						String newStudentID = currentIndex.getFrontOfWaitList();
+						//System.out.println("StudentID of student in wait list: " + newStudentID);
+						currentIndex.printWaitList();
 
 						//check if the student exists
 						if(newStudentID != null) {
-							Student newStudent = dbControl.getStudentData(newStudentID);
-							if(addCourse(newStudent, courseID, index, false)){
+							Student newStudent = dbControl.getStudentData(newStudentID);	
+							String IDkey = newStudent.getIDKey();
+							if(addCourse(newStudent, courseID, index, false, false)){
 								notif.sendRegisterSuccessfulMessage(newStudent.getUserID(), courseID, index);
 							}
+
 						}
 					}
+					dbControl.updateCourseData(courseID, currentCourse);
+					dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+
 				} else if (currentIndex.removeStudentFromWaitList(currentStudent.getUserID()) && checkWaitList) {
 					HashMap<String, String> studentsCourses = currentStudent.getWaitListedCourses();
+					
 					if(!studentsCourses.containsKey(courseID))
 						return false;
 
 					studentsCourses.remove(courseID, index);
 					currentStudent.setWaitListedCourses(studentsCourses);
+					dbControl.updateCourseData(courseID, currentCourse);
+					dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
 				} else {
 					return false;
 				}
@@ -190,8 +213,7 @@ public class StudentControl {
 					notif.sendDropCourseMessage(currentStudent.getUserID(), courseID, index);
 				}
 
-				dbControl.updateCourseData(courseID, currentCourse);
-				dbControl.updateStudentData(currentStudent.getUserID(), currentStudent);
+				
 				return true;
 			}
 		}
@@ -338,7 +360,7 @@ public class StudentControl {
 		}
 
 		if(waitListedCourses != null) {
-			courses.addAll(waitListedCourses.keySet());
+			//courses.addAll(waitListedCourses.keySet());
 		}
 
 		//Course object of the new course
@@ -452,6 +474,9 @@ public class StudentControl {
 			for (Index i : listOfIndex) {
 				System.out.printf("%s\t%d/%d\n", i.getIndexCode(), i.getVacancy(), i.getClassSize());
 			}
+		}
+		else {
+			System.out.println("Course entered is not valid.");
 		}
 	}
 }

@@ -288,11 +288,9 @@ public class Index implements Serializable {
             if(pos >= 0) {
                 enrolled.remove(pos);
                 ++vacancy;
-
                 return true;
             }
         }
-
         return false;
     }
 

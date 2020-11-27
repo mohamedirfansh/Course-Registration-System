@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.io.File;
 import java.nio.file.Paths;
 import java.nio.file.Path;
+import java.io.*;
 
 /**
  * The DatabaseControl class defines methods that facilitate easy access to the user and school records in terms
@@ -41,13 +42,24 @@ public class DatabaseControl {
 	 * The below attributes define the pathnames to acess the database files. This pathname could differ according
 	 * to the OS.
 	 */
-	static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
+	/*static final String STUDENT = System.getProperty("user.dir") + "/src/data/student.dat";
 	static final String STAFF = System.getProperty("user.dir") + "/src/data/staff.dat";
 	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
 	static final String SCHOOL = System.getProperty("user.dir") + "/src/data/school.dat";
 	static final String STUDENTPASSWORD = System.getProperty("user.dir") + "/src/data/studentPassword.dat";
 	static final String STAFFPASSWORD = System.getProperty("user.dir") + "/src/data/staffPassword.dat";
-	
+	*/
+
+	static File dir = new File(System.getProperty("user.dir"));
+	static String parentpath = dir.getParent();
+	static final String STUDENT = parentpath + "/data/student.ser";
+	static final String STAFF = parentpath + "/data/staff.ser";
+	static final String COURSE = parentpath + "/data/course.ser";
+	static final String SCHOOL = parentpath + "/data/school.ser";
+	static final String STUDENTPASSWORD = parentpath + "/data/studentPassword.ser";
+	static final String STAFFPASSWORD = parentpath + "/data/staffPassword.ser";
+
+
 	/**
 	 * getStudentPassword() is used to read the student account password from the database, and can be used to
 	 * verify the student trying to access the database.
@@ -76,7 +88,7 @@ public class DatabaseControl {
 
 		tempPW = (HashMap)SerializeDB.readSerializedMapObject(STAFFPASSWORD);
 		
-		// Search through list of Student objects
+		// Search through list of Staff objects
 		// if found, replace with new object
 		// write to binary file and return
 		for (String key: tempPW.keySet()) {
@@ -108,8 +120,7 @@ public class DatabaseControl {
 		tempPW.put(userID, newHashedPassword);
 
 		// write to binary file
-		SerializeDB.writeSerializedObject(STUDENT, temp);
-
+		SerializeDB.writeSerializedObject(STUDENTPASSWORD, tempPW);
 		return true;
 	}
 
@@ -149,27 +160,6 @@ public class DatabaseControl {
 		}
 		return null;
 	}
-	
-	public Student getStudentDataID(String identificationKey) {
-
-		temp = (ArrayList) SerializeDB.readSerializedObject(STUDENT);
-
-		Student empty = null;
-
-		// Search through the list of Student objects
-		// return object if found
-		for (int i = 0; i < temp.size(); i++) {
-			Student u = (Student) temp.get(i);
-			if (u.getIDKey().equals(identificationKey)) {
-				System.out.println("Student " + identificationKey + " found!");
-				return u;
-			}
-		}
-
-		// return null object if not found
-		System.out.println("Student " + identificationKey + " not found!");
-		return empty;
-	}
 
 
 	/**
@@ -201,7 +191,8 @@ public class DatabaseControl {
 	 */
 	public boolean addStudentData(Student newUser) {
 
-		temp = (ArrayList)SerializeDB.readSerializedObject(STUDENT);
+		SerializeDB sdb = new SerializeDB();
+		temp = (ArrayList)sdb.readSerializedObject(STUDENT);
 		for (int i = 0; i < temp.size(); i++) {
 			Student u = (Student)temp.get(i);
 			if (u.getUserID().equals(newUser.getUserID())) {

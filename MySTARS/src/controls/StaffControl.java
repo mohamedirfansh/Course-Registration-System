@@ -38,8 +38,9 @@ public class StaffControl {
 
         int schoolID = currentStaff.getSchoolID();
         School school = db.getSchoolData(schoolID);
-        return school.setAccessPeriod(startDate, endDate);
-
+        boolean isUpdated =  school.setAccessPeriod(startDate, endDate);
+	db.updateSchoolData(schoolID, school);
+	return isUpdated;
     }
 
     /**
@@ -57,10 +58,11 @@ public class StaffControl {
      * @return A boolean variable. true if the update was successful else false.
      */
     public static boolean addStudent(Staff currentStaff, String name, String userID, String userPW, String gender, String nationality, int schoolID, String identificationKey) {
-        try {
 
+        try {
+        
             // Check if identificationKey matches UXXXXXXX[A-Z]
-            Pattern p = Pattern.compile("U[0-9]{8}[A-Z]");
+            Pattern p = Pattern.compile("U[0-9]{6}[A-Z]");
             Matcher m = p.matcher(identificationKey);
             if (!m.find()) {
                 System.out.println("Please enter a valid indentification key!");
@@ -84,14 +86,19 @@ public class StaffControl {
             allStudents.add(identificationKey);
             school.setAllStudents(allStudents);
 
-            return (db.updateSchoolData(schoolID, school) && db.addStudentData(student));
+            // return (db.updateSchoolData(schoolIDTwo, school) && db.addStudentData(student));
+	    db.updateSchoolData(schoolIDTwo, school);
+	    db.addStudentData(student);
+
+	    return true;
+
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return false;
         }
     }
-    // Shows class twice
+
     /**
      * addCourse: Adds a new course to a staff's school and to the course database.
      *
@@ -105,6 +112,22 @@ public class StaffControl {
      */
     public static boolean addCourse(Staff currentStaff, String courseCode, String courseName, String schoolName, int au) {
 
+        /*Course newCourse = new Course(courseCode, courseName, schoolName, au);
+        int schoolIDThree = currentStaff.getSchoolID();
+        School school = db.getSchoolData(schoolIDThree);
+        ArrayList <String> allCourses = school.getAllCourses();
+        allCourses.add(courseCode);
+        school.setAllCourses(allCourses);
+
+        return (db.updateSchoolData(schoolIDThree, school) && db.addCourseData(newCourse));*/
+
+	Pattern p = Pattern.compile("^[A-Z]{2}+[0-9]{4}+$");
+        Matcher m = p.matcher(courseCode);
+        if (!m.find()) {
+              System.out.println("Please enter a valid course code!");
+                return false;
+        }
+        
         Course newCourse = new Course(courseCode, courseName, schoolName, au);
         int schoolIDThree = currentStaff.getSchoolID();
         School school = db.getSchoolData(schoolIDThree);
@@ -171,6 +194,7 @@ public class StaffControl {
     public static ArrayList<Student> getAllStudentsInCourse(String courseCode) {
 
         try {
+        
             Course course = db.getCourseData(courseCode);
             ArrayList<String> allStudentsID = new ArrayList<>();
 
@@ -204,6 +228,7 @@ public class StaffControl {
      * @return An ArrayList of Student objects
      */
     public static ArrayList<Student> getAllStudentsInIndex(String courseCode, String indexCode) {
+                
         try {
         Course course = db.getCourseData(courseCode);
         ArrayList<Index> allIndices = course.getCourseIndex();
@@ -214,7 +239,7 @@ public class StaffControl {
             if (i.getIndexCode().equals(indexCode)) {
                 allIndexStudentsID.addAll(i.getEnrolled());
             }
-
+        }
             // Get all student objects belonging to enrolled student IDs
             ArrayList<Student> allStudentsIndex = new ArrayList<>();
             for (String idx : allIndexStudentsID) {

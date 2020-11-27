@@ -52,7 +52,40 @@ public class AccessPeriod implements Serializable {
 				validEndDate = dateFormat.parse(this.endDate);
 
 				// Checking if current date is within the access window (-ve if currDate is before validEndDate)
-				return (currentDate.compareTo(validEndDate) <= 0 && validStartDate.compareTo(validEndDate) < 0);
+				return (/*currentDate.compareTo(validEndDate) => 0 && */validStartDate.compareTo(validEndDate) < 0);
+
+			} catch (ParseException e){
+				System.out.println("Date entered in the wrong format! Please enter a valid date format.");
+				return false;
+			}
+
+		}
+		// Temporary for now, can change to boundary classes later...
+		else {
+			System.out.println("Cannot get access period for school");
+			return false;
+		}
+	}
+	
+	public boolean isValidLoginPeriod(){
+		// Only check if there is a date already available for the start & end dates.
+		Date validStartDate = null;
+		Date validEndDate = null;
+
+		if (startDate != null && endDate != null){
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			Date currentDate = new Date();	// Get the current date
+			// Try catch block in case date cannot be parsed properly, 
+			// Parse needed to convert the date from string type to date type for comparison
+			try {
+				validStartDate = dateFormat.parse(this.startDate);
+				validEndDate = dateFormat.parse(this.endDate);
+				System.out.println("Current date: " + currentDate);
+				System.out.println("Start date: " + this.startDate);
+				System.out.println("End date: " + this.endDate);
+
+				// Checking if current date is within the access window (-ve if currDate is before validEndDate)
+				return (currentDate.compareTo(validEndDate) <= 0 && currentDate.compareTo(validStartDate) >= 0);
 
 			} catch (ParseException e){
 				System.out.println("Date entered in the wrong format! Please enter a valid date format.");

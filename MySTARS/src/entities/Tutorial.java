@@ -73,7 +73,8 @@ public class Tutorial extends Lesson{
         BufferedReader validVenues;
 
         try {
-	   String tutVenueFilePath = System.getProperty("user.dir") + "/src/data/tutorialVenues.txt"; 
+	   //String tutVenueFilePath = System.getProperty("user.dir") + "/src/data/tutorialVenues.txt";
+	   String tutVenueFilePath = System.getProperty("user.dir") + "/../data/tutorialVenues.txt";
             validVenues = new BufferedReader(new FileReader(tutVenueFilePath));
 
             String temp = validVenues.readLine();

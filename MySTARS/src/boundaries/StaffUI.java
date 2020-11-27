@@ -185,33 +185,6 @@ public class StaffUI {
             System.out.println("");
         }
     }
-    
-    // C. Get all students in school
-    /**
-     * getAllIndexes: Get all indexes belonging to a given course.
-     *
-     * @param courseCode Course code of interest
-     *
-     * @return Prints all indexes
-     */
-    public static void getAllStudents(Staff currentStaff) {
-        try {
-            // Display all indexes
-            int schoolID = currentStaff.getSchoolID();
-            School school = db.getSchoolData(schoolID);
-            ArrayList<String> allStuIDs = school.getAllStudents();
-            ArrayList<Student> allStu = new ArrayList<>();
-            System.out.println("Students currently enrolled:");
-            for (String stuID : allStuIDs) {
-                Student currStu = db.getStudentDataID(stuID);
-                System.out.println("Name: " + currStu.getName() + " | " + currStu.getIDKey());
-            }
-        } catch(NullPointerException e) {
-            System.out.println("");
-        }
-    }
-
-    // 1. Update school's Access Period
 
     /**
      * updateAccPeriod: Updates a staff's school's access period using the newly
@@ -313,6 +286,10 @@ public class StaffUI {
      * @return Prints result of update
      */
     public static void printCourseStudentList(String courseCode) {
+        if (db.getCourseData(courseCode) == null) {
+            System.out.println("This course does not exist");
+            return;
+        }
         ArrayList<Student> allStudents = StaffControl.getAllStudentsInCourse(courseCode);
         if (allStudents.isEmpty()) {
             System.out.println("There are no students enrolled in this course!");
@@ -334,6 +311,11 @@ public class StaffUI {
      * @return Prints result of update
      */
     public static void printIndexStudentList(String courseCode, String indexCode) {
+        if (db.getCourseData(courseCode).findIndex(indexCode) == null) {
+            System.out.println("This index does not exist");
+            return;
+        }
+        
         ArrayList<Student> allStudents = StaffControl.getAllStudentsInIndex(courseCode, indexCode);
         if (allStudents.isEmpty()) {
             System.out.println("There are no students enrolled in this index!");

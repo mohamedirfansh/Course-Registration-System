@@ -11,7 +11,10 @@ import java.security.NoSuchAlgorithmException;
  */
 public class createCourseData {
 	
-	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
+/* 	static final String COURSE = System.getProperty("user.dir") + "/src/data/course.dat";
+ *  	*/
+
+	static final String COURSE = System.getProperty("user.dir") + "/course.ser";
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		ArrayList<Course> courseData = new ArrayList();
@@ -49,7 +52,6 @@ public class createCourseData {
 		WorkingHours CZ2001SS1LabHours = new WorkingHours("13:30", "15:30", 3);
 		course2.findIndex("CZ2001SS1").addLesson("TUT", "TR+77", CZ2001SS1TutorialHours);
 		course2.findIndex("CZ2001SS1").addLesson("LAB", "SPL", CZ2001SS1LabHours);
-		course2.findIndex("CZ2001SS1").registerStudent("U190123A");
 		course2.findIndex("CZ2001SS1").registerStudent("U234234D");
 		course2.findIndex("CZ2001SS1").registerStudent("U234760H");
 		course2.findIndex("CZ2001SS1").registerStudent("U084287J");
@@ -59,6 +61,8 @@ public class createCourseData {
 		course2.findIndex("CZ2001SS1").registerStudent("U973243E");
 		course2.findIndex("CZ2001SS1").registerStudent("U998342C");
 		course2.findIndex("CZ2001SS1").registerStudent("U198752A");
+		course2.findIndex("CZ2001SS1").registerStudent("U193844K");
+
 
 
 		WorkingHours CZ2001SS2TutorialHours = new WorkingHours("09:30", "10:30", 3);
